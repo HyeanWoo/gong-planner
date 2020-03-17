@@ -34,9 +34,9 @@ class Subjects extends Component {
     });
   }
 
-  updateSubject = (id) => {
-    let changed = 
-  }
+  // updateSubject = (id) => {
+  //   let changed = 
+  // }
 
   deleteSubject = (id) => {
     let subjects = this.state.subjects.filter( subject => subject.id !== id);
