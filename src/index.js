@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import Firebase from './firebase';
+import {
+    firebase
+} from './firebase';
 import firebaseConfig from "./firebase/firebase.json";
 import * as serviceWorker from './serviceWorker';
 
-Firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render( < App / > , document.getElementById('root'));
 
