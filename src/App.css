@@ -1,3 +1,20 @@
 body {
   font-size: medium;
 }
+
+.todaytotal {
+  margin-bottom: 0;
+}
+
+.todaylog {
+  margin-bottom: 0;
+}
+
+.subjects input {
+  text-align: center;
+  background-color: white;
+}
+
+.subject-card {
+  border: 1px solid black;
+}
