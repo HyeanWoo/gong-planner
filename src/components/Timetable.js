@@ -27,13 +27,6 @@ const time = {
 
 const studytime = new Array(25); //0번째 방은 안씀
 
-// 배열 초기화
-function init() {
-  for (var i = 1; i <= 24; i++) {
-    studytime[i] = new Array();
-  }
-}
-
 function difftime(time) {
   //   console.log(time.start.getFullYear());
   //   console.log(time.start.getMonth());
@@ -52,14 +45,14 @@ function difftime(time) {
   const timeGap = new Date(0, 0, 0, 0, 0, 0, time.end - time.start);
   const diffHour = timeGap.getHours(); // 시간
   const diffMin = timeGap.getMinutes(); // 분
-  const diffSec = timeGap.getSeconds(); // 초
+  // const diffSec = timeGap.getSeconds(); // 초
 
   //   console.log(diffHour);
   //   console.log(diffMin);
   //   console.log(diffSec);
 
   // 시간이 넘어가지 않을경우
-  if (diffHour == 0 && time.start.getMinutes() + diffMin <= 60) {
+  if (diffHour === 0 && time.start.getMinutes() + diffMin <= 60) {
     studytime[time.start.getHours()] = new Array({
       start: time.start.getMinutes(),
       end: time.start.getMinutes() + diffMin,
@@ -82,7 +75,7 @@ function difftime(time) {
         color: "#123456"
       });
 
-      for (var i = time.start.getHours() + 1; i <= 24; i++) {
+      for (let i = time.start.getHours() + 1; i <= 24; i++) {
         studytime[i] = new Array({
           start: 0,
           end: 60,
@@ -101,7 +94,7 @@ function difftime(time) {
       });
 
       // 그 사이 시간은 전부 풀로
-      for (var i = 1; i <= diffHour; i++) {
+      for (let i = 1; i <= diffHour; i++) {
         studytime[time.start.getHours() + i] = new Array({
           start: 0,
           end: 60,
@@ -121,7 +114,6 @@ function difftime(time) {
   console.log(studytime);
 }
 
-// init();
-// difftime(time);
+difftime(time);
 
 export default Timetable;
