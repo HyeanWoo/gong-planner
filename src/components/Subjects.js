@@ -4,9 +4,51 @@ import { getData, createDate, createSubject, updateSubject} from '../firebase/su
 class Subjects extends Component {
   state = {
     subjects : {
-      1 : {id: "1", subjectName: '바른생활', totalElapsedTime: '05:00:03'},
-      2 : {id: "2", subjectName: '슬기로운생활', totalElapsedTime: '03:40:55'},
-      3 : {id: "3", subjectName: '즐거운생활', totalElapsedTime: '01:20:12'}
+      1 : {
+        id: "1",
+        subjectName: '바른생활', 
+        totalElapsedTime: '05:00:03',
+        todos : [
+          {
+            todoName : "바르게 생활하기",
+            todoCheck : "1"
+          },
+          {
+            todoName : "로션 바르기",
+            todoCheck : "2"
+          },
+        ]
+      },
+      2 : {
+        id: "2", 
+        subjectName: '슬기로운생활', 
+        totalElapsedTime: '03:40:55',
+        todos : [
+          {
+            todoName : "슬기롭게 생활하기",
+            todoCheck : "1"
+          },
+          {
+            todoName : "녹슬기",
+            todoCheck : "0"
+          },
+          {
+            todoName : "다슬기",
+            todoCheck : "2"
+          }
+        ]
+      },
+      3 : {
+        id: "3", 
+        subjectName: '즐거운생활', 
+        totalElapsedTime: '01:20:12',
+        todos : [
+          {
+            todoName : "즐겁게 생활하기",
+            todoCheck : "0"
+          }
+        ]
+      }
     },
     tmpSubjectName: '',
   }

@@ -13,58 +13,87 @@ export async function getData(date) {
   }
 }
 
-// 해당 날짜의 과목중 아이디가 일치하는거 가져오기
-// export async function getDataById(date, id) {
-//   const db = firebase.firestore();
-//   try {
-//     let subRef = await db.collection("testSubject").where('id', '==', id).get();
-//     let subject = subRef.data();
-//     return subject;
-//   }
-//   catch(err) {
-//     console.error('Error getting documents',err);
-//   }
-// }
-
-// 날짜데이터 새로 생성
+// 날짜'문서' 새로 생성
 export function createDate(date) {
   const db = firebase.firestore();
   db.collection('testSubject').doc(date).set({subjects:{isEmpty:true}});
 }
 
-// 과목데이터 새로 생성
-export function createSubject(date, id, subjectName, subjects) {
+// 과목'필드' 새로 생성
+export function createSubject(date, id, subjectName, subjects, todos) {
   const db = firebase.firestore();
   let inputData = {
-    subjects: {
-      ...subjects,
-      [id] : {
-        id : id,
-        subjectName : subjectName,
-        totalElapsedTime : "00:00:00"
+      subjects: {
+          ...subjects,
+          [id]: {
+              id: id,
+              subjectName: subjectName,
+              totalElapsedTime: "00:00:00",
+              todos : todos
+          }
       }
-    }
   };
 
   db.collection('testSubject').doc(date).set(inputData);
 }
 
-// 과목 정보(이름, 시간) 수정
-// export function updateSubject(date, id, changedData) {
+// 과목 '필드'(이름, 시간) 수정
+export function updateSubject(date, id, changedData) {
+  const db = firebase.firestore();
+  if(typeof(changedData) === "string") {
+    db.collection('testSubject').doc(date).update({
+      ['subjects.'+id+'.subjectName'] : changedData
+    });
+  } else if(typeof(changedData) === "number") {
+    db.collection('testSubject').doc(date).update({
+      ['subjects.'+id+'.totalElapsedTime'] : changedData
+    });
+  } else {
+    console.error("updateSubject","Wrong Data type input")
+  }
+}
+
+// 과목 '필드' 삭제
+export function deleteSubject(date, id) {
+  const db = firebase.firestore();
+  db.collection('testSubject').doc(date).update({
+    ['subjects.'+id] : firebase.firestore.FieldValue.delete()
+  });  
+}
+//todos만 가져오기
+export async function getTodos(date, id) {
+  const db = firebase.firestore();
+  let todoRef = await db.collection('testSubject').doc(date).get();
+  let { subjects } = todoRef.data();
+  let { todos } = subjects[id];
+  return todos;
+}
+
+// todo만 새로 추가
+export function addTodos(date, id, todoArg1, todoArg2) {
+  const db = firebase.firestore();
+  let unionData = { todoCheck: todoArg1, todoName: todoArg2 };
+  db.collection('testSubject').doc(date).update({
+    ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayUnion(unionData)
+  });  
+}
+
+// todo 내용 수정
+// export async function updateTodos(date, id, todoArg1, todoArg2) {
 //   const db = firebase.firestore();
-//   if(typeof(changedData) === "string") {
-//     findById(date, id);
-//     db.collection('testSubject').doc(date).update({
-//       'subjects.33.subjectName' : changedData
-//     });
-//   } else if(typeof(changedData) === "number") {
-//     // 공부시간 수정
-//   } else {
-//     console.error("updateSubject","Wrong Data type input")
-//   }
+//   let changeData = { todoCheck: todoArg1, todoName: todoArg2 };
+//   let allTodos = await getTodos(date, id);
+
+//   db.collection('testSubject').doc(date).update({
+//     ['subjects.'+id+".todos"] : allTodos
+//   }); 
 // }
 
-// async function findById(date, id) {
-//   let sub = await getDataById(date, id);
-//   console.log(sub);
-// }
+// todo 내용 삭제
+export function deleteTodos(date, id, todoArg1, todoArg2) {
+  const db = firebase.firestore();
+  let removeData = { todoCheck: todoArg1, todoName: todoArg2 };
+  db.collection('testSubject').doc(date).update({
+    ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayRemove(removeData)
+  });  
+}
