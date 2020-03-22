@@ -10,10 +10,12 @@ class Subjects extends Component {
         totalElapsedTime: '05:00:03',
         todos : [
           {
+            id : "1-11",
             todoName : "바르게 생활하기",
             todoCheck : "1"
           },
           {
+            id : "1-22",
             todoName : "로션 바르기",
             todoCheck : "2"
           },
@@ -25,14 +27,17 @@ class Subjects extends Component {
         totalElapsedTime: '03:40:55',
         todos : [
           {
+            id : "2-03",
             todoName : "슬기롭게 생활하기",
             todoCheck : "1"
           },
           {
+            id : "2-09",
             todoName : "녹슬기",
             todoCheck : "0"
           },
           {
+            id : "2-19",
             todoName : "다슬기",
             todoCheck : "2"
           }
@@ -44,6 +49,7 @@ class Subjects extends Component {
         totalElapsedTime: '01:20:12',
         todos : [
           {
+            id : "3-51",
             todoName : "즐겁게 생활하기",
             todoCheck : "0"
           }

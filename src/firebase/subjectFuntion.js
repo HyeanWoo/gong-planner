@@ -70,29 +70,31 @@ export async function getTodos(date, id) {
 }
 
 // todo만 새로 추가
-export function addTodos(date, id, todoArg1, todoArg2) {
+export function addTodos(date, id, todoID, todoArg1, todoArg2) {
   const db = firebase.firestore();
-  let unionData = { todoCheck: todoArg1, todoName: todoArg2 };
+  let unionData = { id: todoID, todoCheck: todoArg1, todoName: todoArg2 };
   db.collection('testSubject').doc(date).update({
     ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayUnion(unionData)
   });  
 }
 
 // todo 내용 수정
-// export async function updateTodos(date, id, todoArg1, todoArg2) {
-//   const db = firebase.firestore();
-//   let changeData = { todoCheck: todoArg1, todoName: todoArg2 };
-//   let allTodos = await getTodos(date, id);
+export async function updateTodos(date, id, todoID, todoArg1, todoArg2) {
+  const db = firebase.firestore();
+  let changeData = { id: todoID, todoCheck: todoArg1, todoName: todoArg2 };
+  let allTodos = await getTodos(date, id);
+  let idx = allTodos.indexOf(allTodos.find( todo => todo.id === todoID));
+  allTodos[idx] = changeData;
 
-//   db.collection('testSubject').doc(date).update({
-//     ['subjects.'+id+".todos"] : allTodos
-//   }); 
-// }
+  db.collection('testSubject').doc(date).update({
+    ['subjects.'+id+".todos"] : allTodos
+  }); 
+}
 
 // todo 내용 삭제
-export function deleteTodos(date, id, todoArg1, todoArg2) {
+export function deleteTodos(date, id, todoID, todoArg1, todoArg2) {
   const db = firebase.firestore();
-  let removeData = { todoCheck: todoArg1, todoName: todoArg2 };
+  let removeData = { id: todoID, todoCheck: todoArg1, todoName: todoArg2 };
   db.collection('testSubject').doc(date).update({
     ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayRemove(removeData)
   });  
