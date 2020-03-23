@@ -11,7 +11,7 @@ const Home = () => {
             <Todaylog/>
             <div className="row">
               <Subjects/>
-              <Timetable/>
+              {/* <Timetable/> */}
             </div>
         </div>
     );

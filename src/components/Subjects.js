@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SubjectList from './SubjectList';
 import * as Q from '../firebase/subjectFuntion';
 
 class Subjects extends Component {
@@ -62,11 +63,14 @@ class Subjects extends Component {
         ]
       }
     },
-    tmpSubjectName: '',
+    today: ''
   }
 
   async componentDidMount() {
-    // let date = "20.03.21"; // 날짜 지정
+    // 날짜 지정
+    this.setState({
+      today: '20.03.19'
+    })
     // let subjects = await Q.getData(date);
     // this.setState({
     //   subjects : subjects
@@ -84,43 +88,35 @@ class Subjects extends Component {
     // Q.deleteTodos(date, '1','1-22', '1', '넌 이미 발려있다');
   }
 
-  handleChange = (e) => {
-    this.setState ({
-      tmpSubjectName: e.target.value
-    });
-  }
-  
-  addSubject = (e) => {
-    e.preventDefault();
-    let id = Math.random();
-
-    this.setState({
-      subjects: {
-        ...this.state.subjects, 
-        [id] : {
-          id: id, 
-          subjectName:this.state.tmpSubjectName, 
-          totalElapsedTime:"00:00:00" 
-        }
-      } 
-    });
-
-    this.setState({
-      tmpSubjectName : ''
-    });
-  }
-
-  // createSubject = () => {
-  //   console.log("Nothing Here");
-  //   처음에는 +버튼으로 표시하고 누르면 input창이 나타나면서 과목추가하게 만들기
-  // }
-
-  render() {
-    const { subjects } = this.state;
-    let todoList = [];
-    for(let i=0; i < 3; i++) {
-      todoList[i] = <div>hello from the {i} div</div>
+  makeTodoList = () => {
+    const todoList = [];
+    const keys = Object.keys(this.state.subjects);
+    for(let i=0; i < keys.length; i++) {
+      const { todos } = this.state.subjects[keys[i]];
+      todoList[i] = todos.length ? (
+        todos.map( todo => {
+          return(
+            <div className="todo-card" key={todo.id}>
+              <span>{todo.todoCheck}</span>
+              <span> : </span>
+              <span>{todo.todoName}</span>
+            </div>
+          )
+        })
+      ) : (
+        <div className="empty-Todos">
+          <p>추가된 할일이 없습니다</p>
+        </div>
+      );
     }
+    
+    return todoList;
+  }
+
+  makeSubjectList = () => {
+    const todoList = this.makeTodoList();
+
+    const { subjects } = this.state;
     const subjectList = subjects !== undefined ? (
       Object.keys(subjects).map( (key, item) => {
         return(
@@ -140,14 +136,16 @@ class Subjects extends Component {
       </div>
     );
 
+    return subjectList;
+  }
+
+  render() {
+    // const subjectList = this.makeSubjectList();
+    
     return(
       <div className="container col s5 offset-s2 orange subjects">
-          <button onClick={this.createSubject}>+</button>
-        <form onSubmit={this.addSubject}>
-          <input className="orange lighten-1" type="text" id="tmpSubjectName" value={this.state.tmpSubjectName}
-            placeholder="과목을 입력해보세요!" onChange={this.handleChange}/>
-        </form>
-        {subjectList}
+        {/* {subjectList} */}
+        <SubjectList subjects={this.state.subjects} today={this.state.today}/>
       </div>
     );
   }
