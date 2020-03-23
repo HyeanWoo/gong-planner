@@ -18,3 +18,33 @@ body {
 .subject-card {
   border: 1px solid black;
 }
+
+.timetable-row {
+  display: flex;
+  height: 20px;
+  line-height: 20px;
+  background: white;
+  border-style: none none solid none;
+  border-width: 0.5px;
+  border-color: #00000033;
+}
+
+.timetable-time {
+  flex-shrink: 0;
+  width: 30px;
+  font-size: 5px;
+  text-align: center;
+  border-style: none solid none none;
+  border-width: 0.5px;
+  border-color: #00000033;
+}
+
+.timetable-cell {
+  flex: 1;
+}
+
+.timetable-ten {
+  border-style: none solid none none;
+  border-width: 0.5px;
+  border-color: #00000033;
+}
