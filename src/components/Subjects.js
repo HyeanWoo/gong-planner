@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { getData, createDate, createSubject, updateSubject} from '../firebase/subjectFuntion'
+import React, { Component } from 'react';
+import * as Q from '../firebase/subjectFuntion';
 
 class Subjects extends Component {
   state = {
@@ -8,6 +8,8 @@ class Subjects extends Component {
         id: "1",
         subjectName: '바른생활', 
         totalElapsedTime: '05:00:03',
+        subjectColor: '#00FFFF',
+        fold: false,
         todos : [
           {
             id : "1-11",
@@ -25,6 +27,8 @@ class Subjects extends Component {
         id: "2", 
         subjectName: '슬기로운생활', 
         totalElapsedTime: '03:40:55',
+        subjectColor: '#FFFF00',
+        fold: false,
         todos : [
           {
             id : "2-03",
@@ -47,6 +51,8 @@ class Subjects extends Component {
         id: "3", 
         subjectName: '즐거운생활', 
         totalElapsedTime: '01:20:12',
+        subjectColor: '#FF00FF',
+        fold: false,
         todos : [
           {
             id : "3-51",
@@ -60,17 +66,22 @@ class Subjects extends Component {
   }
 
   async componentDidMount() {
-    let date = "20.20.20"; // 날짜 지정
-    // let subjects = await getData(date);
+    // let date = "20.03.21"; // 날짜 지정
+    // let subjects = await Q.getData(date);
     // this.setState({
     //   subjects : subjects
     // })
 
-    // createDate("20.03.19");
-    // createDate("20.03.20");
-    // createSubject(date,"50","행복한생활",this.state.subjects);
-    // createSubject(date,"33","편안한생활",this.state.subjects);
-    // updateSubject(date, "33", "활기찬생활");
+    // Q.createDate("20.03.19");
+    // Q.createSubject(date,"50","행복한생활",this.state.subjects,[]);
+    // Q.updateSubject(date, "subjectName", "1", "희망찬생활");
+    // Q.updateSubject(date, "totalElapsedTime", "1", "12:30:45");
+    // Q.deleteSubject(date, "50");
+    // let todos = await Q.getTodos(date, "1");
+    // console.log(todos);
+    // Q.addTodos(date, '1', '1-33', '2', '식빵에 잼 바르기');
+    // Q.updateTodos(date, '1', '1-22', '1', '넌 이미 발려있다');
+    // Q.deleteTodos(date, '1','1-22', '1', '넌 이미 발려있다');
   }
 
   handleChange = (e) => {
@@ -106,14 +117,20 @@ class Subjects extends Component {
 
   render() {
     const { subjects } = this.state;
+    let todoList = [];
+    for(let i=0; i < 3; i++) {
+      todoList[i] = <div>hello from the {i} div</div>
+    }
     const subjectList = subjects !== undefined ? (
       Object.keys(subjects).map( (key, item) => {
         return(
           <div className="subject-card" key={item}>
-            <div>{subjects[key].subjectName}</div>
-            <div>{subjects[key].totalElapsedTime}</div>
+            <span>{subjects[key].totalElapsedTime}</span>
+            <span> | </span>
+            <span>{subjects[key].subjectName}</span>
             {/* <button onClick={()=>{this.updateSubject(subjects[key].id)}}>수정</button> */}
             {/* <button onClick={()=>{this.deleteSubject(subjects[key].id)}}>삭제</button> */}
+            {todoList[item]}
           </div>
         )
       })
