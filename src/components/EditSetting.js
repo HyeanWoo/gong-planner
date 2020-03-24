@@ -12,7 +12,7 @@ const Todaylog = () => {
 			</Button>
 			<Button>
 				<span role='img' aria-label='setting' className='setting'>
-					⚙️
+					<Link to="/setting">⚙️</Link>
 				</span>
 			</Button>
 		</React.Fragment>
