@@ -1,18 +1,27 @@
-import React from 'react'
+import React from 'react';
 
-const Todaylog = () => {
-  return(
-    <div className="row todaylog">
-      <div className="col s5 offset-s2 green one-word">
-        <div>오늘의 한마디</div>
-        <div>오늘도 코딩을 한다</div>
-      </div>
-      <div className="col s3 blue d-day">
-        <div>D-day</div> 
-        <div>만족도</div>
-      </div>
-    </div>
-  );
-}
+const Todaylog = ({ todayData }) => {
+	const { wordToday, dDay, score, totalStudyTime } = todayData;
+	return (
+		<React.Fragment>
+			<div className='row todaylog'>
+				<div className='col s5 offset-s2 green one-word'>
+					<div>{wordToday ? wordToday : '한마디없음ㅜ'}</div>
+				</div>
+				<div className='col s3 blue d-day'>
+					<div>{dDay ? dDay : '디데이없음ㅠ'}</div>
+				</div>
+			</div>
+			<div className='row todaylog'>
+				<div className='col s5 offset-s2 yellow one-word'>
+					<div>{score ? score : '만족도없는부분'}</div>
+				</div>
+				<div className='col s3 pink d-day'>
+					<div>{totalStudyTime ? totalStudyTime : '공부한시간이없어!'}</div>
+				</div>
+			</div>
+		</React.Fragment>
+	);
+};
 
 export default Todaylog;
