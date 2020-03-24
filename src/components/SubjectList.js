@@ -5,58 +5,60 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import FolderIcon from '@material-ui/icons/Folder';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-const SubjectList = ({subjects, today}) => {
+const SubjectList = ({subjects, today, setFold}) => {
   const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
-      maxWidth: 360,
+      maxWidth: 360
+    },
+    subject: {
+      backgroundColor: 'orange'
     },
     nested: {
       paddingLeft: theme.spacing(4),
+      backgroundColor: '#FED8B1',
+      color: 'black'
     },
   }));
-
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  const lists = [0,1,2,3].map( index => {
+  
+  const listSubject = Object.keys(subjects).map((key, idx) => {
     return(
-      <React.Fragment key={index}>
-      <ListItem button onClick={handleClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="Inbox" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemText primary="X"/>
-            <ListItemText primary="Starred" />
-          </ListItem>
-        </List>
-      </Collapse>
+      <React.Fragment key={key}>
+        <ListItem button onClick={()=>{setFold(key, subjects[key].fold)}} className={classes.subject}>
+          <ListItemIcon>
+            <FolderIcon style={{ color: subjects[key].subjectColor }}/>
+          </ListItemIcon>
+          <ListItemText primary={subjects[key].subjectName} />
+          {subjects[key].fold ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={subjects[key].fold} timeout="auto" unmountOnExit>
+          {subjects[key].todos.map( todo => {
+            return(
+              <List component="div" disablePadding key={todo.id}>
+              <ListItem button className={classes.nested}>
+                <ListItemText primary={todo.todoCheck}/>
+                <ListItemText primary={todo.todoName} />
+              </ListItem>
+            </List>
+            );
+          })}
+        </Collapse>
       </React.Fragment>
     )
   });
 
   return (
-    // List 부분은 위로 올리기(subjects.js로)
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      {lists}
+      {listSubject}
     </List>
   );
 }

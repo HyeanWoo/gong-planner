@@ -139,13 +139,25 @@ class Subjects extends Component {
     return subjectList;
   }
 
+  setFold = (id,flag) => {
+    let foldChange = this.state.subjects[id];
+    foldChange.fold = !flag;
+
+    this.setState({
+      subjects: {
+        ...this.state.subjects,
+        [id]: foldChange
+      }
+    })
+  }
+
   render() {
     // const subjectList = this.makeSubjectList();
     
     return(
       <div className="container col s5 offset-s2 orange subjects">
         {/* {subjectList} */}
-        <SubjectList subjects={this.state.subjects} today={this.state.today}/>
+        <SubjectList subjects={this.state.subjects} today={this.state.today} setFold={this.setFold}/>
       </div>
     );
   }
