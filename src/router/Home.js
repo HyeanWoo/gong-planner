@@ -6,21 +6,27 @@ import Todaytotal from '../components/Todaytotal';
 import Todaylog from '../components/Todaylog';
 import Subjects from '../components/Subjects';
 import Timetable from '../components/Timetable';
-import { getTodayData } from '../firebase/todayFuntion';
+import { getTodayData } from '../firebase/todayFunction';
 
 const Home = () => {
 	let today = dayjs();
-	let [ todayData, setTodayData ] = useState({});
+	let [ todayData, setTodayData ] = useState({
+		today: today.format('YY.MM.DD')
+	});
 
 	const changeDateCallback = (date) => {
 		if (date) today = date;
 
 		const strToday = today.format('YY.MM.DD');
 		console.log(strToday, '정보를 받아오는중..');
-
 		getTodayData(strToday).then((data) => {
 			console.log(data);
-			setTodayData(data ? data : {});
+			if (data) {
+				data.today = strToday;
+				setTodayData(data);
+			} else {
+				setTodayData({});
+			}
 		});
 	};
 	useEffect(changeDateCallback, []);
@@ -37,8 +43,8 @@ const Home = () => {
 			</div>
 			<Todaylog todayData={todayData} />
 			<div className='row'>
-				<Subjects />
-				{/* <Timetable/> */}
+				<Subjects today={todayData.today} subjects={todayData.subjects} />
+				<Timetable today={todayData.today} timeTable={todayData.timeTable ? todayData.timeTable : []} />
 			</div>
 		</div>
 	);

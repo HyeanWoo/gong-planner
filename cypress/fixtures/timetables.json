@@ -1,0 +1,25 @@
+{
+    "timetables": [{
+            "end": {
+                "seconds": 1585197000,
+                "nanoseconds": 0
+            },
+            "start": {
+                "seconds": 1585200180,
+                "nanoseconds": 0
+            },
+            "subject": "영어"
+        },
+        {
+            "end": {
+                "seconds": 1585197000,
+                "nanoseconds": 0
+            },
+            "start": {
+                "seconds": 1585200180,
+                "nanoseconds": 0
+            },
+            "subject": "국어"
+        }
+    ]
+}

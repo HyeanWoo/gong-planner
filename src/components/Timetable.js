@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import dayjs from 'dayjs';
 import TimeTable from '../lib/timetable';
-import * as timeTableDB from '../firebase/timeTableFunction';
 
 export default class Timetable extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { timeTable: null };
+	state = {};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (prevState.today !== nextProps.today) {
+			const { timeTable } = nextProps;
+
+			const refinedTimeTable = timeTable.map((time) => {
+				return {
+					...time,
+					start: dayjs.unix(time.start.seconds),
+					end: dayjs.unix(time.end.seconds)
+				};
+			});
+
+			return {
+				today: nextProps.today,
+				timeTable: new TimeTable(refinedTimeTable)
+			};
+		}
+		return {};
 	}
 
-	componentDidMount() {
-		const collectionName = 'testSubject';
-		const date = '20.03.21';
-		timeTableDB.getTimeTable(collectionName, date).then((timeTable) => {
-			this.setState(
-				{
-					timeTable: new TimeTable(
-						timeTable.map((time) => {
-							return {
-								...time,
-								start: dayjs.unix(time.start.seconds),
-								end: dayjs.unix(time.end.seconds)
-							};
-						})
-					)
-				},
-				this.makeTimeTable
-			);
-		});
-	}
-
+	// TODO: 과목 리스트에서 color 받아서 변경하는걸로 고쳐야됨
 	makeTimeTable(hour = 24, minute = 60) {
 		const studyTime = this.state.timeTable.studyTime;
 		const red = { backgroundColor: 'red' };
@@ -41,11 +38,14 @@ export default class Timetable extends Component {
 				{hour.map((cell, j) => {
 					let style = {},
 						className = [ 'timetable-cell' ];
+
 					if (cell === '국어') style = red;
 					else if (cell === '영어') style = blue;
+
 					if ((j + 1) % 10 === 0 && j !== 59) {
 						className.push('timetable-ten');
 					}
+
 					return <div key={i * 60 + j} className={className.join(' ')} style={style} />;
 				})}
 			</div>
@@ -53,10 +53,10 @@ export default class Timetable extends Component {
 	}
 
 	render() {
-		if (this.state.timeTable) {
-			return <div className='col s3 yellow timetable'>{this.makeTimeTable()}</div>;
-		} else {
+		if (_.isEmpty(this.state.timeTable)) {
 			return <div className='col s3 yellow timetable'>로딩중</div>;
+		} else {
+			return <div className='col s3 yellow timetable'>{this.makeTimeTable()}</div>;
 		}
 	}
 }
