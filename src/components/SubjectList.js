@@ -26,7 +26,7 @@ const SubjectList = ({subjects, today, setFold}) => {
   }));
   const classes = useStyles();
   
-  const listSubject = Object.keys(subjects).map((key, idx) => {
+  const listSubject = Object.keys(subjects).map((key) => {
     return(
       <React.Fragment key={key}>
         <ListItem button onClick={()=>{setFold(key, subjects[key].fold)}} className={classes.subject}>
