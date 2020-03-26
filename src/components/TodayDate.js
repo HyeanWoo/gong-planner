@@ -25,9 +25,9 @@ const TodayDate = ({ onChangeDate }) => {
 
 	return (
 		<React.Fragment>
-			<ArrowBackIosIcon onClick={onClickArrowBack} />
+			<ArrowBackIosIcon className="prevDate" onClick={onClickArrowBack} />
 			{date.format(dateFormat)}
-			<ArrowForwardIosIcon onClick={onClickArrowForward} />
+			<ArrowForwardIosIcon className="nextDate" onClick={onClickArrowForward} />
 		</React.Fragment>
 	);
 };
