@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import EditSubjectList from '../components/EditSubjectList';
+import SubjectAddModal from '../components/Modals/SubjectAddModal';
 
 const Edit = () => {
   return (
@@ -23,12 +25,10 @@ const Edit = () => {
           </Button>
       </div>
       <div className="row">
-        subject and todo list
+        <EditSubjectList/>
       </div>
       <div className="row">
-        <Button onClick="">
-          modal btn
-        </Button>
+        <SubjectAddModal/>
       </div>
     </div>
   );
