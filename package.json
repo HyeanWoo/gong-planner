@@ -13,6 +13,7 @@
     "firebase": "^7.11.0",
     "global": "^4.4.0",
     "lodash": "^4.17.15",
+    "rc-progress": "^2.5.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-modal": "^3.11.2",
