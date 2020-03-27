@@ -2,25 +2,32 @@ import React from 'react';
 import withModal from '../../HOC/withModal'
 
 const SubjectAddModal = () => {
+  const [name, setName] = React.useState("");
   const [color, setColor] = React.useState("#FF0000");
 
-  const handleColor = e => {
+  const handleChangeName = e => {
+    setName(e.target.value);
+  }
+
+  const handleChangeColor = e => {
     setColor(e.target.value);
   }
 
-  const handleChange = e => {
+  const handleSubmit = e => {
     e.preventDefault();
+    console.log(name, color);
   }
 
   return(
     <div className="subject-modal">
       <div>과목 추가</div>
-      <form onSubmit={handleChange}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="subjectName">과목명</label>
-        <input type="text" id="subjectName"/>
+        <input type="text" id="subjectName" onChange={handleChangeName}/>
         <label htmlFor="subjectColor">과목색상</label>
         <div style={{backgroundColor: color}}>&nbsp;</div>
-        <input type="text" id="subjectColor" onChange={handleColor}/>
+        <input type="text" id="subjectColor" onChange={handleChangeColor}/>
+        <input type="submit" value="" style={{ visibility: "hidden"}}/>
       </form>
     </div>
   )

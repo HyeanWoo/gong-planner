@@ -16,11 +16,18 @@ class EditSubjectList extends Component {
     subjects : null,
   }
 
-  addSubjects(subjectName, subjectColor) {
-    const subject = {
+  // addSubjects(subjectName, subjectColor) {
+  //   const subject = {
       
-    }
-  }
+  //   }
+  // }
+
+  // addTodo(subjectId, todoName, todoCheck) {
+  //   let todo = {id: "99", todoName: todoName, todoCheck: todoCheck};
+  //   this.setState({
+
+  //   })
+  // }
 
   async getSubjects(date) {
     const subjects = await subFunctions.getData(date);
@@ -58,7 +65,7 @@ class EditSubjectList extends Component {
                 <FolderIcon style={{ color: this.state.subjects[key].subjectColor }} />
               </ListItemIcon>
               <ListItemText primary={this.state.subjects[key].subjectName}/>
-              <SubjectEditModal/>
+              <SubjectEditModal subject={this.state.subjects[key]}/>
             </ListItem>
             <Collapse in={true} timeout='auto' unmountOnExit>
               {this.state.subjects[key].todos.map((todo) => {
@@ -72,7 +79,7 @@ class EditSubjectList extends Component {
                   </List>
                 );
               })}
-              <TodoAdd/>
+              <TodoAdd subjectId={key} addTodo={this.addTodo}/>
             </Collapse>
           </React.Fragment>
         )

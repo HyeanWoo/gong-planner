@@ -1,0 +1,46 @@
+.state {
+  margin-bottom: 8px;
+}
+
+.radio-input {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* HIDE RADIO */
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+  width: 28px;
+  margin: 3%;
+  outline: 0.5px solid grey;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  background-color: grey;
+}
+
+[type=radio] + svg {
+  cursor: pointer;
+  margin: 3%;
+  font-size: 28px;
+  outline: 0.5px solid grey;
+}
+
+/* ICON STYLES */
+[type=radio] + svg > path {
+  fill: black;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + svg {
+  background-color: grey;
+}

@@ -19,8 +19,10 @@ class Collections extends Component {
   }
 
   render() {
-    const list = this.state.collectionData ? (JSON.stringify(this.state.collectionData)
-      ) : (<h5>올바르지 않은 콜렉션 이름입니다</h5>);
+    const list = this.state.collectionData ? 
+    (JSON.stringify(this.state.collectionData)) : (<h5>올바르지 않은 콜렉션 이름입니다</h5>);
+
+    console.log(typeof(this.state.collectionData));
     return(
       <div className="collections">
         {list}
