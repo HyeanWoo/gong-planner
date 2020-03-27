@@ -141,3 +141,14 @@ const changedTodos = [
 // addTodos('99.99.99', '123', '2', '콩떡빙수');
 
 // updateTodos("99.99.99","123", "123-71", "2", "멜론빙수");
+
+
+async function getCollection(name) {
+  const db = firebase.firestore();
+  let all = db.collection(name);
+  let snapshot = await all.get();
+
+  return snapshot.docs;
+}
+
+getCollection('testSubject');
