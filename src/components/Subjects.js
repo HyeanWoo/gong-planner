@@ -104,7 +104,7 @@ class Subjects extends Component {
 		for (let i = 0; i < keys.length; i++) {
 			const { todos } = this.state.subjects[keys[i]];
 			todoList[i] = todos.length ? (
-				todos.map((todo) => {
+				todos.map(todo => {
 					return (
 						<div className='todo-card' key={todo.id}>
 							<span>{todo.todoCheck}</span>
@@ -166,7 +166,7 @@ class Subjects extends Component {
 		// const subjectList = this.makeSubjectList();
 		console.log(this.state);
 		return (
-			<div className='container col s5 offset-s2 orange subjects'>
+			<div className='orange subjects'>
 				{/* {subjectList} */}
 				<SubjectList subjects={this.state.subjects} setFold={this.setFold} />
 			</div>

@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { Grid } from '@material-ui/core';
+
 import TodayDate from '../components/TodayDate';
 import EditSetting from '../components/EditSetting';
 import Todaylog from '../components/Todaylog';
 import Subjects from '../components/Subjects';
 import Timetable from '../components/Timetable';
 
-const Home = (props) => {
-  const { todayData, onChangeTodayData } = props;
-  const collectionName = props.match.params.colName;
+const Home = props => {
+	const { todayData, onChangeTodayData } = props;
+	const collectionName = props.match.params.colName || 'testSubject';
 
 	return (
-		<div className='center home'>
-			<div className='row'>
-				<div className='col s5 offset-s2'>
+		<Grid container justify='center'>
+			<Grid item container xs={12}>
+				<Grid item xs>
 					<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
-				</div>
-				<div className='col s3'>
+				</Grid>
+				<Grid item xs>
 					<EditSetting />
-				</div>
-			</div>
-			<Todaylog todayData={todayData} />
-			<div className='row'>
-				<Subjects today={todayData.date} subjects={todayData.subjects} />
-				<Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} />
-			</div>
-		</div>
+				</Grid>
+			</Grid>
+			<Grid item xs={12}>
+				<Todaylog todayData={todayData} />
+			</Grid>
+			<Grid item container xs={12}>
+				<Grid item xs>
+					<Subjects today={todayData.date} subjects={todayData.subjects} />
+				</Grid>
+				<Grid item xs>
+					{/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
+				</Grid>
+			</Grid>
+		</Grid>
 	);
 };
 

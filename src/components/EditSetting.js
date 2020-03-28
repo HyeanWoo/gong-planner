@@ -5,16 +5,20 @@ import { Link } from 'react-router-dom';
 const Todaylog = () => {
 	return (
 		<React.Fragment>
-			<Button>
-				<span role='img' aria-label='edit' className='edit'>
-					<Link to="/edit">📝</Link>
-				</span>
-			</Button>
-			<Button>
-				<span role='img' aria-label='setting' className='setting'>
-					<Link to="/setting">⚙️</Link>
-				</span>
-			</Button>
+			<Link to='/edit'>
+				<Button>
+					<span role='img' aria-label='edit' className='edit'>
+						📝
+					</span>
+				</Button>
+			</Link>
+			<Link to='/setting'>
+				<Button>
+					<span role='img' aria-label='setting' className='setting'>
+						⚙️
+					</span>
+				</Button>
+			</Link>
 		</React.Fragment>
 	);
 };
