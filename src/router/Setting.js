@@ -1,7 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 
-const Setting = () => {
+const Setting = (props) => {
+  const goBack = () => {
+    props.history.goBack();
+  }
+
   return(
     <div className="center setting">
       <div className="row">
@@ -9,7 +12,7 @@ const Setting = () => {
         this is setting page
       </div>
       <div className="col s1 offset-11">
-        <Link to="/">X</Link>
+        <button onClick={goBack}>X</button>
       </div>  
       </div>
     </div>

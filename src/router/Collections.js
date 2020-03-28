@@ -7,7 +7,7 @@ class Collections extends Component {
   }
 
   async initialize() {
-    let collectionName = this.props.match.params.col_name;
+    let collectionName = this.props.match.params.colName;
     const collectionData = await getCollection(collectionName);
     this.setState({
       collectionData

@@ -5,7 +5,10 @@ import Todaylog from '../components/Todaylog';
 import Subjects from '../components/Subjects';
 import Timetable from '../components/Timetable';
 
-const Home = ({ todayData, onChangeTodayData }) => {
+const Home = (props) => {
+  const { todayData, onChangeTodayData } = props;
+  const collectionName = props.match.params.colName;
+
 	return (
 		<div className='center home'>
 			<div className='row'>

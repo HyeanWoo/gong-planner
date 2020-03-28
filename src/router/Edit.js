@@ -1,10 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import EditSubjectList from '../components/EditSubjectList';
 import SubjectAddModal from '../components/Modals/SubjectAddModal';
 
-const Edit = () => {
+const Edit = (props) => {
+  const goBack = () => {
+    props.history.goBack();
+  }
+  
   return (
     <div className="center edit">
       <div className="row">
@@ -12,7 +15,7 @@ const Edit = () => {
           This is Edit Page
         </div>
         <div className="col s1 offset-11">
-          <Link to="/">X</Link>
+          <button onClick={goBack}>X</button>
         </div>
       </div>
       <div className="row">

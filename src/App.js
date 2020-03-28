@@ -5,7 +5,6 @@ import './App.css';
 import Home from './router/Home';
 import Edit from './router/Edit';
 import Setting from './router/Setting';
-import Collections from './router/Collections';
 import { getTodayData } from './firebase/todayFunction';
 
 class App extends Component {
@@ -36,13 +35,13 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/" component={() => (
-              <Home 
-                todayData={this.state.todayData}
-                onChangeTodayData={this.setTodayData} />)}/>
             <Route path="/edit" component={Edit}/>
             <Route path='/setting' component={Setting}/>
-            <Route path='/:col_name' component={Collections}/>
+            <Route exact path="/:colName" component={(props) => (
+              <Home 
+                todayData={this.state.todayData}
+                onChangeTodayData={this.setTodayData} 
+                {...props} />)}/>
           </Switch>
         </div>
       </BrowserRouter>
