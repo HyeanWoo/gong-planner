@@ -14,6 +14,7 @@ import SubjectEditModal from './Modals/SubjectEditModal';
 class EditSubjectList extends Component {
   state = {
     subjects : null,
+    colName : "testSubject"
   }
 
   // addSubjects(subjectName, subjectColor) {
@@ -30,7 +31,8 @@ class EditSubjectList extends Component {
   // }
 
   async getSubjects(date) {
-    const subjects = await subFunctions.getData(date);
+    // console.log(this.props.match.params.colName);
+    const subjects = await subFunctions.getData(this.state.colName, date);
     this.setState({
       subjects
     })

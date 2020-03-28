@@ -37,11 +37,13 @@ class App extends Component {
           <Switch>
             <Route path="/edit" component={Edit}/>
             <Route path='/setting' component={Setting}/>
-            <Route exact path="/:colName" component={(props) => (
+            <Route path="/:colName" component={(props) => (
               <Home 
                 todayData={this.state.todayData}
                 onChangeTodayData={this.setTodayData} 
-                {...props} />)}/>
+                {...props} 
+              />)
+            }/>
           </Switch>
         </div>
       </BrowserRouter>

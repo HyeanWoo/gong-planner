@@ -1,10 +1,10 @@
 import firebase from './index'
 
 //todos만 가져오기
-export async function getTodos(date, id) {
+export async function getTodos(collectionName, date, id) {
   const db = firebase.firestore();
   try {
-    let todoRef = await db.collection('testSubject').doc(date).get();
+    let todoRef = await db.collection(collectionName).doc(date).get();
     let { subjects } = todoRef.data();
     let { todos } = subjects[id];
     console.log("Get Todos OK");
@@ -15,10 +15,10 @@ export async function getTodos(date, id) {
 }
 
 // todo만 새로 추가
-export function addTodos(date, id, todoID, todoCheck, todoName) {
+export function addTodos(collectionName, date, id, todoID, todoCheck, todoName) {
   const db = firebase.firestore();
   let unionData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
-  db.collection('testSubject').doc(date).update({
+  db.collection(collectionName).doc(date).update({
     ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayUnion(unionData)
   })
   .then(function() {
@@ -30,14 +30,14 @@ export function addTodos(date, id, todoID, todoCheck, todoName) {
 }
 
 // todo 내용 수정
-export async function updateTodos(date, id, todoID, todoCheck, todoName) {
+export async function updateTodos(collectionName, date, id, todoID, todoCheck, todoName) {
   const db = firebase.firestore();
   let changeData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
   let allTodos = await getTodos(date, id);
   let idx = allTodos.indexOf(allTodos.find( todo => todo.id === todoID));
   allTodos[idx] = changeData;
 
-  db.collection('testSubject').doc(date).update({
+  db.collection(collectionName).doc(date).update({
     ['subjects.'+id+".todos"] : allTodos
   })
   .then(function() {
@@ -49,10 +49,10 @@ export async function updateTodos(date, id, todoID, todoCheck, todoName) {
 }
 
 // todo 내용 삭제
-export function deleteTodos(date, id, todoID, todoCheck, todoName) {
+export function deleteTodos(collectionName, date, id, todoID, todoCheck, todoName) {
   const db = firebase.firestore();
   let removeData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
-  db.collection('testSubject').doc(date).update({
+  db.collection(collectionName).doc(date).update({
     ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayRemove(removeData)
   })
   .then(function() {

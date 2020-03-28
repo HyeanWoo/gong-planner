@@ -1,10 +1,10 @@
 import firebase from './index'
 
 // 해당 날짜의 과목들 가져오기
-export async function getData(date) {
+export async function getData(collectionName, date) {
   const db = firebase.firestore();
   try {
-    let subRef = await db.collection("testSubject").doc(date).get();
+    let subRef = await db.collection(collectionName).doc(date).get();
     let {subjects} = subRef.data();
     console.log("Get Sujects docs OK");
     return subjects;
@@ -15,9 +15,9 @@ export async function getData(date) {
 }
 
 // 날짜'문서' 새로 생성
-export function createDate(date) {
+export function createDate(collectionName,date) {
   const db = firebase.firestore();
-  db.collection('testSubject').doc(date).set({subjects:{isEmpty:true}})
+  db.collection(collectionName).doc(date).set({subjects:{isEmpty:true}})
   .then(function() {
     console.log("Create Date Doc OK");
   })
@@ -27,7 +27,7 @@ export function createDate(date) {
 }
 
 // 과목'필드' 새로 생성
-export function createSubject(date, id, subjectName, subjects, todos) {
+export function createSubject(collectionName,date, id, subjectName, subjects, todos) {
   const db = firebase.firestore();
   let inputData = {
       subjects: {
@@ -41,7 +41,7 @@ export function createSubject(date, id, subjectName, subjects, todos) {
       }
   };
 
-  db.collection('testSubject').doc(date).set(inputData)
+  db.collection(collectionName).doc(date).set(inputData)
   .then(function() {
     console.log("Create Subjects Field OK");
   })
@@ -51,15 +51,15 @@ export function createSubject(date, id, subjectName, subjects, todos) {
 }
 
 // 과목 '필드'(이름, 시간) 수정
-export function updateSubject(date, dataType, id, changedData) {
+export function updateSubject(collectionName, date, dataType, id, changedData) {
   const db = firebase.firestore();
   try {
     if(dataType === "subjectName") {
-      db.collection('testSubject').doc(date).update({
+      db.collection(collectionName).doc(date).update({
         ['subjects.'+id+'.subjectName'] : changedData
       });
     } else if(dataType === "totalElapsedTime") {
-      db.collection('testSubject').doc(date).update({
+      db.collection(collectionName).doc(date).update({
         ['subjects.'+id+'.totalElapsedTime'] : changedData
       });
     } else {
@@ -72,9 +72,9 @@ export function updateSubject(date, dataType, id, changedData) {
 }
 
 // 과목 '필드' 삭제
-export function deleteSubject(date, id) {
+export function deleteSubject(collectionName,date, id) {
   const db = firebase.firestore();
-  db.collection('testSubject').doc(date).update({
+  db.collection(collectionName).doc(date).update({
     ['subjects.'+id] : firebase.firestore.FieldValue.delete()
   })
   .then(function() {
