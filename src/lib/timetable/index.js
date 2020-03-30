@@ -1,4 +1,4 @@
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
 
 class TimeTable {
 	constructor(timeTable = []) {
@@ -17,33 +17,34 @@ class TimeTable {
     입력 : [{
       start: dayjs()
       end: dayjs()
-      subject: "과목"
+      color: "과목"
     }, ...]
   */
 	parse(timeTable = []) {
-		const studyTime = [ ...Array(24) ].map((x) => [ ...Array(60) ].map((x) => undefined));
-		timeTable.forEach((time) => {
-			const diffMin = time.end.diff(time.start, 'minute');
+		const studyTime = [ ...Array(24) ].map(x => [ ...Array(60) ].map(x => undefined));
+		console.log(timeTable);
+		timeTable.forEach(time => {
+			let diffMin = time.end.diff(time.start, 'minute');
 
-			// console.groupCollapsed(ii);
-			// console.log(time.start.hour(), time.start.minute());
-			// console.log(time.end.hour(), time.end.minute());
-			// console.log(diffMin);
+			console.log(time.start.hour(), time.start.minute());
+			console.log(time.end.hour(), time.end.minute());
+			console.log(diffMin);
 
-			const startHourIndex = time.start.hour();
-			const endHourIndex = time.end.hour();
-			if (diffMin > 0) {
-				const diffHour = time.end.diff(time.start, 'hour');
-				studyTime[startHourIndex].fill(time.subject, time.start.minute());
-				for (let i = 1; i < diffHour; ++i) {
-					studyTime[startHourIndex + i].fill(time.subject);
+			let hour = time.start.hour();
+			let minute = time.start.minute();
+			while (diffMin > 0) {
+				let last;
+				if (diffMin + minute > 60) {
+					last = 60;
+				} else if (hour < time.end.hour() && time.end.minute() === 0) {
+					last = 60;
+				} else {
+					last = time.end.minute();
 				}
-				studyTime[endHourIndex].fill(time.subject, 0, time.end.minute());
-			} else {
-				studyTime[startHourIndex].fill(time.subject, time.start.minute(), time.end.minute());
+				studyTime[hour++].fill(time.color, minute, last);
+				diffMin -= last - minute;
+				minute = 0;
 			}
-
-			// console.groupEnd();
 		});
 		this.studyTime = studyTime;
 	}
@@ -85,7 +86,7 @@ class TimeTable {
 	isValid(timeArray) {}
 
 	check(time) {
-		this.studyTime.forEach((study) => {
+		this.studyTime.forEach(study => {
 			if ((time.start < study.start && time.start <= study.end) || time.start >= study.end) {
 				// GOOD
 			} else {
@@ -101,13 +102,13 @@ class TimeTable {
 		// 예외처리
 		if (Array.isArray(timeData)) {
 			// 배열일 경우
-			timeData.forEach((data) => {
+			timeData.forEach(data => {
 				const check = this.check(data);
 				if (typeof check === 'object') {
 					return check;
 				}
 			});
-			timeData.forEach((data) => this.push(data));
+			timeData.forEach(data => this.push(data));
 		} else {
 			// 객체일 경우
 			this.push(timeData);
@@ -117,4 +118,4 @@ class TimeTable {
 	}
 }
 
-module.exports = TimeTable;
+export default TimeTable;

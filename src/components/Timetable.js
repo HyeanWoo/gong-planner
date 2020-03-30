@@ -37,10 +37,14 @@ export default class Timetable extends Component {
 	state = {};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		if (prevState.today !== nextProps.today) {
+		if (nextProps.timeTable) {
 			const { timeTable } = nextProps;
 
 			const refinedTimeTable = timeTable.map(time => {
+				if (time.start.seconds > time.end.seconds) {
+					[ time.start.seconds, time.end.seconds ] = [ time.end.seconds, time.start.seconds ];
+				}
+
 				return {
 					...time,
 					start: dayjs.unix(time.start.seconds),
@@ -56,32 +60,45 @@ export default class Timetable extends Component {
 		return {};
 	}
 
-	// TODO: 과목 리스트에서 color 받아서 변경하는걸로 고쳐야됨
-	makeTimeTable(hour = 24, minute = 60) {
-		const studyTime = this.state.timeTable.studyTime;
-		const red = { backgroundColor: 'red' };
-		const blue = { backgroundColor: 'blue' };
-
-		return studyTime.map((hour, i) => (
-			<TimetableRow key={i}>
-				<TimeTableTime>{i}시</TimeTableTime>
-				{hour.map((cell, j) => {
-					let style = {};
-
-					if (cell === '국어') style = red;
-					else if (cell === '영어') style = blue;
-
-					if ((j + 1) % 10 === 0 && j !== 59) {
-						return <TimetableTen key={i * 60 + j} style={style} />;
-					} else {
-						return <TimetableCell key={i * 60 + j} style={style} />;
-					}
-				})}
-			</TimetableRow>
-		));
-	}
-
 	render() {
-		return <TimetableFrame>{_.isEmpty(this.state.timeTable) ? '로딩중' : this.makeTimeTable()}</TimetableFrame>;
+		const { timeTable } = this.state;
+		if (_.isEmpty(timeTable)) {
+			return (
+				<TimetableFrame>
+					{[ ...Array(24) ].map((_, i) => (
+						<TimetableRow key={i}>
+							<TimeTableTime>{i}시</TimeTableTime>
+							{[ ...Array(60) ].map((_, j) => {
+								if ((j + 1) % 10 === 0 && j !== 59) {
+									return <TimetableTen key={i * 60 + j} />;
+								} else {
+									return <TimetableCell key={i * 60 + j} />;
+								}
+							})}
+						</TimetableRow>
+					))}
+				</TimetableFrame>
+			);
+		} else {
+			const studyTime = timeTable.studyTime;
+
+			return (
+				<TimetableFrame>
+					{studyTime.map((hour, i) => (
+						<TimetableRow key={i}>
+							<TimeTableTime>{i}시</TimeTableTime>
+							{hour.map((cell, j) => {
+								let style = { backgroundColor: cell };
+								if ((j + 1) % 10 === 0 && j !== 59) {
+									return <TimetableTen key={i * 60 + j} style={style} />;
+								} else {
+									return <TimetableCell key={i * 60 + j} style={style} />;
+								}
+							})}
+						</TimetableRow>
+					))}
+				</TimetableFrame>
+			);
+		}
 	}
 }
