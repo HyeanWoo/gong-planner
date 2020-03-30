@@ -10,14 +10,15 @@ import FolderIcon from '@material-ui/icons/Folder';
 import TodoAdd from './Modals/TodoAddModal';
 import TodoEditModal from './Modals/TodoEditModal';
 import SubjectEditModal from './Modals/SubjectEditModal';
+// import dayjs from 'dayjs';
 
 class EditSubjectList extends Component {
   state = {
-    subjects : null,
-    colName : "testSubject"
+    subjects : null
   }
-
+  
   // addSubjects(subjectName, subjectColor) {
+  //   console.log(+dayjs())
   //   const subject = {
       
   //   }
@@ -30,16 +31,15 @@ class EditSubjectList extends Component {
   //   })
   // }
 
-  async getSubjects(date) {
-    // console.log(this.props.match.params.colName);
-    const subjects = await subFunctions.getData(this.state.colName, date);
+  async getSubjects() {
+    const subjects = await subFunctions.getData(this.props.colName, "99.99.99");
     this.setState({
       subjects
     })
   }
 
   componentDidMount() {
-    this.getSubjects("99.99.99");
+    this.getSubjects();
   }
 
   makeSubList() {

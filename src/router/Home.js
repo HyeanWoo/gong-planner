@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
 
 import TodayDate from '../components/TodayDate';
@@ -11,18 +11,18 @@ const Home = props => {
 	const { todayData, onChangeTodayData } = props;
 	const collectionName = props.match.params.colName || 'testSubject';
 
-	return (
+  return (
 		<Grid container justify='center'>
 			<Grid item container xs={12}>
 				<Grid item xs>
 					<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
 				</Grid>
 				<Grid item xs>
-					<EditSetting />
+					<EditSetting colName={collectionName}/>
 				</Grid>
 			</Grid>
 			<Grid item xs={12}>
-				<Todaylog todayData={todayData} />
+				<Todaylog todayData={todayData}/>
 			</Grid>
 			<Grid item container xs={12}>
 				<Grid item xs>

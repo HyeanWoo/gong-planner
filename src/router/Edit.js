@@ -3,10 +3,12 @@ import Button from '@material-ui/core/Button';
 import EditSubjectList from '../components/EditSubjectList';
 import SubjectAddModal from '../components/Modals/SubjectAddModal';
 
-const Edit = (props) => {
+const Edit = props => {
   const goBack = () => {
     props.history.goBack();
   }
+
+  const colName = props.match.params.colName;
   
   return (
     <div className="center edit">
@@ -20,15 +22,15 @@ const Edit = (props) => {
       </div>
       <div className="row">
           <Button onClick={() => {console.log("Yesterday")}}>
-            <span>🌗</span>
+            <span role='img' aria-label='yesterday'>🌗</span>
           </Button>
           <span>2020-03-24</span>
           <Button onClick={() => {console.log("Tomrrow")}}>
-            <span>🌓</span>
+            <span role='img' aria-label='tommorow'>🌓</span>
           </Button>
       </div>
       <div className="row">
-        <EditSubjectList/>
+        <EditSubjectList colName={colName}/>
       </div>
       <div className="row">
         <SubjectAddModal/>

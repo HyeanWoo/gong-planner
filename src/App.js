@@ -51,8 +51,8 @@ class App extends Component {
 				<AppComponent>
 					<Switch>
 						<Route exact path='/' component={HomeComponent} />
-						<Route path='/edit' component={Edit} />
-						<Route path='/setting' component={Setting} />
+						<Route path='/:colName/edit' component={Edit} />
+						<Route path='/:colName/setting' component={Setting} />
 						<Route path='/:colName' component={HomeComponent} />
 					</Switch>
 				</AppComponent>

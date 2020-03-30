@@ -27,13 +27,15 @@ export function createDate(collectionName,date) {
 }
 
 // 과목'필드' 새로 생성
-export function createSubject(collectionName,date, id, subjectName, subjects, todos) {
+export function createSubject(collectionName,date, id, subjectName, subjectColor, subjects, todos) {
   const db = firebase.firestore();
   let inputData = {
       subjects: {
           ...subjects,
           [id]: {
               id: id,
+              fold: false,
+              subjectColor: subjectColor,
               subjectName: subjectName,
               totalElapsedTime: "00:00:00",
               todos : todos
@@ -58,6 +60,10 @@ export function updateSubject(collectionName, date, dataType, id, changedData) {
       db.collection(collectionName).doc(date).update({
         ['subjects.'+id+'.subjectName'] : changedData
       });
+    } else if(dataType === "subjectColor") {
+      db.collection(collectionName).doc(date).update({
+        ['subjects.'+id+'.subjectColor'] : changedData
+      });
     } else if(dataType === "totalElapsedTime") {
       db.collection(collectionName).doc(date).update({
         ['subjects.'+id+'.totalElapsedTime'] : changedData
@@ -72,7 +78,7 @@ export function updateSubject(collectionName, date, dataType, id, changedData) {
 }
 
 // 과목 '필드' 삭제
-export function deleteSubject(collectionName,date, id) {
+export function deleteSubject(collectionName, date, id) {
   const db = firebase.firestore();
   db.collection(collectionName).doc(date).update({
     ['subjects.'+id] : firebase.firestore.FieldValue.delete()

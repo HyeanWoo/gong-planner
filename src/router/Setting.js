@@ -1,9 +1,11 @@
 import React from 'react'
 
-const Setting = (props) => {
+const Setting = props => {
   const goBack = () => {
     props.history.goBack();
   }
+
+  // const colName = props.match.params.colName;
 
   return(
     <div className="center setting">

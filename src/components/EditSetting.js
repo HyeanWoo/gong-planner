@@ -2,17 +2,20 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-const Todaylog = () => {
+const Todaylog = ({colName}) => {
+  const editUrl = "/"+colName+"/edit";
+  const settingUrl = "/"+colName+"/setting";
+
 	return (
 		<React.Fragment>
-			<Link to='/edit'>
+			<Link to={editUrl}>
 				<Button>
 					<span role='img' aria-label='edit' className='edit'>
 						📝
 					</span>
 				</Button>
 			</Link>
-			<Link to='/setting'>
+			<Link to={settingUrl}>
 				<Button>
 					<span role='img' aria-label='setting' className='setting'>
 						⚙️
