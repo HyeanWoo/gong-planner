@@ -6,23 +6,24 @@ import EditSetting from '../components/EditSetting';
 import Todaylog from '../components/Todaylog';
 import Subjects from '../components/Subjects';
 import Timetable from '../components/Timetable';
+import CvsTimetable from '../components/CvsTimetable';
 
 const Home = props => {
 	const { todayData, onChangeTodayData } = props;
 	const collectionName = props.match.params.colName || 'testSubject';
 
-  return (
+	return (
 		<Grid container justify='center'>
 			<Grid item container xs={12}>
 				<Grid item xs>
 					<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
 				</Grid>
 				<Grid item xs>
-					<EditSetting colName={collectionName}/>
+					<EditSetting colName={collectionName} />
 				</Grid>
 			</Grid>
 			<Grid item xs={12}>
-				<Todaylog todayData={todayData}/>
+				<Todaylog todayData={todayData} />
 			</Grid>
 			<Grid item container xs={12}>
 				<Grid item xs>
@@ -30,6 +31,7 @@ const Home = props => {
 				</Grid>
 				<Grid item xs>
 					{/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
+					<CvsTimetable timeTable={todayData.timeTable ? todayData.timeTable : []} />
 				</Grid>
 			</Grid>
 		</Grid>

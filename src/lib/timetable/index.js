@@ -4,7 +4,8 @@ class TimeTable {
 	constructor(timeTable = []) {
 		this.originTime = timeTable;
 		this.studyTime = [];
-		this.parse(timeTable);
+		// this.parse(timeTable);
+		this.toOneArray(timeTable);
 	}
 
 	sort() {
@@ -42,6 +43,34 @@ class TimeTable {
 					last = time.end.minute();
 				}
 				studyTime[hour++].fill(time.color, minute, last);
+				diffMin -= last - minute;
+				minute = 0;
+			}
+		});
+		this.studyTime = studyTime;
+	}
+
+	toOneArray(timeTable = []) {
+		const studyTime = [ ...Array(24) ].map(x => []);
+		timeTable.forEach(time => {
+			let diffMin = time.end.diff(time.start, 'minute');
+
+			let hour = time.start.hour();
+			let minute = time.start.minute();
+			while (diffMin > 0) {
+				let last;
+				if (diffMin + minute > 60) {
+					last = 60;
+				} else if (hour < time.end.hour() && time.end.minute() === 0) {
+					last = 60;
+				} else {
+					last = time.end.minute();
+				}
+				studyTime[hour++].push({
+					color: time.color,
+					start: minute,
+					end: last
+				});
 				diffMin -= last - minute;
 				minute = 0;
 			}
