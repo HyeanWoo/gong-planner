@@ -5,7 +5,7 @@ import Timetable from '../components/Timetable';
 import CvsTimetable from '../components/CvsTimetable';
 
 export default {
-	title: '타임테이블',
+	title: '화면1/타임테이블',
 	decorators: [ withKnobs ],
 	parameters: {
 		viewport: { defaultViewport: 'mobile2' }
