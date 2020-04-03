@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { Grid } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import TodayDate from '../components/TodayDate';
@@ -30,7 +31,7 @@ const BottomGrid = styled(Grid)({
 const Home = props => {
 	const { onChangeTodayData } = props;
 	const todayData = props.todayData || {};
-	const collectionName = props.match ? props.match.params.colName : 'testSubject';
+	const collectionName = _.isEmpty(props.match.params) ? 'testSubject' : props.match.params.colName;
 
 	return (
 		<RootGrid container spacing={1}>

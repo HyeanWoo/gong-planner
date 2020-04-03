@@ -1,5 +1,4 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import _ from 'lodash';
 import { Box, Grid, Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
