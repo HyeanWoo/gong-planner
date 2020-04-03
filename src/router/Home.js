@@ -8,37 +8,48 @@ import Subjects from '../components/Subjects';
 // import Timetable from '../components/Timetable';
 import CvsTimetable from '../components/CvsTimetable';
 
-const RootGrid = styled(Grid)({});
-const HeaderGrid = styled(Grid)({
-	height: '64px',
-	justifyContent: 'space-between'
+const RootGrid = styled(Grid)({
+	height: '100vh',
+	flexDirection: 'column',
+	flexWrap: 'nowrap'
 });
-const LogGrid = styled(Grid)({
-	margin: '8px 0 8px 0'
+const HeaderGrid = styled(Grid)({
+	display: 'flex',
+	height: '64px',
+	justifyContent: 'space-between',
+	flexWrap: 'nowrap'
+});
+const LogGrid = styled(Grid)({});
+const BottomGrid = styled(Grid)({
+	height: '100%',
+	'& div': {
+		height: '100%'
+	}
 });
 
 const Home = props => {
-	const { todayData, onChangeTodayData } = props;
-	const collectionName = props.match.params.colName || 'testSubject';
+	const { onChangeTodayData } = props;
+	const todayData = props.todayData || {};
+	const collectionName = props.match ? props.match.params.colName : 'testSubject';
 
 	return (
-		<RootGrid container>
-			<HeaderGrid item container xs={12}>
+		<RootGrid container spacing={1}>
+			<HeaderGrid item>
 				<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
 				<EditSetting colName={collectionName} />
 			</HeaderGrid>
-			<LogGrid item xs={12}>
+			<LogGrid item>
 				<Todaylog todayData={todayData} />
 			</LogGrid>
-			<Grid item container spacing={1}>
-				<Grid item xs>
+			<BottomGrid item container spacing={1}>
+				<Grid item xs={6}>
 					<Subjects today={todayData.date} subjects={todayData.subjects} />
 				</Grid>
-				<Grid item xs>
+				<Grid item xs={6}>
 					{/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
 					<CvsTimetable timeTable={todayData.timeTable ? todayData.timeTable : []} />
 				</Grid>
-			</Grid>
+			</BottomGrid>
 		</RootGrid>
 	);
 };

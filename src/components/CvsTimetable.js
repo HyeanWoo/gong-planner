@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import dayjs from 'dayjs';
+import { styled } from '@material-ui/styles';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 import TimeTable from '../lib/timetable';
+
+const StyledStage = styled(Stage)({
+	height: '100%'
+});
 
 export default class CvsTimetable extends Component {
 	state = {
 		width: 240,
-		height: 500
+		height: 550
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -45,8 +50,9 @@ export default class CvsTimetable extends Component {
 
 	checkSize() {
 		if (this.element) {
-			const width = this.element.attrs.container.offsetWidth;
-			const height = this.element.attrs.container.offsetHeight;
+			const container = this.element.attrs.container;
+			const width = container.offsetWidth;
+			const height = container.offsetHeight;
 			if (this.state.width !== width || this.state.height !== height) {
 				this.setState(prevState => {
 					return { ...prevState, width, height };
@@ -65,12 +71,7 @@ export default class CvsTimetable extends Component {
 		const cellHeight = maxHeight / 24;
 
 		return (
-			<Stage
-				ref={element => {
-					this.element = element;
-				}}
-				width={maxWidth}
-				height={maxHeight}>
+			<StyledStage ref={element => (this.element = element)} width={maxWidth} height={maxHeight}>
 				<Layer name='frame'>
 					<Rect x={0} y={0} width={maxWidth} height={maxHeight} stroke='black' />
 					<Line points={[ hourWidth, 0, hourWidth, maxHeight ]} stroke='black' strokeWidth={1} />
@@ -119,7 +120,7 @@ export default class CvsTimetable extends Component {
 						})
 					)}
 				</Layer>
-			</Stage>
+			</StyledStage>
 		);
 	}
 }
