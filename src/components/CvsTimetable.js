@@ -6,8 +6,8 @@ import TimeTable from '../lib/timetable';
 
 export default class CvsTimetable extends Component {
 	state = {
-		width: 500,
-		height: 700
+		width: 240,
+		height: 500
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {

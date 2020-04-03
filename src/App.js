@@ -9,7 +9,7 @@ import Edit from './router/Edit';
 import Setting from './router/Setting';
 import { getTodayData } from './firebase/todayFunction';
 
-const AppComponent = styled(Container)({
+const AppContainer = styled(Container)({
 	fontSize: 'medium'
 });
 
@@ -48,14 +48,14 @@ class App extends Component {
 
 		return (
 			<BrowserRouter>
-				<AppComponent>
+				<AppContainer maxWidth='sm'>
 					<Switch>
 						<Route exact path='/' component={HomeComponent} />
 						<Route path='/:colName/edit' component={Edit} />
 						<Route path='/:colName/setting' component={Setting} />
 						<Route path='/:colName' component={HomeComponent} />
 					</Switch>
-				</AppComponent>
+				</AppContainer>
 			</BrowserRouter>
 		);
 	}

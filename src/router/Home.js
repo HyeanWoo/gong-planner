@@ -1,31 +1,36 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-
+import { styled } from '@material-ui/styles';
 import TodayDate from '../components/TodayDate';
 import EditSetting from '../components/EditSetting';
 import Todaylog from '../components/Todaylog';
 import Subjects from '../components/Subjects';
-import Timetable from '../components/Timetable';
+// import Timetable from '../components/Timetable';
 import CvsTimetable from '../components/CvsTimetable';
+
+const RootGrid = styled(Grid)({});
+const HeaderGrid = styled(Grid)({
+	height: '64px',
+	justifyContent: 'space-between'
+});
+const LogGrid = styled(Grid)({
+	margin: '8px 0 8px 0'
+});
 
 const Home = props => {
 	const { todayData, onChangeTodayData } = props;
 	const collectionName = props.match.params.colName || 'testSubject';
 
 	return (
-		<Grid container justify='center'>
-			<Grid item container xs={12}>
-				<Grid item xs>
-					<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
-				</Grid>
-				<Grid item xs>
-					<EditSetting colName={collectionName} />
-				</Grid>
-			</Grid>
-			<Grid item xs={12}>
+		<RootGrid container>
+			<HeaderGrid item container xs={12}>
+				<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
+				<EditSetting colName={collectionName} />
+			</HeaderGrid>
+			<LogGrid item xs={12}>
 				<Todaylog todayData={todayData} />
-			</Grid>
-			<Grid item container xs={12}>
+			</LogGrid>
+			<Grid item container spacing={1}>
 				<Grid item xs>
 					<Subjects today={todayData.date} subjects={todayData.subjects} />
 				</Grid>
@@ -34,7 +39,7 @@ const Home = props => {
 					<CvsTimetable timeTable={todayData.timeTable ? todayData.timeTable : []} />
 				</Grid>
 			</Grid>
-		</Grid>
+		</RootGrid>
 	);
 };
 

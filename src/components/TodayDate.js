@@ -1,13 +1,15 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DayjsUtils from '@date-io/dayjs';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
 
-const IconBox = styled(Box)({
-	cursor: 'pointer'
+const TodayDateBox = styled(Box)({
+	display: 'flex',
+	justifyContent: 'center',
+	alignItems: 'center'
 });
 
 const TodayDate = ({ date, onChangeDate }) => {
@@ -17,10 +19,10 @@ const TodayDate = ({ date, onChangeDate }) => {
 	const onClickArrowForward = () => onChangeDate(date.add(1, 'day'));
 
 	return (
-		<Box display='flex'>
-			<IconBox onClick={onClickArrowBack}>
-				<ArrowBackIosIcon className='prevDate' />
-			</IconBox>
+		<TodayDateBox>
+			<IconButton onClick={onClickArrowBack}>
+				<ArrowBackIosRoundedIcon />
+			</IconButton>
 			<MuiPickersUtilsProvider utils={DayjsUtils}>
 				<KeyboardDatePicker
 					format='YYYY. MM. DD.'
@@ -31,10 +33,10 @@ const TodayDate = ({ date, onChangeDate }) => {
 					}}
 				/>
 			</MuiPickersUtilsProvider>
-			<IconBox onClick={onClickArrowForward}>
-				<ArrowForwardIosIcon className='nextDate' />
-			</IconBox>
-		</Box>
+			<IconButton onClick={onClickArrowForward}>
+				<ArrowForwardIosRoundedIcon />
+			</IconButton>
+		</TodayDateBox>
 	);
 };
 

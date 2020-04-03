@@ -5,6 +5,8 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 
+const RootGrid = styled(Grid)({});
+
 const FixedHeightGrid = styled(Grid)({
 	height: '48px',
 	overflow: 'hidden'
@@ -39,6 +41,7 @@ const Score = styled(Paper)({
 	fontSize: '16px',
 	fontWeight: props => props.fontWeight
 });
+const EmptyScore = CenterPaper;
 
 const Todaylog = ({ todayData }) => {
 	const { wordToday, dDay, score, totalStudyTime } = todayData;
@@ -58,23 +61,19 @@ const Todaylog = ({ todayData }) => {
 	}
 
 	return (
-		<Grid container spacing={1}>
+		<RootGrid container spacing={1}>
 			<Grid item container spacing={1}>
-				<FixedHeightGrid item xs className='green'>
-					<WordToday variant='outlined'>
-						<span>{wordToday ? wordToday : '한마디없음ㅜ'}</span>
-					</WordToday>
+				<FixedHeightGrid item xs>
+					<WordToday variant='outlined'>{wordToday ? wordToday : '한마디없음ㅜ'}</WordToday>
 				</FixedHeightGrid>
-				<FixedHeightGrid item xs className='blue'>
-					<DDay variant='outlined'>
-						<span>{dDay ? dDay : '디데이없음ㅠ'}</span>
-					</DDay>
+				<FixedHeightGrid item xs>
+					<DDay variant='outlined'>{dDay ? dDay : '디데이없음ㅠ'}</DDay>
 				</FixedHeightGrid>
 			</Grid>
 			<Grid item container spacing={1}>
-				<FixedHeightGrid item xs className='yellow'>
-					<Score variant='outlined'>
-						{score ? (
+				<FixedHeightGrid item xs>
+					{score ? (
+						<Score variant='outlined'>
 							<Box p={1} display='flex' alignItems='center'>
 								<Box flexGrow='1'>
 									<ScoreProgress
@@ -85,18 +84,18 @@ const Todaylog = ({ todayData }) => {
 								</Box>
 								<Box p={0.5}>{score}</Box>
 							</Box>
-						) : (
-							'만족도없는부분'
-						)}
-					</Score>
+						</Score>
+					) : (
+						<EmptyScore variant='outlined'>만족도없는부분</EmptyScore>
+					)}
 				</FixedHeightGrid>
 				<FixedHeightGrid item xs>
 					<TotalScoreTime fontWeight='bold' variant='outlined'>
-						<span>{totalStr ? totalStr : '공부한시간이없어!'}</span>
+						{totalStr ? totalStr : '공부한시간이없어!'}
 					</TotalScoreTime>
 				</FixedHeightGrid>
 			</Grid>
-		</Grid>
+		</RootGrid>
 	);
 };
 

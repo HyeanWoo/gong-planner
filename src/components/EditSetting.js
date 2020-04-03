@@ -1,29 +1,35 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import { Box } from '@material-ui/core';
+import { styled } from '@material-ui/styles';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Link } from 'react-router-dom';
 
-const Todaylog = ({colName}) => {
-  const editUrl = "/"+colName+"/edit";
-  const settingUrl = "/"+colName+"/setting";
+const RightContentBox = styled(Box)({
+	display: 'flex',
+	justifyContent: 'flex-end',
+	alignItems: 'center'
+});
+
+const EditSetting = ({ colName }) => {
+	const editUrl = '/' + colName + '/edit';
+	const settingUrl = '/' + colName + '/setting';
 
 	return (
-		<React.Fragment>
+		<RightContentBox>
 			<Link to={editUrl}>
-				<Button>
-					<span role='img' aria-label='edit' className='edit'>
-						📝
-					</span>
-				</Button>
+				<IconButton aria-label='edit'>
+					<EditIcon />
+				</IconButton>
 			</Link>
 			<Link to={settingUrl}>
-				<Button>
-					<span role='img' aria-label='setting' className='setting'>
-						⚙️
-					</span>
-				</Button>
+				<IconButton aria-label='setting'>
+					<SettingsIcon />
+				</IconButton>
 			</Link>
-		</React.Fragment>
+		</RightContentBox>
 	);
 };
 
-export default Todaylog;
+export default EditSetting;
