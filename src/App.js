@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
+import _ from 'lodash';
 import dayjs from 'dayjs';
 import './App.css';
 import Home from './router/Home';
@@ -21,32 +22,48 @@ class App extends Component {
 	};
 
 	setTodayData = date => {
-		const shortDateStr = date.format('YY.MM.DD');
+		// 임시로 URL 검사해서 받아옴
+		const pathList = window.location.pathname.split('/');
+		const collectionName = pathList[1] || 'testSubject';
 
+		const shortDateStr = date.format('YY.MM.DD');
 		console.log(shortDateStr, '정보를 받아오는중..');
 
-		// 임시로 URL 검사해서 받아옴
-		const collectionName = window.location.pathname.substring(1) || 'testSubject';
-
 		getTodayData(collectionName, shortDateStr).then(data => {
-			const todayData = data ? data : {};
-			todayData.date = date;
+			let todayData = { date };
+			if (data) {
+				todayData = {
+					...todayData,
+					...data,
 
-			console.log(todayData);
+					// 색깔 넣어주기
+					timeTable: _.map(data.timeTable, subject => {
+						const subObj = _.find(data.subjects, { subjectName: subject.subject });
+
+						return {
+							...subject,
+							color: subObj ? subObj.subjectColor : 'black'
+						};
+					})
+				};
+			}
 			this.setState(prevState => {
 				return { ...prevState, todayData };
 			});
 		});
 	};
 
+	componentDidMount() {
+		this.setTodayData(this.state.todayData.date);
+	}
+
 	render() {
-		console.log(this.state.todayData);
+		const { todayData } = this.state;
+		const HomeComponent = props => <Home todayData={todayData} onChangeTodayData={this.setTodayData} {...props} />;
 
-		const HomeComponent = props => (
-			<Home todayData={this.state.todayData} onChangeTodayData={this.setTodayData} {...props} />
-		);
-
-		return (
+		return _.isEmpty(todayData) ? (
+			<div>로-딩</div>
+		) : (
 			<BrowserRouter>
 				<AppContainer maxWidth='sm'>
 					<Switch>

@@ -33,20 +33,20 @@ const TotalScoreTime = CenterPaper;
 const ScoreProgress = styled(LinearProgress)({
 	height: '16px',
 	backgroundColor: props => props.backColor || '#e0e0e0',
-	'& div': { backgroundColor: props => props.barColor }
+	'& div': { backgroundColor: props => props.barcolor }
 });
 const Score = styled(Paper)({
 	height: '100%',
 	fontSize: '16px',
 	fontWeight: props => props.fontWeight
 });
-const EmptyScore = CenterPaper;
 
 const Todaylog = ({ todayData }) => {
-	const { wordToday, dDay, score, totalStudyTime } = todayData;
+	const { wordToday, dDay, totalStudyTime } = todayData;
+	const score = todayData.score ? todayData.score : 0;
 
 	// 공부 시간 변환(초단위 시간 -> 00:00:00)
-	let totalStr = '';
+	let totalStr = '00:00:00';
 	if (_.isNumber(totalStudyTime) && totalStudyTime > 0) {
 		const second = totalStudyTime % 60;
 		const rest = ~~(totalStudyTime / 60);
@@ -63,34 +63,30 @@ const Todaylog = ({ todayData }) => {
 		<RootGrid container spacing={1}>
 			<Grid item container spacing={1}>
 				<FixedHeightGrid item xs>
-					<WordToday variant='outlined'>{wordToday ? wordToday : '한마디없음ㅜ'}</WordToday>
+					<WordToday variant='outlined'>{wordToday ? wordToday : '-'}</WordToday>
 				</FixedHeightGrid>
 				<FixedHeightGrid item xs>
-					<DDay variant='outlined'>{dDay ? dDay : '디데이없음ㅠ'}</DDay>
+					<DDay variant='outlined'>{dDay !== undefined ? dDay : '디데이없음'}</DDay>
 				</FixedHeightGrid>
 			</Grid>
 			<Grid item container spacing={1}>
 				<FixedHeightGrid item xs>
-					{score ? (
-						<Score variant='outlined'>
-							<Box p={1} display='flex' alignItems='center'>
-								<Box flexGrow='1'>
-									<ScoreProgress
-										barColor={score >= 7 ? 'LimeGreen' : score >= 4 ? '#ffb300' : '#e57373'}
-										variant='determinate'
-										value={score * 10}
-									/>
-								</Box>
-								<Box p={0.5}>{score}</Box>
+					<Score variant='outlined'>
+						<Box p={1} display='flex' alignItems='center'>
+							<Box flexGrow='1'>
+								<ScoreProgress
+									barcolor={score >= 7 ? 'LimeGreen' : score >= 4 ? '#ffb300' : '#e57373'}
+									variant='determinate'
+									value={score * 10}
+								/>
 							</Box>
-						</Score>
-					) : (
-						<EmptyScore variant='outlined'>만족도없는부분</EmptyScore>
-					)}
+							<Box p={0.5}>{score}</Box>
+						</Box>
+					</Score>
 				</FixedHeightGrid>
 				<FixedHeightGrid item xs>
 					<TotalScoreTime fontWeight='bold' variant='outlined'>
-						{totalStr ? totalStr : '공부한시간이없어!'}
+						{totalStr}
 					</TotalScoreTime>
 				</FixedHeightGrid>
 			</Grid>

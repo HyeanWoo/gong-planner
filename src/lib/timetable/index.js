@@ -5,7 +5,18 @@ class TimeTable {
 		this.originTime = timeTable;
 		this.studyTime = [];
 		// this.parse(timeTable);
-		this.toOneArray(timeTable);
+		this.refinedTimetable = timeTable.map(time => {
+			if (time.start.seconds > time.end.seconds) {
+				[ time.start.seconds, time.end.seconds ] = [ time.end.seconds, time.start.seconds ];
+			}
+
+			return {
+				...time,
+				start: dayjs.unix(time.start.seconds),
+				end: dayjs.unix(time.end.seconds)
+			};
+		});
+		this.toOneArray(this.refinedTimetable);
 	}
 
 	sort() {

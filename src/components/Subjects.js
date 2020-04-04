@@ -87,17 +87,6 @@ class Subjects extends Component {
 		// Q.deleteTodos(date, '1','1-22', '1', '넌 이미 발려있다');
 	}
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (prevState.today !== nextProps.today) {
-			const { today, subjects } = nextProps;
-			return {
-				today,
-				subjects: _.isEmpty(subjects) ? undefined : subjects
-			};
-		}
-		return {};
-	}
-
 	makeTodoList = () => {
 		const todoList = [];
 		const keys = Object.keys(this.state.subjects);
@@ -168,7 +157,7 @@ class Subjects extends Component {
 		return (
 			<div className='orange subjects'>
 				{/* {subjectList} */}
-				<SubjectList subjects={this.state.subjects} setFold={this.setFold} />
+				<SubjectList subjects={this.props.subjects} setFold={this.setFold} />
 			</div>
 		);
 	}

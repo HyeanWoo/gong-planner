@@ -48,7 +48,12 @@ const Home = props => {
 				</Grid>
 				<Grid item xs={6}>
 					{/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
-					<CvsTimetable timeTable={todayData.timeTable ? todayData.timeTable : []} />
+					<CvsTimetable
+						colName={collectionName}
+						date={todayData.date}
+						timeTable={todayData.timeTable ? todayData.timeTable : []}
+						subjects={todayData.subjects}
+					/>
 				</Grid>
 			</BottomGrid>
 		</RootGrid>

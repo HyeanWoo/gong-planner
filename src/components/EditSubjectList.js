@@ -122,6 +122,7 @@ class EditSubjectList extends Component {
 
 	render() {
 		const subList = this.makeSubList();
+		console.log(this.state);
 		return <div className='col s4 offset-s4'>{subList}</div>;
 	}
 }

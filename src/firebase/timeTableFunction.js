@@ -16,17 +16,19 @@ export async function getTimeTable(collectionName, date) {
 // 공부 기록 '배열 아이템'(시작시간, 끝시간, 과목) 추가
 export function addTimeTable(collectionName, date, timeTable) {
 	const db = firebase.firestore();
-	db
+	return db
 		.collection(collectionName)
 		.doc(date)
 		.update({
 			timeTable: timeTable ? firebase.firestore.FieldValue.arrayUnion(timeTable) : []
 		})
-		.then(function() {
+		.then(async function() {
 			console.log('Add timeTable Field OK');
+			return await getTimeTable(collectionName, date);
 		})
 		.catch(function(err) {
 			console.log('Add timeTable Error', err);
+			return false;
 		});
 }
 
