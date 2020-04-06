@@ -46,10 +46,11 @@ class EditSubjectList extends Component {
 	}
 
 	async getSubjects() {
-		const date = this.state.date || dayjs();
+		// const date = this.state.date || dayjs();
+		const date = this.props.date;
 		const colName = this.props.colName;
-		const shortDate = date.format('YY.MM.DD');
-		const subjects = await subFunctions.getData(colName, shortDate);
+		// const shortDate = date.format('YY.MM.DD');
+		const subjects = await subFunctions.getData(colName, date);
 		if (subjects) {
 			// subjects가 있는 경우
 			this.setState(prevState => {
@@ -62,6 +63,10 @@ class EditSubjectList extends Component {
 			});
 		}
 	}
+
+  componentDidMount() {
+    this.getSubjects();
+  }
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.date !== this.state.date) {
@@ -122,7 +127,7 @@ class EditSubjectList extends Component {
 
 	render() {
 		const subList = this.makeSubList();
-		console.log(this.state);
+		// console.log(this.state);
 		return <div className='col s4 offset-s4'>{subList}</div>;
 	}
 }

@@ -25,7 +25,8 @@ const Edit = props => {
 				<TodayDate date={date} onChangeDate={setDate} />
 			</div>
 			<div className='row'>
-				<EditSubjectList date={date} colName={colName} />
+				{/* <EditSubjectList date={date} colName={colName} /> */}
+				<EditSubjectList date="99.99.99" colName={colName} />
 			</div>
 			<div className='row'>
 				<SubjectAddModal />
