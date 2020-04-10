@@ -1,12 +1,14 @@
 import React from 'react';
-import withModal from '../../HOC/withModal';
+import dayjs from 'dayjs';
 import './TodoModal.css';
+import withModal from '../../HOC/withModal';
 import nothing from '../../image/nothing.png'
 import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import { addTodos } from '../../firebase/todoFunction';
 
-const TodoAddModal = () => {
+const TodoAddModal = ({subjectId, colName, date, handleCloseModal}) => {
   const [todoName, setTodoName] = React.useState("");
   const [todoCheck, setTodoCheck] = React.useState(0);
 
@@ -20,7 +22,11 @@ const TodoAddModal = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(todoName, todoCheck);
+    // console.log(todoName, todoCheck);
+    // addTodos(collectionName, date, subjectId, todoId, todoCheck, todoName)
+    const todoId = +dayjs();
+    addTodos(colName, date, subjectId, todoId, todoCheck, todoName);
+    handleCloseModal();
   }
 
   return(
@@ -48,6 +54,7 @@ const TodoAddModal = () => {
             <ClearRoundedIcon/>
           </label>
         </div>
+        <button type="submit" style={{float: "right"}}>추가</button>
       </form>
     </div>
   )

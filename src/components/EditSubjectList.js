@@ -84,7 +84,7 @@ class EditSubjectList extends Component {
 								<FolderIcon style={{ color: this.state.subjects[key].subjectColor }} />
 							</ListItemIcon>
 							<ListItemText primary={this.state.subjects[key].subjectName} />
-							<SubjectEditModal subID={key} colName={this.props.colName} date={this.props.date} subject={this.state.subjects[key]} />
+							<SubjectEditModal subjectId={key} colName={this.props.colName} date={this.props.date} subject={this.state.subjects[key]} />
 						</ListItem>
 						<Collapse in={true} timeout='auto' unmountOnExit>
 							{this.state.subjects[key].todos.map(todo => {
@@ -93,12 +93,12 @@ class EditSubjectList extends Component {
 										<ListItem className={classes.nested}>
 											<ListItemText primary={todo.todoCheck} />
 											<ListItemText primary={todo.todoName} />
-											<TodoEditModal />
+											<TodoEditModal subjectId={key} colName={this.props.colName} date={this.props.date} todo={todo}/>
 										</ListItem>
 									</List>
 								);
 							})}
-							<TodoAdd subjectId={key} addTodo={this.addTodo} />
+							<TodoAdd subjectId={key} colName={this.props.colName} date={this.props.date}/>
 						</Collapse>
 					</React.Fragment>
 				);

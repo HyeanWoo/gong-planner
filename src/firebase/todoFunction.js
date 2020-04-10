@@ -1,12 +1,12 @@
 import firebase from './index'
 
 //todos만 가져오기
-export async function getTodos(collectionName, date, id) {
+export async function getTodos(collectionName, date, subjectId) {
   const db = firebase.firestore();
   try {
     let todoRef = await db.collection(collectionName).doc(date).get();
     let { subjects } = todoRef.data();
-    let { todos } = subjects[id];
+    let { todos } = subjects[subjectId];
     console.log("Get Todos OK");
     return todos;
   } catch(err) {
@@ -15,11 +15,11 @@ export async function getTodos(collectionName, date, id) {
 }
 
 // todo만 새로 추가
-export function addTodos(collectionName, date, id, todoID, todoCheck, todoName) {
+export function addTodos(collectionName, date, subjectId, todoId, todoCheck, todoName) {
   const db = firebase.firestore();
-  let unionData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
+  let unionData = { id: todoId, todoCheck: todoCheck, todoName: todoName };
   db.collection(collectionName).doc(date).update({
-    ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayUnion(unionData)
+    ['subjects.'+subjectId+".todos"] : firebase.firestore.FieldValue.arrayUnion(unionData)
   })
   .then(function() {
     console.log("Add Todos OK");
@@ -30,15 +30,15 @@ export function addTodos(collectionName, date, id, todoID, todoCheck, todoName) 
 }
 
 // todo 내용 수정
-export async function updateTodos(collectionName, date, id, todoID, todoCheck, todoName) {
+export async function updateTodos(collectionName, date, subjectId, todoId, todoCheck, todoName) {
   const db = firebase.firestore();
-  let changeData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
-  let allTodos = await getTodos(date, id);
-  let idx = allTodos.indexOf(allTodos.find( todo => todo.id === todoID));
+  let changeData = { id: todoId, todoCheck: todoCheck, todoName: todoName };
+  let allTodos = await getTodos(collectionName, date, subjectId);
+  let idx = allTodos.indexOf(allTodos.find( todo => todo.id === todoId));
   allTodos[idx] = changeData;
 
   db.collection(collectionName).doc(date).update({
-    ['subjects.'+id+".todos"] : allTodos
+    ['subjects.'+subjectId+".todos"] : allTodos
   })
   .then(function() {
     console.log("Update Todos OK");
@@ -49,11 +49,11 @@ export async function updateTodos(collectionName, date, id, todoID, todoCheck, t
 }
 
 // todo 내용 삭제
-export function deleteTodos(collectionName, date, id, todoID, todoCheck, todoName) {
+export function deleteTodos(collectionName, date, subjectId, todoId, todoCheck, todoName) {
   const db = firebase.firestore();
-  let removeData = { id: todoID, todoCheck: todoCheck, todoName: todoName };
+  let removeData = { id: todoId, todoCheck: todoCheck, todoName: todoName };
   db.collection(collectionName).doc(date).update({
-    ['subjects.'+id+".todos"] : firebase.firestore.FieldValue.arrayRemove(removeData)
+    ['subjects.'+subjectId+".todos"] : firebase.firestore.FieldValue.arrayRemove(removeData)
   })
   .then(function() {
     console.log("Delete Todos OK");

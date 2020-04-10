@@ -1,10 +1,9 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import withModal from '../../HOC/withModal';
 import { TwitterPicker } from 'react-color';
 import { updateSubject, deleteSubject } from '../../firebase/subjectFuntion';
 
-const SubjectEditModal = ({subID, colName, date, subject, handleCloseModal}) => {
+const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal}) => {
   const [name, setName] = React.useState("");
   const [color, setColor] = React.useState(subject.subjectColor);
 
@@ -18,14 +17,12 @@ const SubjectEditModal = ({subID, colName, date, subject, handleCloseModal}) => 
 
   const handleSubmit = e => {
     e.preventDefault();
-    // updateSubject(collectionName, date, dataType, id, changedData1, changedData2)
-    updateSubject(colName, date, "EDIT_SUBJECT", subID, name, color);
+    updateSubject(colName, date, "EDIT_SUBJECT", subjectId, name, color);
     handleCloseModal();
   }
 
-  const handleDelete = e => {
-    // deleteSubject(collectionName, date, id)
-    deleteSubject(colName, date, subID);
+  const handleDelete = () => {
+    deleteSubject(colName, date, subjectId);
     handleCloseModal();
   }
 
