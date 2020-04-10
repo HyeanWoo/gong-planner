@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactModal from 'react-modal';
 
-const withModal = (buttonName, options) => WrappedComponent => {
+const withModal = (buttonName) => WrappedComponent => {
   return (props) => {
     const customStyles = {
       content : {
@@ -24,9 +24,6 @@ const withModal = (buttonName, options) => WrappedComponent => {
       setshowModal(false);
     }
 
-    const delFlag = options[0];
-    const addFlag = options[1];
-    const subFlag = options[2];
     return (
       <>
       <button onClick={handleOpenModal}>{buttonName}</button>
@@ -37,11 +34,8 @@ const withModal = (buttonName, options) => WrappedComponent => {
           onRequestClose={handleCloseModal}
           style={customStyles}
       >
-        <WrappedComponent {...props}/>
-        {delFlag ? <button style={{backgroundColor:"#FF0000"}}>제거</button> : <></>}
+        <WrappedComponent {...props} handleCloseModal={handleCloseModal}/>
         <button onClick={handleCloseModal}>닫기</button>
-        {addFlag ? <button>추가</button> : <></>}
-        {subFlag ? <button>완료</button> : <></>}
       </ReactModal>
       </>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import withModal from '../../HOC/withModal';
-import './TodoAddModal.css';
+import './TodoModal.css';
 import nothing from '../../image/nothing.png'
 import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
@@ -16,7 +16,7 @@ const TodoEditModal = () => {
       <div>할일 편집</div>
       <form onSubmit={handleChange}>
         <label htmlFor="todoName">할일</label>
-        <input type="text" id="todoName"/>
+        <input type="text" id="todoName" required/>
         <div className="state"><label htmlFor="todoCheck">상태</label></div>
         <div className="radio-input">
           <label>
@@ -41,6 +41,4 @@ const TodoEditModal = () => {
   )
 }
 
-// delete, add, submit
-const options = [true, false, true];
-export default withModal("*",options)(TodoEditModal);
+export default withModal("*")(TodoEditModal);

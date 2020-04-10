@@ -27,21 +27,30 @@ function createDate(date) {
 }
 
 // 과목데이터 새로 생성
-function createSubject(date, id, subjectName, subjects, todos) {
-	const db = firebase.firestore();
-	let inputData = {
-		subjects: {
-			...subjects,
-			[id]: {
-				id: id,
-				subjectName: subjectName,
-				totalElapsedTime: '00:00:00',
-				todos: todos
-			}
-		}
-	};
+function createSubject(collectionName,date, id, subjectName, subjectColor) {
+  const db = firebase.firestore();
+  const subjects = getData(collectionName, date);
+  let inputData = {
+      subjects: {
+          ...subjects,
+          [id]: {
+              id: id,
+              fold: false,
+              subjectColor: subjectColor,
+              subjectName: subjectName,
+              totalElapsedTime: "00:00:00",
+              todos : []
+          }
+      }
+  };
 
-	db.collection('testSubject').doc(date).set(inputData);
+  db.collection(collectionName).doc(date).set(inputData)
+  .then(function() {
+    console.log("Create Subjects Field OK");
+  })
+  .catch(function(err){
+    console.log('Create Subjects Error', err);
+  });
 }
 
 // 과목 정보(이름, 시간) 수정
@@ -109,46 +118,64 @@ function deleteTodos(date, id, todoID, todoArg1, todoArg2) {
 	});
 }
 
-// getData("20.20.20").then((subjects) => {
-//     console.log(subjects)
-// });
-
-// updateSubject("20.20.20", "33", "편안한생활");
-
-// deleteSubject("20.03.21", "33")
-
-// getTodos("99.99.99", "123").then( sub => {
-//   console.log(sub);
-// });
-
-const changedTodos = [
-	{
-		id: '123-32',
-		todoCheck: '0',
-		todoName: '산딸기빙수'
-	},
-	{
-		id: '123-71',
-		todoCheck: '1',
-		todoName: '콩떡빙수'
-	}
-];
-
-// createSubject('20.03.21', '123', '빨강빨강딸기', {}, changedTodos);
-
-// deleteTodos("99.99.99", "123", '콩떡빙수');
-
-// addTodos('99.99.99', '123', '2', '콩떡빙수');
-
-// updateTodos("99.99.99","123", "123-71", "2", "멜론빙수");
-
-
-async function getCollection(name) {
-  const db = firebase.firestore();
-  let all = db.collection(name);
-  let snapshot = await all.get();
-
-  return snapshot.docs;
+const	subjects = {
+		  1 : {
+		    id: "1",
+		    subjectName: '바른생활',
+		    totalElapsedTime: '05:00:03',
+		    subjectColor: '#00FFFF',
+		    fold: false,
+		    todos : [
+		      {
+		        id : "1-11",
+		        todoName : "바르게 생활하기",
+		        todoCheck : "1"
+		      },
+		      {
+		        id : "1-22",
+		        todoName : "로션 바르기",
+		        todoCheck : "2"
+		      },
+		    ]
+		  },
+		  2 : {
+		    id: "2",
+		    subjectName: '슬기로운생활',
+		    totalElapsedTime: '03:40:55',
+		    subjectColor: '#FFFF00',
+		    fold: false,
+		    todos : [
+		      {
+		        id : "2-03",
+		        todoName : "슬기롭게 생활하기",
+		        todoCheck : "1"
+		      },
+		      {
+		        id : "2-09",
+		        todoName : "녹슬기",
+		        todoCheck : "0"
+		      },
+		      {
+		        id : "2-19",
+		        todoName : "다슬기",
+		        todoCheck : "2"
+		      }
+		    ]
+		  },
+		  3 : {
+		    id: "3",
+		    subjectName: '즐거운생활',
+		    totalElapsedTime: '01:20:12',
+		    subjectColor: '#FF00FF',
+		    fold: false,
+		    todos : [
+		      {
+		        id : "3-51",
+		        todoName : "즐겁게 생활하기",
+		        todoCheck : "0"
+		      }
+		    ]
+		  }
 }
-
-getCollection('testSubject');
+    
+createSubject("testSubject", "99.99.99", "3434", "휘끼휘끼", "#0693e3");

@@ -1,7 +1,10 @@
 import React from 'react';
-import withModal from '../../HOC/withModal'
+import dayjs from 'dayjs';
+import withModal from '../../HOC/withModal';
+import { TwitterPicker } from 'react-color';
+import { updateSubject, deleteSubject } from '../../firebase/subjectFuntion';
 
-const SubjectEditModal = ({subject}) => {
+const SubjectEditModal = ({subID, colName, date, subject, handleCloseModal}) => {
   const [name, setName] = React.useState("");
   const [color, setColor] = React.useState(subject.subjectColor);
 
@@ -9,13 +12,21 @@ const SubjectEditModal = ({subject}) => {
     setName(e.target.value);
   }
 
-  const handleChangeColor = e => {
-    setColor(e.target.value);
+  const handleChangeColor = color => {
+    setColor(color.hex);
   }
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(name, color);
+    // updateSubject(collectionName, date, dataType, id, changedData1, changedData2)
+    updateSubject(colName, date, "EDIT_SUBJECT", subID, name, color);
+    handleCloseModal();
+  }
+
+  const handleDelete = e => {
+    // deleteSubject(collectionName, date, id)
+    deleteSubject(colName, date, subID);
+    handleCloseModal();
   }
 
   return(
@@ -23,16 +34,19 @@ const SubjectEditModal = ({subject}) => {
       <div>과목 편집</div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="subjectName">과목명</label>
-        <input type="text" id="subjectName" onChange={handleChangeName} placeholder={subject.subjectName}/>
+        <input type="text" id="subjectName" onChange={handleChangeName} placeholder={subject.subjectName} required/>
         <label htmlFor="subjectColor">과목색상</label>
         <div style={{backgroundColor: color}}>&nbsp;</div>
-        <input type="text" id="subjectColor" onChange={handleChangeColor}/>
-        <input type="submit" value="" style={{ visibility: "hidden"}}/>
+        <TwitterPicker
+          color={color}
+          onChangeComplete={handleChangeColor}
+          triangle="hide"
+        />
+        <button type="submit" style={{float: "right"}}>수정</button>
+        <button type="button" onClick={handleDelete} style={{float: "right", backgroundColor: "red"}}>제거</button>
       </form>
     </div>
   )
 }
 
-// delete, add, submit
-const options = [true, false, true];
-export default withModal("*",options)(SubjectEditModal);
+export default withModal("*")(SubjectEditModal);

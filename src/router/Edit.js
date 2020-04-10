@@ -26,10 +26,10 @@ const Edit = props => {
 			</div>
 			<div className='row'>
 				{/* <EditSubjectList date={date} colName={colName} /> */}
-				<EditSubjectList date="99.99.99" colName={colName} />
+				<EditSubjectList colName={colName} date="99.99.99"/>
 			</div>
 			<div className='row'>
-				<SubjectAddModal />
+				<SubjectAddModal colName={colName} date="99.99.99"/>
 			</div>
 		</div>
 	);

@@ -17,7 +17,7 @@ export async function getData(collectionName, date) {
 // 날짜'문서' 새로 생성
 export function createDate(collectionName,date) {
   const db = firebase.firestore();
-  db.collection(collectionName).doc(date).set({subjects:{isEmpty:true}})
+  db.collection(collectionName).doc(date).set({subjects:{}})
   .then(function() {
     console.log("Create Date Doc OK");
   })
@@ -27,8 +27,9 @@ export function createDate(collectionName,date) {
 }
 
 // 과목'필드' 새로 생성
-export function createSubject(collectionName,date, id, subjectName, subjectColor, subjects, todos) {
+export async function createSubject(collectionName,date, id, subjectName, subjectColor) {
   const db = firebase.firestore();
+  const subjects = await getData(collectionName, date);
   let inputData = {
       subjects: {
           ...subjects,
@@ -38,7 +39,7 @@ export function createSubject(collectionName,date, id, subjectName, subjectColor
               subjectColor: subjectColor,
               subjectName: subjectName,
               totalElapsedTime: "00:00:00",
-              todos : todos
+              todos : []
           }
       }
   };
@@ -53,20 +54,17 @@ export function createSubject(collectionName,date, id, subjectName, subjectColor
 }
 
 // 과목 '필드'(이름, 시간) 수정
-export function updateSubject(collectionName, date, dataType, id, changedData) {
+export function updateSubject(collectionName, date, dataType, id, changedData1, changedData2) {
   const db = firebase.firestore();
   try {
-    if(dataType === "subjectName") {
+    if(dataType === "EDIT_SUBJECT") {
       db.collection(collectionName).doc(date).update({
-        ['subjects.'+id+'.subjectName'] : changedData
+        ['subjects.'+id+'.subjectName'] : changedData1,
+        ['subjects.'+id+'.subjectColor'] : changedData2
       });
-    } else if(dataType === "subjectColor") {
+    } else if(dataType === "EDIT_TIME") {
       db.collection(collectionName).doc(date).update({
-        ['subjects.'+id+'.subjectColor'] : changedData
-      });
-    } else if(dataType === "totalElapsedTime") {
-      db.collection(collectionName).doc(date).update({
-        ['subjects.'+id+'.totalElapsedTime'] : changedData
+        ['subjects.'+id+'.totalElapsedTime'] : changedData1
       });
     } else {
       console.error("updateSubject","Wrong Data type input")
