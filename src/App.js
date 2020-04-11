@@ -37,11 +37,11 @@ class App extends Component {
 					...data,
 
 					// 색깔 넣어주기
-					timeTable: _.map(data.timeTable, subject => {
-						const subObj = _.find(data.subjects, { subjectName: subject.subject });
+					timeTable: _.map(data.timeTable, time => {
+						const subObj = _.find(data.subjects, { subjectName: time.subject });
 
 						return {
-							...subject,
+							...time,
 							color: subObj ? subObj.subjectColor : 'black'
 						};
 					})

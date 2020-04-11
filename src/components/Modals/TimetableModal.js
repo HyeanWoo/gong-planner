@@ -41,7 +41,16 @@ const TimetableModal = props => {
 			end: endTime.toDate(),
 			subject: name
 		}).then(res => {
-			onSetTimeTable(res);
+			// 색깔 넣어주기
+			const timeTable = _.map(res, time => {
+				const subObj = _.find(subjects, { subjectName: time.subject });
+				console.log(subObj);
+				return {
+					...time,
+					color: subObj ? subObj.subjectColor : 'black'
+				};
+			});
+			onSetTimeTable(timeTable);
 		});
 		handleCloseModal();
 	};

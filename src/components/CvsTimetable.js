@@ -127,17 +127,15 @@ export default class CvsTimetable extends Component {
 						)}
 					</Layer>
 				</StyledStage>
-				<React.Fragment>
-					<TimetableModal
-						date={date}
-						colName={colName}
-						show={showModal}
-						handleModal={this.handleModal.bind(this)}
-						onSetTimeTable={this.setTimeTable.bind(this)}
-						subjects={subjects}
-						role='add'
-					/>
-				</React.Fragment>
+				<TimetableModal
+					date={date}
+					colName={colName}
+					show={showModal}
+					handleModal={this.handleModal.bind(this)}
+					onSetTimeTable={this.setTimeTable.bind(this)}
+					subjects={subjects}
+					role='add'
+				/>
 			</React.Fragment>
 		);
 	}
