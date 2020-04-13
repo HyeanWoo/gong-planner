@@ -12,8 +12,8 @@ class TimeTable {
 
 			return {
 				...time,
-				start: dayjs.unix(time.start.seconds),
-				end: dayjs.unix(time.end.seconds)
+				start: dayjs(time.start.toDate()),
+				end: dayjs(time.end.toDate())
 			};
 		});
 		this.toOneArray(this.refinedTimetable);
@@ -80,7 +80,9 @@ class TimeTable {
 				studyTime[hour++].push({
 					color: time.color,
 					start: minute,
-					end: last
+					end: last,
+					startDayjs: time.start,
+					endDayjs: time.end
 				});
 				diffMin -= last - minute;
 				minute = 0;

@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
-import dayjs from 'dayjs';
-import { Grid, FormControl, Select, InputLabel, MenuItem, FormHelperText, Box } from '@material-ui/core';
+import { Grid, FormControl, Select, InputLabel, Input, MenuItem, FormHelperText, Box, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardTimePicker } from '@material-ui/pickers';
 import DayjsUtils from '@date-io/dayjs';
 import ReactModal from 'react-modal';
-import { addTimeTable } from '../../firebase/timeTableFunction';
+import { addTimeTable, updateTimeTable, deleteTimeTable } from '../../firebase/timeTableFunction';
 
-const TimetableModal = props => {
-	const { date, colName, show, handleModal, onSetTimeTable, subjects, role } = props;
-	const [ startTime, setStartTime ] = useState(dayjs(date));
-	const [ endTime, setEndTime ] = useState(dayjs(date).add(1, 'hour'));
+const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSetTimeTable, startDayjs, endDayjs }) => {
+	const [ time, setTime ] = useState({ start: startDayjs, end: endDayjs });
+
+	useEffect(
+		() => {
+			setTime({ start: startDayjs, end: endDayjs });
+		},
+		[ startDayjs, endDayjs ]
+	);
 
 	const customStyles = {
 		content: {
@@ -24,34 +28,72 @@ const TimetableModal = props => {
 	};
 
 	const handleChangeName = e => setName(e.target.value);
-	const handleChangeStartTime = time => setStartTime(time);
-	const handleChangeEndTime = time => setEndTime(time);
+	const handleChangeStartTime = time =>
+		setTime(prev => {
+			return { ...prev, start: time };
+		});
+	const handleChangeEndTime = time =>
+		setTime(prev => {
+			return { ...prev, end: time };
+		});
 	const handleCloseModal = () => handleModal(false);
 
-	const handleRemove = e => {
-		e.preventDefault();
-		console.log('삭제 미구현');
-		handleCloseModal();
+	const reRendering = res => {
+		// 색깔 넣어주기
+		const timeTable = _.map(res, study => {
+			const subObj = _.find(subjects, { subjectName: study.subject });
+			console.log(subObj);
+			return {
+				...study,
+				color: subObj ? subObj.subjectColor : 'black'
+			};
+		});
+		onSetTimeTable(timeTable);
 	};
-	const handleSubmit = e => {
+
+	const handleRemove = async e => {
 		e.preventDefault();
 		const shortDate = date.format('YY.MM.DD');
-		addTimeTable(colName, shortDate, {
-			start: startTime.toDate(),
-			end: endTime.toDate(),
+
+		const res = await deleteTimeTable(colName, shortDate, {
+			start: startDayjs.toDate(),
+			end: endDayjs.toDate(),
 			subject: name
-		}).then(res => {
-			// 색깔 넣어주기
-			const timeTable = _.map(res, time => {
-				const subObj = _.find(subjects, { subjectName: time.subject });
-				console.log(subObj);
-				return {
-					...time,
-					color: subObj ? subObj.subjectColor : 'black'
-				};
-			});
-			onSetTimeTable(timeTable);
 		});
+		if (res) reRendering(res);
+		handleCloseModal();
+	};
+	const handleSubmit = async e => {
+		e.preventDefault();
+		const shortDate = date.format('YY.MM.DD');
+
+		let res = null;
+		if (e.target.add) {
+			// 추가일 경우
+			res = await addTimeTable(colName, shortDate, {
+				start: time.start.toDate(),
+				end: time.end.toDate(),
+				subject: name
+			});
+		} else {
+			// 편집일 경우
+			res = await updateTimeTable(
+				colName,
+				shortDate,
+				{
+					start: startDayjs.toDate(),
+					end: endDayjs.toDate(),
+					subject: name
+				},
+				{
+					start: time.start.toDate(),
+					end: time.end.toDate(),
+					subject: name
+				}
+			);
+		}
+		if (res) reRendering(res);
+
 		handleCloseModal();
 	};
 
@@ -90,7 +132,7 @@ const TimetableModal = props => {
 									<KeyboardTimePicker
 										id='start-time-picker'
 										label='시작 시간'
-										value={startTime}
+										value={time.start}
 										onChange={handleChangeStartTime}
 										margin='dense'
 										KeyboardButtonProps={{
@@ -100,7 +142,7 @@ const TimetableModal = props => {
 									<KeyboardTimePicker
 										id='end-time-picker'
 										label='종료 시간'
-										value={endTime}
+										value={time.end}
 										onChange={handleChangeEndTime}
 										margin='dense'
 										KeyboardButtonProps={{
@@ -114,10 +156,16 @@ const TimetableModal = props => {
 						<Box>과목이 없습니다. 편집 화면에서 과목을 추가해주세요.</Box>
 					)}
 
-					{role === 'edit' ? <button name='del' value='삭제' onClick={handleRemove} /> : <React.Fragment />}
-					<button onClick={handleCloseModal}>닫기</button>
-					{role === 'add' && !_.isEmpty(subjectNames) ? <input type='submit' name='add' value='추가' /> : ''}
-					{role === 'edit' && !_.isEmpty(subjectNames) ? <input type='submit' name='sub' value='완료' /> : ''}
+					{role === 'edit' ? (
+						<Button name='del' onClick={handleRemove}>
+							삭제
+						</Button>
+					) : (
+						<React.Fragment />
+					)}
+					<Button onClick={handleCloseModal}>닫기</Button>
+					{role === 'add' && !_.isEmpty(subjectNames) ? <Input type='submit' name='add' value='추가' /> : ''}
+					{role === 'edit' && !_.isEmpty(subjectNames) ? <Input type='submit' name='sub' value='완료' /> : ''}
 				</form>
 			</div>
 		</ReactModal>

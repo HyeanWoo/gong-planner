@@ -15,6 +15,9 @@ export default class CvsTimetable extends Component {
 		width: 240,
 		height: 550,
 		showModal: false,
+		modalRole: 'add',
+		modalStartDayjs: dayjs(),
+		modalEndDayjs: dayjs().add(1, 'hour'),
 		timeTable: new TimeTable(this.props.timeTable)
 	};
 
@@ -27,12 +30,29 @@ export default class CvsTimetable extends Component {
 		window.removeEventListener('resize', this.checkSize.bind(this));
 	}
 
-	handleModal() {
-		this.setState(prevState => {
-			return {
-				showModal: !prevState.showModal
-			};
-		});
+	handleModal(time) {
+		if (time.startDayjs) {
+			// 편집 창
+			this.setState(prevState => {
+				return {
+					...prevState,
+					modalRole: 'edit',
+					modalStartDayjs: time.startDayjs,
+					modalEndDayjs: time.endDayjs,
+					showModal: !prevState.showModal
+				};
+			});
+		} else {
+			this.setState(prevState => {
+				return {
+					...prevState,
+					modalRole: 'add',
+					modalStartDayjs: dayjs(),
+					modalEndDayjs: dayjs().add(1, 'hour'),
+					showModal: _.isBoolean(time) ? time : !prevState.showModal
+				};
+			});
+		}
 	}
 
 	setTimeTable(timetable) {
@@ -58,7 +78,7 @@ export default class CvsTimetable extends Component {
 		const maxWidth = this.state.width;
 		const maxHeight = this.state.height;
 		const timeTable = this.state.timeTable;
-		const showModal = this.state.showModal;
+		const { modalRole, modalStartDayjs, modalEndDayjs, showModal } = this.state;
 
 		const hourWidth = 30;
 		const restWidth = maxWidth - hourWidth;
@@ -116,8 +136,19 @@ export default class CvsTimetable extends Component {
 									return arr.map(study => {
 										const x = hourWidth + study.start * (restWidth / 60);
 										const width = (study.end - study.start) * (restWidth / 60);
+										const time = { startDayjs: study.startDayjs, endDayjs: study.endDayjs };
 										return (
-											<Rect x={x} y={y} width={width} height={cellHeight} fill={study.color} />
+											<React.Fragment>
+												<Rect
+													x={x}
+													y={y}
+													width={width}
+													height={cellHeight}
+													fill={study.color}
+													onClick={this.handleModal.bind(this, time)}
+													onTap={this.handleModal.bind(this, time)}
+												/>
+											</React.Fragment>
 										);
 									});
 								} else {
@@ -134,7 +165,9 @@ export default class CvsTimetable extends Component {
 					handleModal={this.handleModal.bind(this)}
 					onSetTimeTable={this.setTimeTable.bind(this)}
 					subjects={subjects}
-					role='add'
+					startDayjs={modalStartDayjs}
+					endDayjs={modalEndDayjs}
+					role={modalRole}
 				/>
 			</React.Fragment>
 		);

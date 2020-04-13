@@ -1,4 +1,5 @@
 import firebase from './index';
+import _ from 'lodash';
 
 // 해당 날짜의 공부 기록들 가져오기
 export async function getTimeTable(collectionName, date) {
@@ -37,21 +38,26 @@ export function addTimeTable(collectionName, date, timeTable) {
 export function updateTimeTable(collectionName, date, timeTable, updated) {
 	const db = firebase.firestore();
 
-	db
+	return db
 		.collection(collectionName)
 		.doc(date)
 		.update({
-			timeTable: firebase.firestore.FieldValue.arrayRemove(timeTable)
+			timeTable: firebase.firestore.FieldValue.arrayRemove({
+				start: firebase.firestore.Timestamp.fromDate(timeTable.start),
+				end: firebase.firestore.Timestamp.fromDate(timeTable.end),
+				subject: timeTable.subject
+			})
 		})
 		.then(function() {
-			db
+			return db
 				.collection(collectionName)
 				.doc(date)
 				.update({
 					timeTable: firebase.firestore.FieldValue.arrayUnion(updated)
 				})
-				.then(function() {
+				.then(async function() {
 					console.log('Update timeTable Field OK');
+					return await getTimeTable(collectionName, date);
 				})
 				.catch(function(err) {
 					console.log('Update timeTable Error', err);
@@ -63,16 +69,26 @@ export function updateTimeTable(collectionName, date, timeTable, updated) {
 }
 
 // 공부 기록 '배열 아이템' 삭제
-export function deleteTimeTable(collectionName, date, timeTable) {
+export async function deleteTimeTable(collectionName, date, timeTable) {
 	const db = firebase.firestore();
-	db
+	// console.log(timeTable);
+	// const table = await getTimeTable(collectionName, date);
+	// _.find(table, study => {
+	// 				return ~~(study.start.toMillis() / 1000) === ~~(+timeTable.start / 1000);
+	// 			})
+	return db
 		.collection(collectionName)
 		.doc(date)
 		.update({
-			timeTable: timeTable ? firebase.firestore.FieldValue.arrayRemove(timeTable) : []
+			timeTable: firebase.firestore.FieldValue.arrayRemove({
+				start: firebase.firestore.Timestamp.fromDate(timeTable.start),
+				end: firebase.firestore.Timestamp.fromDate(timeTable.end),
+				subject: timeTable.subject
+			})
 		})
-		.then(function() {
+		.then(async function() {
 			console.log('Delete timeTable Field OK');
+			return await getTimeTable(collectionName, date);
 		})
 		.catch(function(err) {
 			console.log('Delete timeTable Error', err);
