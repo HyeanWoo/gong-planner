@@ -9,14 +9,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import FolderIcon from '@material-ui/icons/Folder';
+import SubjectAddModal from '../components/Modals/SubjectAddModal';
+import SubjectEditModal from './Modals/SubjectEditModal';
 import TodoAdd from './Modals/TodoAddModal';
 import TodoEditModal from './Modals/TodoEditModal';
-import SubjectEditModal from './Modals/SubjectEditModal';
+import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
+import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 class EditSubjectList extends Component {
 	state = {
 		subjects: null,
-		date: null
+    date: null,
+    isGoingToRendering: false
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -30,10 +36,8 @@ class EditSubjectList extends Component {
 		return prevState;
 	}
 
-	async getSubjects() {
+	async getSubjects(colName, date) {
 		// const date = this.state.date || dayjs();
-		const date = this.props.date;
-		const colName = this.props.colName;
 		// const shortDate = date.format('YY.MM.DD');
 		const subjects = await getData(colName, date);
 		if (subjects) {
@@ -49,13 +53,18 @@ class EditSubjectList extends Component {
 		}
 	}
 
+  reRenderSubject = (subjectItems) => {
+    console.log(subjectItems);
+    this.setState({ subjects: subjectItems })
+  }
+
   componentDidMount() {
-    this.getSubjects();
+    this.getSubjects(this.props.colName, this.props.date);
   }
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.date !== this.state.date) {
-			this.getSubjects();
+      this.getSubjects(this.props.colName, this.props.date);
 		}
 	}
 
@@ -84,21 +93,27 @@ class EditSubjectList extends Component {
 								<FolderIcon style={{ color: this.state.subjects[key].subjectColor }} />
 							</ListItemIcon>
 							<ListItemText primary={this.state.subjects[key].subjectName} />
-							<SubjectEditModal subjectId={key} colName={this.props.colName} date={this.props.date} subject={this.state.subjects[key]} />
+							<SubjectEditModal subjectId={key} colName={this.props.colName} date={this.props.date} subject={this.state.subjects[key]} reRenderSubject={this.reRenderSubject}/>
 						</ListItem>
 						<Collapse in={true} timeout='auto' unmountOnExit>
 							{this.state.subjects[key].todos.map(todo => {
 								return (
 									<List component='div' disablePadding key={todo.id}>
 										<ListItem className={classes.nested}>
-											<ListItemText primary={todo.todoCheck} />
+											{/* <ListItemText primary={todo.todoCheck} /> */}
+                      <ListItemIcon>
+                        {todo.todoCheck === "0" ? <CheckBoxOutlineBlankIcon/>
+                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
+                          : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>
+                          : <ClearRoundedIcon/>}
+                      </ListItemIcon>
 											<ListItemText primary={todo.todoName} />
-											<TodoEditModal subjectId={key} colName={this.props.colName} date={this.props.date} todo={todo}/>
+											<TodoEditModal subjectId={key} colName={this.props.colName} date={this.props.date} todo={todo} reRenderSubject={this.reRenderSubject}/>
 										</ListItem>
 									</List>
 								);
 							})}
-							<TodoAdd subjectId={key} colName={this.props.colName} date={this.props.date}/>
+							<TodoAdd subjectId={key} colName={this.props.colName} date={this.props.date} reRenderSubject={this.reRenderSubject}/>
 						</Collapse>
 					</React.Fragment>
 				);
@@ -113,7 +128,14 @@ class EditSubjectList extends Component {
 	render() {
 		const subList = this.makeSubList();
 		// console.log(this.state);
-		return <div className='col s4 offset-s4'>{subList}</div>;
+		return(
+      <div className='edit-subjest-list'>
+        <div>{subList}</div>
+        <div style={{ marginTop: "3%" }}>
+          <SubjectAddModal colName={this.props.colName} date={this.props.date} reRenderSubject={this.reRenderSubject}/>
+        </div>
+      </div>
+    );
 	}
 }
 

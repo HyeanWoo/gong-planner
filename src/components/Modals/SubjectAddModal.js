@@ -2,19 +2,25 @@ import React from 'react';
 import dayjs from 'dayjs';
 import withModal from '../../HOC/withModal';
 import { TwitterPicker } from 'react-color';
-import { createSubject } from '../../firebase/subjectFuntion';
+import { getData, createSubject } from '../../firebase/subjectFuntion';
 
-const SubjectAddModal = ({colName, date, handleCloseModal}) => {
+const SubjectAddModal = ({colName, date, handleCloseModal, reRenderSubject}) => {
   const [name, setName] = React.useState("");
   const [color, setColor] = React.useState("#FF0000");
 
   const handleChangeName = e => setName(e.target.value);
   const handleChangeColor = color => setColor(color.hex);
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const id = +dayjs();
-    createSubject(colName, date, id, name, color);
+    await createSubject(colName, date, id, name, color);
     handleCloseModal();
+    handleReRendering();
+  }
+
+  const handleReRendering = async () => {
+    const tmpSubs = await getData(colName, date);
+    reRenderSubject(tmpSubs);
   }
 
   return(

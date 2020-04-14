@@ -1,9 +1,9 @@
 import React from 'react';
 import withModal from '../../HOC/withModal';
 import { TwitterPicker } from 'react-color';
-import { updateSubject, deleteSubject } from '../../firebase/subjectFuntion';
+import { getData, updateSubject, deleteSubject } from '../../firebase/subjectFuntion';
 
-const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal}) => {
+const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal, reRenderSubject}) => {
   const [name, setName] = React.useState("");
   const [color, setColor] = React.useState(subject.subjectColor);
 
@@ -19,11 +19,18 @@ const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal})
     e.preventDefault();
     updateSubject(colName, date, "EDIT_SUBJECT", subjectId, name, color);
     handleCloseModal();
+    handleReRendering();
   }
 
   const handleDelete = () => {
     deleteSubject(colName, date, subjectId);
     handleCloseModal();
+    handleReRendering();
+  }
+
+  const handleReRendering = async () => {
+    const tmpSubs = await getData(colName, date);
+    reRenderSubject(tmpSubs);
   }
 
   return(

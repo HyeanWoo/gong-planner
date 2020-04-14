@@ -7,8 +7,9 @@ import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import { addTodos } from '../../firebase/todoFunction';
+import { getData } from '../../firebase/subjectFuntion';
 
-const TodoAddModal = ({subjectId, colName, date, handleCloseModal}) => {
+const TodoAddModal = ({subjectId, colName, date, handleCloseModal, reRenderSubject}) => {
   const [todoName, setTodoName] = React.useState("");
   const [todoCheck, setTodoCheck] = React.useState(0);
 
@@ -22,11 +23,15 @@ const TodoAddModal = ({subjectId, colName, date, handleCloseModal}) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // console.log(todoName, todoCheck);
-    // addTodos(collectionName, date, subjectId, todoId, todoCheck, todoName)
     const todoId = +dayjs();
     addTodos(colName, date, subjectId, todoId, todoCheck, todoName);
     handleCloseModal();
+    handleReRendering();
+  }
+
+  const handleReRendering = async () => {
+    const tmpSubs = await getData(colName, date);
+    reRenderSubject(tmpSubs);
   }
 
   return(

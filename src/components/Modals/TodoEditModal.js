@@ -6,8 +6,9 @@ import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import { updateTodos, deleteTodos } from '../../firebase/todoFunction';
+import { getData } from '../../firebase/subjectFuntion';
 
-const TodoEditModal = ({subjectId, colName, date, todo, handleCloseModal}) => {
+const TodoEditModal = ({subjectId, colName, date, todo, handleCloseModal, reRenderSubject}) => {
   const [todoName, setTodoName] = React.useState(todo.todoName);
   const [todoCheck, setTodoCheck] = React.useState(todo.todoCheck);
   
@@ -19,16 +20,22 @@ const TodoEditModal = ({subjectId, colName, date, todo, handleCloseModal}) => {
     setTodoCheck(e.target.value);
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateTodos(colName, date, subjectId, todo.id, todoCheck, todoName);
+    await updateTodos(colName, date, subjectId, todo.id, todoCheck, todoName);
     handleCloseModal();
+    handleReRendering();
   }
 
   const handleDelete = () => {
-    // deleteTodos(collectionName, date, subjectId, todoId, todoCheck, todoName)
     deleteTodos(colName, date, subjectId, todo.id, todo.todoCheck, todo.todoName);
     handleCloseModal();
+    handleReRendering();
+  }
+
+  const handleReRendering = async () => {
+    const tmpSubs = await getData(colName, date);
+    reRenderSubject(tmpSubs);
   }
 
   return(

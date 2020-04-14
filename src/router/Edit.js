@@ -3,7 +3,6 @@ import _ from 'lodash';
 import dayjs from 'dayjs';
 import TodayDate from '../components/TodayDate';
 import EditSubjectList from '../components/EditSubjectList';
-import SubjectAddModal from '../components/Modals/SubjectAddModal';
 
 const Edit = props => {
 	const [ date, setDate ] = useState(dayjs());
@@ -27,9 +26,6 @@ const Edit = props => {
 			<div className='row'>
 				{/* <EditSubjectList date={date} colName={colName} /> */}
 				<EditSubjectList colName={colName} date="99.99.99"/>
-			</div>
-			<div className='row'>
-				<SubjectAddModal colName={colName} date="99.99.99"/>
 			</div>
 		</div>
 	);
