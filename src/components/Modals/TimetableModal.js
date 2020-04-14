@@ -133,8 +133,10 @@ const TimetableModal = ({
 							<FormControl required size='medium'>
 								<InputLabel>과목명</InputLabel>
 								<Select autoWidth={true} labelId='label' value={name} onChange={handleChangeName}>
-									{subjectNames.map(subjectName => (
-										<MenuItem value={subjectName}>{subjectName}</MenuItem>
+									{subjectNames.map((subjectName, i) => (
+										<MenuItem key={i} value={subjectName}>
+											{subjectName}
+										</MenuItem>
 									))}
 								</Select>
 								<FormHelperText>필수항목</FormHelperText>

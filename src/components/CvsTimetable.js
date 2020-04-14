@@ -88,14 +88,14 @@ export default class CvsTimetable extends Component {
 		return (
 			<React.Fragment>
 				<StyledStage ref={element => (this.element = element)} width={maxWidth} height={maxHeight}>
-					<Layer name='frame'>
+					<Layer key={0} name='frame'>
 						<Line points={[ hourWidth, 0, hourWidth, maxHeight ]} stroke='black' strokeWidth={1} />
 						{[ ...Array(24) ].map((_, i) => {
 							const y = (i + 1) * cellHeight;
 							const textY = y - cellHeight;
 
 							return (
-								<React.Fragment>
+								<React.Fragment key={i}>
 									<Text
 										x={0}
 										y={textY}
@@ -117,7 +117,7 @@ export default class CvsTimetable extends Component {
 							return <Line key={x} points={[ x, 0, x, maxHeight ]} stroke='black' strokeWidth={0.5} />;
 						})}
 					</Layer>
-					<Layer name='click-frame'>
+					<Layer key={1} name='click-frame'>
 						<Rect
 							x={hourWidth}
 							y={0}
@@ -127,7 +127,7 @@ export default class CvsTimetable extends Component {
 							onTap={this.handleModal.bind(this)}
 						/>
 					</Layer>
-					<Layer name='study'>
+					<Layer key={2} name='study'>
 						{_.isEmpty(timeTable) ? (
 							<React.Fragment />
 						) : (
@@ -143,17 +143,16 @@ export default class CvsTimetable extends Component {
 											endDayjs: study.endDayjs
 										};
 										return (
-											<React.Fragment>
-												<Rect
-													x={x}
-													y={y}
-													width={width}
-													height={cellHeight}
-													fill={study.color}
-													onClick={this.handleModal.bind(this, time)}
-													onTap={this.handleModal.bind(this, time)}
-												/>
-											</React.Fragment>
+											<Rect
+												x={x}
+												y={y}
+												key={x + y}
+												width={width}
+												height={cellHeight}
+												fill={study.color}
+												onClick={this.handleModal.bind(this, time)}
+												onTap={this.handleModal.bind(this, time)}
+											/>
 										);
 									});
 								} else {
