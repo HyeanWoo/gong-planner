@@ -29,7 +29,7 @@ const BottomGrid = styled(Grid)({
 });
 
 const Home = props => {
-	const { onChangeTodayData } = props;
+	const { onChangeTodayData, onChangeSubjects, onChangeTimeTable } = props;
 	const todayData = props.todayData || {};
 	const collectionName = _.isEmpty(props.match.params) ? 'testSubject' : props.match.params.colName;
 
@@ -52,6 +52,7 @@ const Home = props => {
 						colName={collectionName}
 						date={todayData.date}
 						timeTable={todayData.timeTable ? todayData.timeTable : []}
+						onChangeTimeTable={onChangeTimeTable}
 						subjects={todayData.subjects}
 					/>
 				</Grid>

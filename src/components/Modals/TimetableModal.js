@@ -77,8 +77,8 @@ const TimetableModal = ({
 			end: endDayjs.toDate(),
 			subject: editSubject
 		});
-		if (res) reRendering(res);
 		handleCloseModal();
+		if (res) reRendering(res);
 	};
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -109,9 +109,8 @@ const TimetableModal = ({
 				}
 			);
 		}
-		if (res) reRendering(res);
-
 		handleCloseModal();
+		if (res) reRendering(res);
 	};
 
 	let subjectNames = [];
@@ -127,7 +126,7 @@ const TimetableModal = ({
 			onRequestClose={handleCloseModal}
 			style={customStyles}>
 			<div className='timetable-modal'>
-				<div>공부기록 추가</div>
+				<div>공부기록 {role === 'edit' ? '편집' : '추가'}</div>
 				<form onSubmit={handleSubmit} noValidate>
 					{!_.isEmpty(subjectNames) ? (
 						<React.Fragment>

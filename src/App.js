@@ -53,13 +53,44 @@ class App extends Component {
 		});
 	};
 
+	setSubjects = subjects => {
+		this.setState(prevState => {
+			return {
+				todayData: {
+					...prevState.todayData,
+					subjects
+				}
+			};
+		});
+	};
+
+	setTimeTable = timeTable => {
+		this.setState(prevState => {
+			return {
+				todayData: {
+					...prevState.todayData,
+					timeTable
+				}
+			};
+		});
+	};
+
 	componentDidMount() {
 		this.setTodayData(this.state.todayData.date);
 	}
 
 	render() {
 		const { todayData } = this.state;
-		const HomeComponent = props => <Home todayData={todayData} onChangeTodayData={this.setTodayData} {...props} />;
+		const HomeComponent = props => (
+			<Home
+				todayData={todayData}
+				onChangeTodayData={this.setTodayData}
+				onChangeSubjects={this.setSubjects}
+				onChangeTimeTable={this.setTimeTable}
+				{...props}
+			/>
+		);
+		const EditComponent = props => <Edit onChangeSubjects={this.setSubjects} {...props} />;
 
 		return _.isEmpty(todayData) ? (
 			<div>로-딩</div>
@@ -68,7 +99,7 @@ class App extends Component {
 				<AppContainer maxWidth='sm'>
 					<Switch>
 						<Route exact path='/' component={HomeComponent} />
-						<Route path='/:colName/edit' component={Edit} />
+						<Route path='/:colName/edit' component={EditComponent} />
 						<Route path='/:colName/setting' component={Setting} />
 						<Route path='/:colName' component={HomeComponent} />
 					</Switch>

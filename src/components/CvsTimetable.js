@@ -62,12 +62,6 @@ export default class CvsTimetable extends Component {
 		}
 	}
 
-	setTimeTable(timetable) {
-		this.setState({
-			timeTable: new TimeTable(timetable)
-		});
-	}
-
 	checkSize() {
 		if (this.element) {
 			const container = this.element.attrs.container;
@@ -174,7 +168,7 @@ export default class CvsTimetable extends Component {
 					colName={colName}
 					show={showModal}
 					handleModal={this.handleModal.bind(this)}
-					onSetTimeTable={this.setTimeTable.bind(this)}
+					onSetTimeTable={this.props.onChangeTimeTable}
 					subjects={subjects}
 					editSubject={modalSubject}
 					startDayjs={modalStartDayjs}
