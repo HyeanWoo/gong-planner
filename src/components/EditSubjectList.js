@@ -98,7 +98,6 @@ class EditSubjectList extends Component {
 								return (
 									<List component='div' disablePadding key={todo.id}>
 										<ListItem className={classes.nested}>
-											{/* <ListItemText primary={todo.todoCheck} /> */}
                       <ListItemIcon>
                         {todo.todoCheck === "3" ? <ClearRoundedIcon/>
                           : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>

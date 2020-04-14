@@ -8,6 +8,10 @@ import Collapse from '@material-ui/core/Collapse';
 import FolderIcon from '@material-ui/icons/Folder';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
+import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 const SubjectList = ({ subjects, setFold }) => {
 	const useStyles = makeStyles((theme) => ({
@@ -47,7 +51,12 @@ const SubjectList = ({ subjects, setFold }) => {
 								return (
 									<List component='div' disablePadding key={todo.id}>
 										<ListItem button className={classes.nested}>
-											<ListItemText primary={todo.todoCheck} />
+                      <ListItemIcon>
+                        {todo.todoCheck === "3" ? <ClearRoundedIcon/>
+                          : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>
+                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
+                          : <CheckBoxOutlineBlankIcon/>}
+                      </ListItemIcon>
 											<ListItemText primary={todo.todoName} />
 										</ListItem>
 									</List>
