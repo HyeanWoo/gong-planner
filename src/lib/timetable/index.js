@@ -79,6 +79,7 @@ class TimeTable {
 				}
 				studyTime[hour++].push({
 					color: time.color,
+					subject: time.subject,
 					start: minute,
 					end: last,
 					startDayjs: time.start,

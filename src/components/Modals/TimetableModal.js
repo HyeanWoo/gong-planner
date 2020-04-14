@@ -6,7 +6,18 @@ import DayjsUtils from '@date-io/dayjs';
 import ReactModal from 'react-modal';
 import { addTimeTable, updateTimeTable, deleteTimeTable } from '../../firebase/timeTableFunction';
 
-const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSetTimeTable, startDayjs, endDayjs }) => {
+const TimetableModal = ({
+	date,
+	show,
+	colName,
+	subjects,
+	role,
+	handleModal,
+	onSetTimeTable,
+	editSubject,
+	startDayjs,
+	endDayjs
+}) => {
 	const [ time, setTime ] = useState({ start: startDayjs, end: endDayjs });
 
 	useEffect(
@@ -14,6 +25,13 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 			setTime({ start: startDayjs, end: endDayjs });
 		},
 		[ startDayjs, endDayjs ]
+	);
+
+	useEffect(
+		() => {
+			setName(editSubject);
+		},
+		[ editSubject ]
 	);
 
 	const customStyles = {
@@ -42,7 +60,6 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 		// 색깔 넣어주기
 		const timeTable = _.map(res, study => {
 			const subObj = _.find(subjects, { subjectName: study.subject });
-			console.log(subObj);
 			return {
 				...study,
 				color: subObj ? subObj.subjectColor : 'black'
@@ -58,7 +75,7 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 		const res = await deleteTimeTable(colName, shortDate, {
 			start: startDayjs.toDate(),
 			end: endDayjs.toDate(),
-			subject: name
+			subject: editSubject
 		});
 		if (res) reRendering(res);
 		handleCloseModal();
@@ -83,7 +100,7 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 				{
 					start: startDayjs.toDate(),
 					end: endDayjs.toDate(),
-					subject: name
+					subject: editSubject
 				},
 				{
 					start: time.start.toDate(),
@@ -101,7 +118,7 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 	if (!_.isEmpty(subjects)) {
 		subjectNames = _.values(subjects).map(subject => subject.subjectName);
 	}
-	const [ name, setName ] = useState(subjectNames[0] || '');
+	const [ name, setName ] = useState(editSubject ? editSubject : subjectNames[0]);
 	return (
 		<ReactModal
 			isOpen={show}
@@ -116,11 +133,7 @@ const TimetableModal = ({ date, show, colName, subjects, role, handleModal, onSe
 						<React.Fragment>
 							<FormControl required size='medium'>
 								<InputLabel>과목명</InputLabel>
-								<Select
-									autoWidth={true}
-									labelId='label'
-									value={subjectNames[0]}
-									onChange={handleChangeName}>
+								<Select autoWidth={true} labelId='label' value={name} onChange={handleChangeName}>
 									{subjectNames.map(subjectName => (
 										<MenuItem value={subjectName}>{subjectName}</MenuItem>
 									))}

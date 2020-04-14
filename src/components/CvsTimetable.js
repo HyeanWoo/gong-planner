@@ -16,6 +16,9 @@ export default class CvsTimetable extends Component {
 		height: 550,
 		showModal: false,
 		modalRole: 'add',
+		modalSubject: _.isEmpty(this.props.subjects)
+			? null
+			: this.props.subjects[_.keys(this.props.subjects)[0]].subjectName,
 		modalStartDayjs: dayjs(),
 		modalEndDayjs: dayjs().add(1, 'hour'),
 		timeTable: new TimeTable(this.props.timeTable)
@@ -37,6 +40,7 @@ export default class CvsTimetable extends Component {
 				return {
 					...prevState,
 					modalRole: 'edit',
+					modalSubject: time.subject,
 					modalStartDayjs: time.startDayjs,
 					modalEndDayjs: time.endDayjs,
 					showModal: !prevState.showModal
@@ -47,6 +51,9 @@ export default class CvsTimetable extends Component {
 				return {
 					...prevState,
 					modalRole: 'add',
+					modalSubject: _.isEmpty(this.props.subjects)
+						? null
+						: this.props.subjects[_.keys(this.props.subjects)[0]].subjectName,
 					modalStartDayjs: dayjs(),
 					modalEndDayjs: dayjs().add(1, 'hour'),
 					showModal: _.isBoolean(time) ? time : !prevState.showModal
@@ -78,7 +85,7 @@ export default class CvsTimetable extends Component {
 		const maxWidth = this.state.width;
 		const maxHeight = this.state.height;
 		const timeTable = this.state.timeTable;
-		const { modalRole, modalStartDayjs, modalEndDayjs, showModal } = this.state;
+		const { modalRole, modalSubject, modalStartDayjs, modalEndDayjs, showModal } = this.state;
 
 		const hourWidth = 30;
 		const restWidth = maxWidth - hourWidth;
@@ -136,7 +143,11 @@ export default class CvsTimetable extends Component {
 									return arr.map(study => {
 										const x = hourWidth + study.start * (restWidth / 60);
 										const width = (study.end - study.start) * (restWidth / 60);
-										const time = { startDayjs: study.startDayjs, endDayjs: study.endDayjs };
+										const time = {
+											subject: study.subject,
+											startDayjs: study.startDayjs,
+											endDayjs: study.endDayjs
+										};
 										return (
 											<React.Fragment>
 												<Rect
@@ -165,6 +176,7 @@ export default class CvsTimetable extends Component {
 					handleModal={this.handleModal.bind(this)}
 					onSetTimeTable={this.setTimeTable.bind(this)}
 					subjects={subjects}
+					editSubject={modalSubject}
 					startDayjs={modalStartDayjs}
 					endDayjs={modalEndDayjs}
 					role={modalRole}
