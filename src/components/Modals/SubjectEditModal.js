@@ -4,7 +4,7 @@ import { TwitterPicker } from 'react-color';
 import { getData, updateSubject, deleteSubject } from '../../firebase/subjectFuntion';
 
 const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal, reRenderSubject}) => {
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(subject.subjectName);
   const [color, setColor] = React.useState(subject.subjectColor);
 
   const handleChangeName = e => {
@@ -38,7 +38,7 @@ const SubjectEditModal = ({subjectId, colName, date, subject, handleCloseModal, 
       <div>과목 편집</div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="subjectName">과목명</label>
-        <input type="text" id="subjectName" onChange={handleChangeName} placeholder={subject.subjectName} required/>
+        <input type="text" id="subjectName" onChange={handleChangeName} value={name} placeholder={subject.subjectName} required/>
         <label htmlFor="subjectColor">과목색상</label>
         <div style={{backgroundColor: color}}>&nbsp;</div>
         <TwitterPicker

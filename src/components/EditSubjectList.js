@@ -100,10 +100,10 @@ class EditSubjectList extends Component {
 										<ListItem className={classes.nested}>
 											{/* <ListItemText primary={todo.todoCheck} /> */}
                       <ListItemIcon>
-                        {todo.todoCheck === "0" ? <CheckBoxOutlineBlankIcon/>
-                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
+                        {todo.todoCheck === "3" ? <ClearRoundedIcon/>
                           : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>
-                          : <ClearRoundedIcon/>}
+                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
+                          : <CheckBoxOutlineBlankIcon/>}
                       </ListItemIcon>
 											<ListItemText primary={todo.todoName} />
 											<TodoEditModal subjectId={key} colName={this.props.colName} date={this.props.date} todo={todo} reRenderSubject={this.reRenderSubject}/>

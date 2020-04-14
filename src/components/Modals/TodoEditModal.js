@@ -43,7 +43,7 @@ const TodoEditModal = ({subjectId, colName, date, todo, handleCloseModal, reRend
       <div>할일 편집</div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="todoName">할일</label>
-        <input type="text" id="todoName" placeholder={todoName} onChange={handelChangeName} required/>
+        <input type="text" id="todoName" placeholder={todoName} value={todoName} onChange={handelChangeName} required/>
         <div className="state"><label htmlFor="todoCheck">상태</label></div>
         <div className="radio-input">
           <label>
