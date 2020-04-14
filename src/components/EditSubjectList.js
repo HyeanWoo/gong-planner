@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import dayjs from 'dayjs';
 import { getData } from '../firebase/subjectFuntion';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -54,7 +53,6 @@ class EditSubjectList extends Component {
 	}
 
   reRenderSubject = (subjectItems) => {
-    console.log(subjectItems);
     this.setState({ subjects: subjectItems })
   }
 
@@ -127,7 +125,7 @@ class EditSubjectList extends Component {
 
 	render() {
 		const subList = this.makeSubList();
-		// console.log(this.state);
+		
 		return(
       <div className='edit-subjest-list'>
         <div>{subList}</div>

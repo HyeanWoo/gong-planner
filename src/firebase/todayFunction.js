@@ -20,7 +20,6 @@ export async function getTodayData(collectionName, date) {
 			subRef = await doc.get();
 		}
 
-		console.log(subRef.data());
 		console.log('Get today docs OK');
 		return subRef.data();
 	} catch (err) {

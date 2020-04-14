@@ -24,8 +24,7 @@ const Edit = props => {
 				<TodayDate date={date} onChangeDate={setDate} />
 			</div>
 			<div className='row'>
-				{/* <EditSubjectList date={date} colName={colName} /> */}
-				<EditSubjectList colName={colName} date="99.99.99"/>
+				<EditSubjectList colName={colName} date={date.format('YY.MM.DD')}/>
 			</div>
 		</div>
 	);
