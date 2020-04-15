@@ -20,8 +20,8 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 class EditSubjectList extends Component {
 	state = {
 		subjects: null,
-    date: null,
-    isGoingToRendering: false
+		date: null,
+		isGoingToRendering: false
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -52,17 +52,17 @@ class EditSubjectList extends Component {
 		}
 	}
 
-  reRenderSubject = (subjectItems) => {
-    this.setState({ subjects: subjectItems })
-  }
+	reRenderSubject = subjectItems => {
+		this.setState({ subjects: subjectItems });
+	};
 
-  componentDidMount() {
-    this.getSubjects(this.props.colName, this.props.date);
-  }
+	componentDidMount() {
+		this.getSubjects(this.props.colName, this.props.date);
+	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.date !== this.state.date) {
-      this.getSubjects(this.props.colName, this.props.date);
+			this.getSubjects(this.props.colName, this.props.date);
 		}
 	}
 
@@ -91,26 +91,48 @@ class EditSubjectList extends Component {
 								<FolderIcon style={{ color: this.state.subjects[key].subjectColor }} />
 							</ListItemIcon>
 							<ListItemText primary={this.state.subjects[key].subjectName} />
-							<SubjectEditModal subjectId={key} colName={this.props.colName} date={this.props.date} subject={this.state.subjects[key]} reRenderSubject={this.reRenderSubject}/>
+							<SubjectEditModal
+								subjectId={key}
+								colName={this.props.colName}
+								date={this.props.date}
+								subject={this.state.subjects[key]}
+								reRenderSubject={this.reRenderSubject}
+							/>
 						</ListItem>
 						<Collapse in={true} timeout='auto' unmountOnExit>
 							{this.state.subjects[key].todos.map(todo => {
 								return (
 									<List component='div' disablePadding key={todo.id}>
 										<ListItem className={classes.nested}>
-                      <ListItemIcon>
-                        {todo.todoCheck === "3" ? <ClearRoundedIcon/>
-                          : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>
-                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
-                          : <CheckBoxOutlineBlankIcon/>}
-                      </ListItemIcon>
+											<ListItemIcon>
+												{todo.todoCheck === '3' ? (
+													<ClearRoundedIcon />
+												) : todo.todoCheck === '2' ? (
+													<CheckCircleOutlineRoundedIcon />
+												) : todo.todoCheck === '1' ? (
+													<ChangeHistoryRoundedIcon />
+												) : (
+													<CheckBoxOutlineBlankIcon />
+												)}
+											</ListItemIcon>
 											<ListItemText primary={todo.todoName} />
-											<TodoEditModal subjectId={key} colName={this.props.colName} date={this.props.date} todo={todo} reRenderSubject={this.reRenderSubject}/>
+											<TodoEditModal
+												subjectId={key}
+												colName={this.props.colName}
+												date={this.props.date}
+												todo={todo}
+												reRenderSubject={this.reRenderSubject}
+											/>
 										</ListItem>
 									</List>
 								);
 							})}
-							<TodoAdd subjectId={key} colName={this.props.colName} date={this.props.date} reRenderSubject={this.reRenderSubject}/>
+							<TodoAdd
+								subjectId={key}
+								colName={this.props.colName}
+								date={this.props.date}
+								reRenderSubject={this.reRenderSubject}
+							/>
 						</Collapse>
 					</React.Fragment>
 				);
@@ -124,15 +146,19 @@ class EditSubjectList extends Component {
 
 	render() {
 		const subList = this.makeSubList();
-		
-		return(
-      <div className='edit-subjest-list'>
-        <div>{subList}</div>
-        <div style={{ marginTop: "3%" }}>
-          <SubjectAddModal colName={this.props.colName} date={this.props.date} reRenderSubject={this.reRenderSubject}/>
-        </div>
-      </div>
-    );
+
+		return (
+			<div className='edit-subjest-list'>
+				<div>{subList}</div>
+				<div style={{ marginTop: '3%' }}>
+					<SubjectAddModal
+						colName={this.props.colName}
+						date={this.props.date}
+						reRenderSubject={this.reRenderSubject}
+					/>
+				</div>
+			</div>
+		);
 	}
 }
 

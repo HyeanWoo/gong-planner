@@ -1,11 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import FolderIcon from '@material-ui/icons/Folder';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
@@ -14,24 +14,34 @@ import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 const SubjectList = ({ subjects, setFold }) => {
-	const useStyles = makeStyles((theme) => ({
+	const useStyles = makeStyles(theme => ({
 		root: {
 			width: '100%',
-			maxWidth: 360
+			padding: 0,
+			backgroundColor: 'transparent',
+			color: 'black',
+			boxShadow: 'none'
 		},
-		subject: {
-			backgroundColor: 'orange'
+		subject: {},
+		subjectColor: {
+			minWidth: '8px',
+			marginRight: '16px'
+		},
+		subjectText: {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center'
 		},
 		nested: {
 			paddingLeft: theme.spacing(4),
-			backgroundColor: '#FED8B1',
+			backgroundColor: '#EEEEEE',
 			color: 'black'
 		}
 	}));
 	const classes = useStyles();
 
 	const listSubject = subjects
-		? Object.keys(subjects).map((key) => {
+		? Object.keys(subjects).map(key => {
 				return (
 					<React.Fragment key={key}>
 						<ListItem
@@ -40,23 +50,33 @@ const SubjectList = ({ subjects, setFold }) => {
 								setFold(key, subjects[key].fold);
 							}}
 							className={classes.subject}>
-							<ListItemIcon>
-								<FolderIcon style={{ color: subjects[key].subjectColor }} />
-							</ListItemIcon>
-							<ListItemText primary={subjects[key].subjectName} />
+							<Box
+								className={classes.subjectColor}
+								style={{ backgroundColor: subjects[key].subjectColor }}
+							/>
+							<ListItemText
+								className={classes.subjectText}
+								primary={subjects[key].subjectName}
+								secondary={'00:00:00'}
+							/>
 							{subjects[key].fold ? <ExpandLess /> : <ExpandMore />}
 						</ListItem>
 						<Collapse in={subjects[key].fold} timeout='auto' unmountOnExit>
-							{subjects[key].todos.map((todo) => {
+							{subjects[key].todos.map(todo => {
 								return (
 									<List component='div' disablePadding key={todo.id}>
 										<ListItem button className={classes.nested}>
-                      <ListItemIcon>
-                        {todo.todoCheck === "3" ? <ClearRoundedIcon/>
-                          : todo.todoCheck === "2" ? <CheckCircleOutlineRoundedIcon/>
-                          : todo.todoCheck === "1" ? <ChangeHistoryRoundedIcon/>
-                          : <CheckBoxOutlineBlankIcon/>}
-                      </ListItemIcon>
+											<ListItemIcon>
+												{todo.todoCheck === '3' ? (
+													<ClearRoundedIcon />
+												) : todo.todoCheck === '2' ? (
+													<CheckCircleOutlineRoundedIcon />
+												) : todo.todoCheck === '1' ? (
+													<ChangeHistoryRoundedIcon />
+												) : (
+													<CheckBoxOutlineBlankIcon />
+												)}
+											</ListItemIcon>
 											<ListItemText primary={todo.todoName} />
 										</ListItem>
 									</List>

@@ -4,13 +4,13 @@ import SubjectList from './SubjectList';
 
 class Subjects extends Component {
 	state = {
-		subjects : null
+		subjects: null
 	};
 
 	componentDidMount() {
-    this.setState({
-      subjects : this.props.subjects
-    })
+		this.setState({
+			subjects: this.props.subjects
+		});
 	}
 
 	setFold = (id, flag) => {
@@ -25,11 +25,7 @@ class Subjects extends Component {
 	};
 
 	render() {
-		return (
-			<div className='orange subjects'>
-				<SubjectList subjects={this.props.subjects} setFold={this.setFold} />
-			</div>
-		);
+		return <SubjectList subjects={this.props.subjects} setFold={this.setFold} />;
 	}
 }
 
