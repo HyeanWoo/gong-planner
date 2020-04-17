@@ -13,86 +13,93 @@ import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutline
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
+import { secondToTime } from '../utils';
+
 const SubjectList = ({ subjects, setFold }) => {
-	const useStyles = makeStyles(theme => ({
-		root: {
-			width: '100%',
-			padding: 0,
-			backgroundColor: 'transparent',
-			color: 'black',
-			boxShadow: 'none'
-		},
-		subject: {},
-		subjectColor: {
-			minWidth: '8px',
-			marginRight: '16px'
-		},
-		subjectText: {
-			display: 'flex',
-			flexDirection: 'column',
-			justifyContent: 'center'
-		},
-		nested: {
-			paddingLeft: theme.spacing(4),
-			backgroundColor: '#EEEEEE',
-			color: 'black'
-		}
-	}));
-	const classes = useStyles();
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+      padding: 0,
+      backgroundColor: 'transparent',
+      color: 'black',
+      boxShadow: 'none',
+    },
+    subject: {},
+    subjectColor: {
+      minWidth: '8px',
+      marginRight: '16px',
+    },
+    subjectText: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    nested: {
+      paddingLeft: theme.spacing(4),
+      backgroundColor: '#EEEEEE',
+      color: 'black',
+    },
+  }));
+  const classes = useStyles();
 
-	const listSubject = subjects
-		? Object.keys(subjects).map(key => {
-				return (
-					<React.Fragment key={key}>
-						<ListItem
-							button
-							onClick={() => {
-								setFold(key, subjects[key].fold);
-							}}
-							className={classes.subject}>
-							<Box
-								className={classes.subjectColor}
-								style={{ backgroundColor: subjects[key].subjectColor }}
-							/>
-							<ListItemText
-								className={classes.subjectText}
-								primary={subjects[key].subjectName}
-								secondary={'00:00:00'}
-							/>
-							{subjects[key].fold ? <ExpandLess /> : <ExpandMore />}
-						</ListItem>
-						<Collapse in={subjects[key].fold} timeout='auto' unmountOnExit>
-							{subjects[key].todos.map(todo => {
-								return (
-									<List component='div' disablePadding key={todo.id}>
-										<ListItem button className={classes.nested}>
-											<ListItemIcon>
-												{todo.todoCheck === '3' ? (
-													<ClearRoundedIcon />
-												) : todo.todoCheck === '2' ? (
-													<CheckCircleOutlineRoundedIcon />
-												) : todo.todoCheck === '1' ? (
-													<ChangeHistoryRoundedIcon />
-												) : (
-													<CheckBoxOutlineBlankIcon />
-												)}
-											</ListItemIcon>
-											<ListItemText primary={todo.todoName} />
-										</ListItem>
-									</List>
-								);
-							})}
-						</Collapse>
-					</React.Fragment>
-				);
-			})
-		: '리스트 비었음ㅎ';
+  const listSubject = subjects
+    ? Object.keys(subjects).map((key) => {
+        return (
+          <React.Fragment key={key}>
+            <ListItem
+              button
+              onClick={() => {
+                setFold(key, subjects[key].fold);
+              }}
+              className={classes.subject}
+            >
+              <Box
+                className={classes.subjectColor}
+                style={{ backgroundColor: subjects[key].subjectColor }}
+              />
+              <ListItemText
+                className={classes.subjectText}
+                primary={subjects[key].subjectName}
+                secondary={secondToTime(subjects[key].totalElapsedTime)}
+              />
+              {subjects[key].fold ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={subjects[key].fold} timeout='auto' unmountOnExit>
+              {subjects[key].todos.map((todo) => {
+                return (
+                  <List component='div' disablePadding key={todo.id}>
+                    <ListItem button className={classes.nested}>
+                      <ListItemIcon>
+                        {todo.todoCheck === '3' ? (
+                          <ClearRoundedIcon />
+                        ) : todo.todoCheck === '2' ? (
+                          <CheckCircleOutlineRoundedIcon />
+                        ) : todo.todoCheck === '1' ? (
+                          <ChangeHistoryRoundedIcon />
+                        ) : (
+                          <CheckBoxOutlineBlankIcon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText primary={todo.todoName} />
+                    </ListItem>
+                  </List>
+                );
+              })}
+            </Collapse>
+          </React.Fragment>
+        );
+      })
+    : '리스트 비었음ㅎ';
 
-	return (
-		<List component='nav' aria-labelledby='nested-list-subheader' className={classes.root}>
-			{listSubject}
-		</List>
-	);
+  return (
+    <List
+      component='nav'
+      aria-labelledby='nested-list-subheader'
+      className={classes.root}
+    >
+      {listSubject}
+    </List>
+  );
 };
 
 export default SubjectList;
