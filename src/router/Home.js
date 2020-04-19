@@ -10,54 +10,58 @@ import Subjects from '../components/Subjects';
 import CvsTimetable from '../components/CvsTimetable';
 
 const RootGrid = styled(Grid)({
-	height: '100vh',
-	flexDirection: 'column',
-	flexWrap: 'nowrap'
+  height: '100vh',
+  flexDirection: 'column',
+  flexWrap: 'nowrap',
 });
 const HeaderGrid = styled(Grid)({
-	display: 'flex',
-	height: '64px',
-	justifyContent: 'space-between',
-	flexWrap: 'nowrap'
+  display: 'flex',
+  height: '64px',
+  justifyContent: 'space-between',
+  flexWrap: 'nowrap',
 });
 const LogGrid = styled(Grid)({});
 const BottomGrid = styled(Grid)({
-	height: '100%',
-	'& div': {
-		height: '100%'
-	}
+  height: '100%',
+  '& div': {
+    height: '100%',
+  },
 });
 
-const Home = props => {
-	const { onChangeTodayData } = props;
-	const todayData = props.todayData || {};
-	const collectionName = _.isEmpty(props.match.params) ? 'testSubject' : props.match.params.colName;
+const Home = (props) => {
+  const { onChangeTodayData, onChangeSubjects, onChangeTimeTable } = props;
+  const todayData = props.todayData || {};
+  const collectionName = _.isEmpty(props.match.params)
+    ? 'testSubject'
+    : props.match.params.colName;
 
-	return (
-		<RootGrid container spacing={1}>
-			<HeaderGrid item>
-				<TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
-				<EditSetting colName={collectionName} />
-			</HeaderGrid>
-			<LogGrid item>
-				<Todaylog todayData={todayData} />
-			</LogGrid>
-			<BottomGrid item container spacing={1}>
-				<Grid item xs={6}>
-					<Subjects today={todayData.date} subjects={todayData.subjects} />
-				</Grid>
-				<Grid item xs={6}>
-					{/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
-					<CvsTimetable
-						colName={collectionName}
-						date={todayData.date}
-						timeTable={todayData.timeTable ? todayData.timeTable : []}
-						subjects={todayData.subjects}
-					/>
-				</Grid>
-			</BottomGrid>
-		</RootGrid>
-	);
+  return (
+    <RootGrid container spacing={1}>
+      <HeaderGrid item>
+        <TodayDate date={todayData.date} onChangeDate={onChangeTodayData} />
+        <EditSetting colName={collectionName} />
+      </HeaderGrid>
+      <LogGrid item>
+        <Todaylog todayData={todayData} />
+      </LogGrid>
+      <BottomGrid item container spacing={1}>
+        <Grid item xs={6}>
+          <Subjects today={todayData.date} subjects={todayData.subjects} />
+        </Grid>
+        <Grid item xs={6}>
+          {/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}
+          <CvsTimetable
+            colName={collectionName}
+            date={todayData.date}
+            timeTable={todayData.timeTable ? todayData.timeTable : []}
+            onChangeSubjects={onChangeSubjects}
+            onChangeTimeTable={onChangeTimeTable}
+            subjects={todayData.subjects}
+          />
+        </Grid>
+      </BottomGrid>
+    </RootGrid>
+  );
 };
 
 export default Home;
