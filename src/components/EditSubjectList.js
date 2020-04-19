@@ -18,152 +18,136 @@ import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 class EditSubjectList extends Component {
-	state = {
-		subjects: null,
-		date: null,
-		isGoingToRendering: false
-	};
+  state = {
+    date: this.props.date,
+    subjects: this.props.todayData.subjects,
+    todayData: this.props.todayData,
+    isGoingToRendering: false,
+  };
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (prevState.date !== nextProps.date) {
-			const { date } = nextProps;
-			return {
-				...prevState,
-				date
-			};
-		}
-		return prevState;
-	}
+  async getSubjects(colName, date) {
+    // const date = this.state.date || dayjs();
+    // const shortDate = date.format('YY.MM.DD');
+    const subjects = await getData(colName, date);
+    this.setState((prevState) => {
+      return { ...prevState, date, subjects: subjects || {} };
+    });
+  }
 
-	async getSubjects(colName, date) {
-		// const date = this.state.date || dayjs();
-		// const shortDate = date.format('YY.MM.DD');
-		const subjects = await getData(colName, date);
-		if (subjects) {
-			// subjects가 있는 경우
-			this.setState(prevState => {
-				return { ...prevState, subjects };
-			});
-		} else if (!_.isEmpty(this.state.subjects)) {
-			// 받은 subjects가 없는데, 저장되어 있는 subjects가 있는 경우
-			this.setState(prevState => {
-				return { ...prevState, subjects: null };
-			});
-		}
-	}
+  reRenderSubject = (subjectItems) => {
+    if (this.state.todayData.date.format('YY.MM.DD') === this.state.date) {
+      // Home 날짜와 Edit 날짜가 같을 경우 todoData를 리렌더링
+      this.props.onChangeSubjects(subjectItems);
+    } else {
+      // 아닐경우 Edit 리스트만 리렌더링
+      this.setState((prevState) => {
+        return { ...prevState, subjects: subjectItems || {} };
+      });
+    }
+  };
 
-	reRenderSubject = subjectItems => {
-		this.setState({ subjects: subjectItems });
-	};
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.date !== this.props.date) {
+      this.getSubjects(this.props.colName, this.props.date);
+    }
+  }
 
-	componentDidMount() {
-    // this.getSubjects(this.props.colName, this.props.date);
-    // console.log(this.props.todayData);
-    this.setState({
-      subjects: this.props.todayData
-    })
-	}
+  makeSubList() {
+    const classes = makeStyles((theme) => ({
+      root: {
+        width: '100%',
+        maxWidth: 360,
+      },
+      subject: {
+        backgroundColor: 'orange',
+      },
+      nested: {
+        paddingLeft: theme.spacing(4),
+        backgroundColor: '#FED8B1',
+        color: 'black',
+      },
+    }));
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.date !== this.state.date) {
-			this.getSubjects(this.props.colName, this.props.date);
-		}
-	}
+    const list = this.state.subjects ? (
+      Object.keys(this.state.subjects).map((key) => {
+        return (
+          <React.Fragment key={key}>
+            <ListItem className={classes.subject}>
+              <ListItemIcon>
+                <FolderIcon
+                  style={{ color: this.state.subjects[key].subjectColor }}
+                />
+              </ListItemIcon>
+              <ListItemText primary={this.state.subjects[key].subjectName} />
+              <SubjectEditModal
+                subjectId={key}
+                colName={this.props.colName}
+                date={this.props.date}
+                subject={this.state.subjects[key]}
+                reRenderSubject={this.reRenderSubject}
+              />
+            </ListItem>
+            <Collapse in={true} timeout='auto' unmountOnExit>
+              {this.state.subjects[key].todos.map((todo) => {
+                return (
+                  <List component='div' disablePadding key={todo.id}>
+                    <ListItem className={classes.nested}>
+                      <ListItemIcon>
+                        {todo.todoCheck === '3' ? (
+                          <ClearRoundedIcon />
+                        ) : todo.todoCheck === '2' ? (
+                          <CheckCircleOutlineRoundedIcon />
+                        ) : todo.todoCheck === '1' ? (
+                          <ChangeHistoryRoundedIcon />
+                        ) : (
+                          <CheckBoxOutlineBlankIcon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText primary={todo.todoName} />
+                      <TodoEditModal
+                        subjectId={key}
+                        colName={this.props.colName}
+                        date={this.props.date}
+                        todo={todo}
+                        reRenderSubject={this.reRenderSubject}
+                      />
+                    </ListItem>
+                  </List>
+                );
+              })}
+              <TodoAdd
+                subjectId={key}
+                colName={this.props.colName}
+                date={this.props.date}
+                reRenderSubject={this.reRenderSubject}
+              />
+            </Collapse>
+          </React.Fragment>
+        );
+      })
+    ) : (
+      <div>과목을 추가해주세요!</div>
+    );
 
-	makeSubList() {
-		const classes = makeStyles(theme => ({
-			root: {
-				width: '100%',
-				maxWidth: 360
-			},
-			subject: {
-				backgroundColor: 'orange'
-			},
-			nested: {
-				paddingLeft: theme.spacing(4),
-				backgroundColor: '#FED8B1',
-				color: 'black'
-			}
-		}));
+    return list;
+  }
 
-		const list = this.state.subjects ? (
-			Object.keys(this.state.subjects).map(key => {
-				return (
-					<React.Fragment key={key}>
-						<ListItem className={classes.subject}>
-							<ListItemIcon>
-								<FolderIcon style={{ color: this.state.subjects[key].subjectColor }} />
-							</ListItemIcon>
-							<ListItemText primary={this.state.subjects[key].subjectName} />
-							<SubjectEditModal
-								subjectId={key}
-								colName={this.props.colName}
-								date={this.props.date}
-								subject={this.state.subjects[key]}
-								reRenderSubject={this.reRenderSubject}
-							/>
-						</ListItem>
-						<Collapse in={true} timeout='auto' unmountOnExit>
-							{this.state.subjects[key].todos.map(todo => {
-								return (
-									<List component='div' disablePadding key={todo.id}>
-										<ListItem className={classes.nested}>
-											<ListItemIcon>
-												{todo.todoCheck === '3' ? (
-													<ClearRoundedIcon />
-												) : todo.todoCheck === '2' ? (
-													<CheckCircleOutlineRoundedIcon />
-												) : todo.todoCheck === '1' ? (
-													<ChangeHistoryRoundedIcon />
-												) : (
-													<CheckBoxOutlineBlankIcon />
-												)}
-											</ListItemIcon>
-											<ListItemText primary={todo.todoName} />
-											<TodoEditModal
-												subjectId={key}
-												colName={this.props.colName}
-												date={this.props.date}
-												todo={todo}
-												reRenderSubject={this.reRenderSubject}
-											/>
-										</ListItem>
-									</List>
-								);
-							})}
-							<TodoAdd
-								subjectId={key}
-								colName={this.props.colName}
-								date={this.props.date}
-								reRenderSubject={this.reRenderSubject}
-							/>
-						</Collapse>
-					</React.Fragment>
-				);
-			})
-		) : (
-			<div>과목을 추가해주세요!</div>
-		);
+  render() {
+    const subList = this.makeSubList();
 
-		return list;
-	}
-
-	render() {
-		const subList = this.makeSubList();
-
-		return (
-			<div className='edit-subjest-list'>
-				<div>{subList}</div>
-				<div style={{ marginTop: '3%' }}>
-					<SubjectAddModal
-						colName={this.props.colName}
-						date={this.props.date}
-						reRenderSubject={this.reRenderSubject}
-					/>
-				</div>
-			</div>
-		);
-	}
+    return (
+      <div className='edit-subjest-list'>
+        <div>{subList}</div>
+        <div style={{ marginTop: '3%' }}>
+          <SubjectAddModal
+            colName={this.props.colName}
+            date={this.props.date}
+            reRenderSubject={this.reRenderSubject}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default EditSubjectList;

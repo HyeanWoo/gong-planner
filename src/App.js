@@ -103,7 +103,11 @@ class App extends Component {
       />
     );
     const EditComponent = (props) => (
-      <Edit onChangeSubjects={this.setSubjects} {...props} />
+      <Edit
+        todayData={todayData}
+        onChangeSubjects={this.setSubjects}
+        {...props}
+      />
     );
 
     return (

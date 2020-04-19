@@ -16,7 +16,8 @@ export async function getData(collectionName, date) {
 // 날짜'문서' 새로 생성
 export function createDate(collectionName, date) {
   const db = firebase.firestore();
-  db.collection(collectionName)
+  return db
+    .collection(collectionName)
     .doc(date)
     .set({ subjects: {} })
     .then(function () {
@@ -51,7 +52,8 @@ export async function createSubject(
     },
   };
 
-  db.collection(collectionName)
+  return db
+    .collection(collectionName)
     .doc(date)
     .update(inputData)
     .then(function () {
@@ -74,14 +76,16 @@ export function updateSubject(
   const db = firebase.firestore();
   try {
     if (dataType === 'EDIT_SUBJECT') {
-      db.collection(collectionName)
+      return db
+        .collection(collectionName)
         .doc(date)
         .update({
           ['subjects.' + id + '.subjectName']: changedData1,
           ['subjects.' + id + '.subjectColor']: changedData2,
         });
     } else if (dataType === 'EDIT_TIME') {
-      db.collection(collectionName)
+      return db
+        .collection(collectionName)
         .doc(date)
         .update({
           ['subjects.' + id + '.totalElapsedTime']: changedData1,
