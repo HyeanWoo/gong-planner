@@ -35,7 +35,7 @@ export async function createSubject(collectionName,date, id, subjectName, subjec
           ...subjects,
           [id]: {
               id: id,
-              fold: false,
+              fold: true,
               subjectColor: subjectColor,
               subjectName: subjectName,
               totalElapsedTime: "00:00:00",

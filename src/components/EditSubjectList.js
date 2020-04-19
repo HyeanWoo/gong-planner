@@ -57,7 +57,11 @@ class EditSubjectList extends Component {
 	};
 
 	componentDidMount() {
-		this.getSubjects(this.props.colName, this.props.date);
+    // this.getSubjects(this.props.colName, this.props.date);
+    // console.log(this.props.todayData);
+    this.setState({
+      subjects: this.props.todayData
+    })
 	}
 
 	componentDidUpdate(prevProps, prevState) {

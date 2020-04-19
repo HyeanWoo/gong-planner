@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import TodayDate from '../components/TodayDate';
@@ -6,10 +7,6 @@ import EditSubjectList from '../components/EditSubjectList';
 
 const Edit = props => {
 	const [ date, setDate ] = useState(dayjs());
-	const goBack = () => {
-		props.history.goBack();
-	};
-
 	const colName = _.isEmpty(props.match) ? 'testSubject' : props.match.params.colName;
 
 	return (
@@ -17,14 +14,14 @@ const Edit = props => {
 			<div className='row'>
 				<div className='col s4 offset-s4'>This is Edit Page</div>
 				<div className='col s1 offset-11'>
-					<button onClick={goBack}>X</button>
+          <Link to={'/'+colName}>X</Link>
 				</div>
 			</div>
 			<div className='row'>
 				<TodayDate date={date} onChangeDate={setDate} />
 			</div>
 			<div className='row'>
-				<EditSubjectList colName={colName} date={date.format('YY.MM.DD')}/>
+				<EditSubjectList todayData={props.todayData} onChangeSubjects={props.onChangeSubjects} colName={colName} date={date.format('YY.MM.DD')}/>
 			</div>
 		</div>
 	);

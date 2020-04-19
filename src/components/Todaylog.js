@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { Box, Grid, Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
+import WordTodayModal from '../components/Modals/WordTodayModal';
 
 const RootGrid = styled(Grid)({});
 
@@ -59,18 +60,31 @@ const Todaylog = ({ todayData }) => {
 				${(second + '').padStart(2, '0')}`;
 	}
 
-	return (
+  // 모달 처리 함수
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const handleOpenModal1 = () => setShowModal1(true);
+  const handleOpenModal2 = () => setShowModal2(true);
+  const handleOpenModal3 = () => setShowModal3(true);
+  const handleCloseModal1 = () => setShowModal1(false);
+  const handleCloseModal2 = () => setShowModal2(false);
+  const handleCloseModal3 = () => setShowModal3(false);
+  
+  return (
 		<RootGrid container spacing={1}>
 			<Grid item container spacing={1}>
-				<FixedHeightGrid item xs>
+				<FixedHeightGrid item xs onClick={handleOpenModal1}>
 					<WordToday variant='outlined'>{wordToday ? wordToday : '-'}</WordToday>
+          <WordTodayModal showModal={showModal1} closeModal={handleCloseModal1} />
 				</FixedHeightGrid>
-				<FixedHeightGrid item xs>
+				<FixedHeightGrid item xs onClick={()=>console.log("DDay")}>
 					<DDay variant='outlined'>{dDay !== undefined ? dDay : '디데이없음'}</DDay>
+          {/* <DDayModal showModal={showModal2} openModal={handleOpenModal2} closeModal={handleCloseModal2}/> */}
 				</FixedHeightGrid>
 			</Grid>
 			<Grid item container spacing={1}>
-				<FixedHeightGrid item xs>
+				<FixedHeightGrid item xs onClick={()=>console.log("ScoreProgress")}>
 					<Score variant='outlined'>
 						<Box p={1} display='flex' alignItems='center'>
 							<Box flexGrow='1'>
@@ -79,6 +93,7 @@ const Todaylog = ({ todayData }) => {
 									variant='determinate'
 									value={score * 10}
 								/>
+                {/* <ScoreProgressModal showModal={showModal3} openModal={handleOpenModal3} closeModal={handleCloseModal3}/> */}
 							</Box>
 							<Box p={0.5}>{score}</Box>
 						</Box>

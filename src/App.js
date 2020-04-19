@@ -90,7 +90,7 @@ class App extends Component {
 				{...props}
 			/>
 		);
-		const EditComponent = props => <Edit onChangeSubjects={this.setSubjects} {...props} />;
+		const EditComponent = props => <Edit todayData={this.state.todayData.subjects} onChangeSubjects={this.setSubjects} {...props} />;
 
 		return _.isEmpty(todayData) ? (
 			<div>로-딩</div>

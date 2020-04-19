@@ -15,14 +15,8 @@ const withModal = (buttonName) => WrappedComponent => {
     };
 
     const [showModal, setshowModal] = React.useState(false);
-
-    const handleOpenModal = () => {
-      setshowModal(true);
-    }
-    
-    const handleCloseModal = () => {
-      setshowModal(false);
-    }
+    const handleOpenModal = () => setshowModal(true);
+    const handleCloseModal = () => setshowModal(false);
 
     return (
       <>
