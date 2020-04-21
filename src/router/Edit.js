@@ -18,7 +18,7 @@ const Edit = (props) => {
   return (
     <div className='center edit'>
       <div className='row'>
-        <div className='col s4 offset-s4'>This is Edit Page</div>
+        <div className='col s4 offset-s4'>공부과목/할일 편집</div>
         <div className='col s1 offset-11'>
           <Link to={'/' + colName}>X</Link>
         </div>
