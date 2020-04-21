@@ -42,7 +42,11 @@ const Home = (props) => {
         <EditSetting colName={collectionName} />
       </HeaderGrid>
       <LogGrid item>
-        <Todaylog todayData={todayData} />
+        <Todaylog 
+          colName={collectionName}
+          date={todayData.date}
+          todayData={todayData}
+        />
       </LogGrid>
       <BottomGrid item container spacing={1}>
         <Grid item xs={6}>

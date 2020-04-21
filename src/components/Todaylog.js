@@ -4,8 +4,11 @@ import { Box, Grid, Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 import WordTodayModal from '../components/Modals/WordTodayModal';
-
+import DDayModal from '../components/Modals/DDayModal';
+import ScoreProgressModal from '../components/Modals/ScoreProgressModal';
+import { updateTodayLog } from '../firebase/todayFunction';
 import { secondToTime } from '../utils';
+import dayjs from 'dayjs';
 
 const RootGrid = styled(Grid)({});
 
@@ -44,74 +47,118 @@ const Score = styled(Paper)({
   fontWeight: (props) => props.fontWeight,
 });
 
-const Todaylog = ({ todayData }) => {
-  const { wordToday, dDay } = todayData;
-  const score = todayData.score ? todayData.score : 0;
-
+const Todaylog = ({ colName, date, todayData }) => {
+  let shortDate = date.format('YY.MM.DD');
   // 공부 시간 변환(초단위 시간 -> 00:00:00)
   let totalStr = '00:00:00';
 
   if (todayData.subjects) {
     const totalStudyTime = _.sum(_.map(todayData.subjects, 'totalElapsedTime'));
     totalStr = secondToTime(totalStudyTime);
+    // 공부시간 서버에 업데이트하는 함수인데 너무 자주 떠서 주석처리 함
+    // updateTodayLog(colName, shortDate, "TOTAL_STUDY_TIME", totalStudyTime);
   }
+
+  const stateMaker = init => useState.call(this, init).reduce((value, set) => { return { value, set } });
   
-  // 모달 처리 함수
-  const [showModal1, setShowModal1] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-  const [showModal3, setShowModal3] = useState(false);
-  const handleOpenModal1 = () => setShowModal1(true);
-  const handleOpenModal2 = () => setShowModal2(true);
-  const handleOpenModal3 = () => setShowModal3(true);
-  const handleCloseModal1 = () => setShowModal1(false);
-  const handleCloseModal2 = () => setShowModal2(false);
-  const handleCloseModal3 = () => setShowModal3(false);
+  const logVariables = {
+    wordToday:     stateMaker(todayData.wordToday),
+    dDay:          stateMaker(todayData.dDay),
+    scoreProgress: stateMaker(todayData.score ? todayData.score : 0),
+  }
+
+  const modalStates = {
+    wordToday:     stateMaker(false),
+    dDay:          stateMaker(false),
+    scoreProgress: stateMaker(false),
+  };
+  
+  const dDayCalc = () => {
+    if(logVariables.dDay.value === undefined || logVariables.dDay.value === 0) {
+      return '디데이없음';
+    }
+
+    let dday = typeof(logVariables.dDay.value) === "string" ? dayjs(logVariables.dDay.value, "YYYY. MM. DD") : logVariables.dDay.value;
+    let today = dayjs().hour(0).minute(0).second(0).millisecond(0);
+    let ddayResult = ~~(today/86400000 - dday/86400000);
+    if(Number(dday)==Number(today)) {
+      return "D-Day";
+    } else if(Number(dday) < Number(today)) {
+      return "D+"+(ddayResult);
+    } else {
+      return "D"+(ddayResult);
+    }
+  }
 
   return (
-    <RootGrid container spacing={1}>
-      <Grid item container spacing={1}>
-        <FixedHeightGrid item xs onClick={handleOpenModal1}>
-          <WordToday variant='outlined'>
-            {wordToday ? wordToday : '-'}
-          </WordToday>
-          <WordTodayModal showModal={showModal1} closeModal={handleCloseModal1} />
-        </FixedHeightGrid>
-        <FixedHeightGrid item xs  onClick={()=>console.log("DDay")}>
-          <DDay variant='outlined'>
-            {dDay !== undefined ? dDay : '디데이없음'}
-          </DDay>
-          {/* <DDayModal showModal={showModal2} openModal={handleOpenModal2} closeModal={handleCloseModal2}/> */}
-        </FixedHeightGrid>
-      </Grid>
-      <Grid item container spacing={1}>
-        <FixedHeightGrid item xs onClick={()=>console.log("ScoreProgress")}>
-          <Score variant='outlined'>
-            <Box p={1} display='flex' alignItems='center'>
-              <Box flexGrow='1'>
-                <ScoreProgress
-                  barcolor={
-                    score >= 7
+    <React.Fragment>
+      <RootGrid container spacing={1}>
+        <Grid item container spacing={1}>
+          <FixedHeightGrid item xs onClick={() => modalStates.wordToday.set(true)}>
+            <WordToday variant='outlined'>
+              {logVariables.wordToday.value ? logVariables.wordToday.value : '-'}
+            </WordToday>
+          </FixedHeightGrid>
+          <FixedHeightGrid item xs  onClick={() => modalStates.dDay.set(true)}>
+            <DDay variant='outlined'>
+              {dDayCalc()}
+              {/* {logVariables.dDay.value !== undefined ? logVariables.dDay.value : '디데이없음'} */}
+            </DDay>
+          </FixedHeightGrid>
+        </Grid>
+        <Grid item container spacing={1}>
+          <FixedHeightGrid item xs onClick={() => modalStates.scoreProgress.set(true)}>
+            <Score variant='outlined'>
+              <Box p={1} display='flex' alignItems='center'>
+                <Box flexGrow='1'>
+                  <ScoreProgress
+                    barcolor={
+                      logVariables.scoreProgress.value >= 7
                       ? 'LimeGreen'
-                      : score >= 4
-                      ? '#ffb300'
-                      : '#e57373'
-                  }
-                  variant='determinate'
-                  value={score * 10}
-                />
+                      : logVariables.scoreProgress.value >= 4
+                        ? '#ffb300'
+                        : '#ff0000'
+                      }
+                      variant='determinate'
+                      value={logVariables.scoreProgress.value * 10}
+                  />
+                </Box>
+                <Box p={0.5}>{logVariables.scoreProgress.value}</Box>
               </Box>
-              <Box p={0.5}>{score}</Box>
-            </Box>
-          </Score>
-          {/* <ScoreProgressModal showModal={showModal3} openModal={handleOpenModal3} closeModal={handleCloseModal3}/> */}
-        </FixedHeightGrid>
-        <FixedHeightGrid item xs>
-          <TotalScoreTime fontWeight='bold' variant='outlined'>
-            {totalStr}
-          </TotalScoreTime>
-        </FixedHeightGrid>
-      </Grid>
-    </RootGrid>
+            </Score>
+          </FixedHeightGrid>
+          <FixedHeightGrid item xs>
+            <TotalScoreTime fontWeight='bold' variant='outlined'>
+              {totalStr}
+            </TotalScoreTime>
+          </FixedHeightGrid>
+        </Grid>
+      </RootGrid>
+      <WordTodayModal
+        colName={colName}
+        date={shortDate}
+        value={logVariables.wordToday.value}
+        setValue={logVariables.wordToday.set}
+        showModal={modalStates.wordToday.value}
+        closeModal={() => modalStates.wordToday.set(false)}
+      />
+      <DDayModal
+        colName={colName}
+        date={shortDate}
+        value={logVariables.dDay.value}
+        setValue={logVariables.dDay.set}
+        showModal={modalStates.dDay.value}
+        closeModal={() => modalStates.dDay.set(false)}
+      />
+      <ScoreProgressModal
+        colName={colName}
+        date={shortDate}
+        value={logVariables.scoreProgress.value}
+        setValue={logVariables.scoreProgress.set}
+        showModal={modalStates.scoreProgress.value}
+        closeModal={() => modalStates.scoreProgress.set(false)}
+      />
+    </React.Fragment>
   );
 };
 

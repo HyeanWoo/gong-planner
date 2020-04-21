@@ -1,54 +1,37 @@
 import React from 'react';
-// import withTodayModal from '../../HOC/withTodayModal';
-import ReactModal from 'react-modal';
+import './TodayLogModal.css';
+import withTodayModal from '../../HOC/withTodayModal';
+import { updateTodayLog } from '../../firebase/todayFunction';
 
-const customStyles = {
-  content : {
-    top                   : '40%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-const WordTodayModal = ({showModal, closeModal}) => {
+const WordTodayModal = ({ colName, date, value, setValue, closeModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.name)
-
+    setValue(wordToday);
+    updateTodayLog(colName, date, "WORD_TODAY", wordToday);
     closeModal();
     // handleReRendering();
   }
-
-  const handleClose = (e) => {
-    e.preventDefault();
+  
+  const handleClose = () => {
+    // debugger;
+    // setTimeout(() => closeModal());
     closeModal();
-    console.log("Is this btn work?")
   }
+  
+  const [wordToday, setWordToday] = React.useState(value);
+  const handleChange = e => setWordToday(e.target.value);
 
   return(
-    <ReactModal 
-      isOpen={showModal}
-      contentLabel="reuse-today-modal"
-      ariaHideApp={false}
-      onRequestClose={closeModal}
-      style={customStyles}
-     >
     <div className="wordToday-modal">
-      <div>오늘의 한마디 편집</div>
+      <div className="title">오늘의 한마디 편집</div>
       <form onSubmit={handleSubmit} noValidate>
-        <label htmlFor="subjectName">한마디</label>
-        <input type="text" id="wordToday"/>
-        <button name="btn_submit" type="submit" style={{float: "right"}}>완료</button>
-        <button name="btn_close" type="button" onClick={handleClose}>닫기</button>
+        <label htmlFor="subjectName">오늘의 한마디</label>
+        <input type="text" className="input-tag" onChange={handleChange} value={wordToday}/>
+        <button type="submit" style={{float: "right"}}>완료</button>
+        <button type="button" onClick={handleClose}>닫기</button>
       </form>
     </div>
-    </ReactModal>
-
   )
 }
 
-// export default withTodayModal(WordTodayModal);
-export default WordTodayModal;
+export default withTodayModal(WordTodayModal);
