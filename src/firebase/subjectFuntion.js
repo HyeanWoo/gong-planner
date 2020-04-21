@@ -43,7 +43,7 @@ export async function createSubject(
       ...subjects,
       [id]: {
         id: id,
-        fold: false,
+        fold: true,
         subjectColor: subjectColor,
         subjectName: subjectName,
         totalElapsedTime: 0,

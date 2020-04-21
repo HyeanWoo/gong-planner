@@ -81,7 +81,7 @@ const Todaylog = ({ colName, date, todayData }) => {
     let dday = typeof(logVariables.dDay.value) === "string" ? dayjs(logVariables.dDay.value, "YYYY. MM. DD") : logVariables.dDay.value;
     let today = dayjs().hour(0).minute(0).second(0).millisecond(0);
     let ddayResult = ~~(today/86400000 - dday/86400000);
-    if(Number(dday)==Number(today)) {
+    if(Number(dday)===Number(today)) {
       return "D-Day";
     } else if(Number(dday) < Number(today)) {
       return "D+"+(ddayResult);

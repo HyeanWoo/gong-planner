@@ -24,7 +24,6 @@ const SubjectList = ({ subjects, setFold }) => {
       color: 'black',
       boxShadow: 'none',
     },
-    subject: {},
     subjectColor: {
       minWidth: '8px',
       marginRight: '16px',
@@ -51,7 +50,6 @@ const SubjectList = ({ subjects, setFold }) => {
               onClick={() => {
                 setFold(key, subjects[key].fold);
               }}
-              className={classes.subject}
             >
               <Box
                 className={classes.subjectColor}
@@ -64,11 +62,11 @@ const SubjectList = ({ subjects, setFold }) => {
               />
               {subjects[key].fold ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={subjects[key].fold} timeout='auto' unmountOnExit>
-              {subjects[key].todos.map((todo) => {
-                return (
-                  <List component='div' disablePadding key={todo.id}>
-                    <ListItem button className={classes.nested}>
+            {subjects[key].todos.map((todo) => {
+              return (
+                <Collapse in={subjects[key].fold} timeout='auto' unmountOnExit key={todo.id} style={{height:"auto"}}>
+                  <List component='div' disablePadding>
+                    <ListItem className={classes.nested}>
                       <ListItemIcon>
                         {todo.todoCheck === '3' ? (
                           <ClearRoundedIcon />
@@ -83,9 +81,9 @@ const SubjectList = ({ subjects, setFold }) => {
                       <ListItemText primary={todo.todoName} />
                     </ListItem>
                   </List>
-                );
-              })}
-            </Collapse>
+                </Collapse>
+              );
+            })}
           </React.Fragment>
         );
       })
