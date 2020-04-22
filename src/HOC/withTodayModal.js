@@ -11,8 +11,8 @@ const withTodayModal = (WrappedComponent) => {
         bottom                : 'auto',
         marginRight           : '-50%',
         transform             : 'translate(-50%, -50%)',
-        width                 : '65%',
-        height                : '25%',
+        width                 : '275px',
+        height                : '180px',
       }
     };
 

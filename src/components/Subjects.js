@@ -4,12 +4,13 @@ import SubjectList from './SubjectList';
 
 class Subjects extends Component {
 	state = {
-		subjects: null
+    subjects: null,
+    date: this.props.date.format('YY.MM.DD')
 	};
 
 	componentDidMount() {
 		this.setState({
-			subjects: this.props.subjects
+      subjects: this.props.subjects,
 		});
 	}
 
@@ -23,9 +24,21 @@ class Subjects extends Component {
 			}
 		});
 	};
+  
+  reRenderSubject = (subjectItems) => {
+    this.props.onChangeSubjects(subjectItems);
+  };
 
 	render() {
-		return <SubjectList subjects={this.props.subjects} setFold={this.setFold} />;
+		return ( 
+      <SubjectList
+        colName={this.props.colName} 
+        date={this.props.date.format('YY.MM.DD')} 
+        subjects={this.props.subjects} 
+        setFold={this.setFold} 
+        reRenderSubject={this.reRenderSubject}
+      />
+    );
 	}
 }
 

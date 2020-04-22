@@ -12,10 +12,11 @@ import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import TodoHomeModal from '../components/Modals/TodoHomeModal';
 
 import { secondToTime } from '../utils';
 
-const SubjectList = ({ subjects, setFold }) => {
+const SubjectList = ({ colName, date, subjects, setFold, reRenderSubject }) => {
   const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
@@ -37,6 +38,7 @@ const SubjectList = ({ subjects, setFold }) => {
       paddingLeft: theme.spacing(4),
       backgroundColor: '#EEEEEE',
       color: 'black',
+      zIndex: -2,
     },
   }));
   const classes = useStyles();
@@ -66,7 +68,14 @@ const SubjectList = ({ subjects, setFold }) => {
               return (
                 <Collapse in={subjects[key].fold} timeout='auto' unmountOnExit key={todo.id} style={{height:"auto"}}>
                   <List component='div' disablePadding>
-                    <ListItem className={classes.nested} onClick={()=>console.log("clicked")}>
+                    <TodoHomeModal 
+                      subjectId={key}
+                      colName={colName}
+                      date={date}
+                      todo={todo}
+                      reRenderSubject={reRenderSubject}
+                    />
+                    <ListItem className={classes.nested}>
                       <ListItemIcon>
                         {todo.todoCheck === '3' ? (
                           <ClearRoundedIcon />

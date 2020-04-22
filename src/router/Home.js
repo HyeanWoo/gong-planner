@@ -50,7 +50,12 @@ const Home = (props) => {
       </LogGrid>
       <BottomGrid item container spacing={1}>
         <Grid item xs={6}>
-          <Subjects today={todayData.date} subjects={todayData.subjects} />
+          <Subjects 
+            colName={collectionName}
+            date={todayData.date}
+            onChangeSubjects={onChangeSubjects}
+            subjects={todayData.subjects} 
+          />
         </Grid>
         <Grid item xs={6}>
           {/* <Timetable today={todayData.date} timeTable={todayData.timeTable ? todayData.timeTable : []} /> */}

@@ -102,7 +102,6 @@ const Todaylog = ({ colName, date, todayData }) => {
           <FixedHeightGrid item xs  onClick={() => modalStates.dDay.set(true)}>
             <DDay variant='outlined'>
               {dDayCalc()}
-              {/* {logVariables.dDay.value !== undefined ? logVariables.dDay.value : '디데이없음'} */}
             </DDay>
           </FixedHeightGrid>
         </Grid>
