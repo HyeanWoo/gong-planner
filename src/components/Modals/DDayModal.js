@@ -36,8 +36,8 @@ const DDayModal = ({ colName, date, value, setValue, closeModal }) => {
             }}
           />
         </MuiPickersUtilsProvider>
-        <button type="submit" style={{float: "right"}}>완료</button>
-        <button type="button" onClick={handleClose}>닫기</button>
+        <button className="todaylog-btn" type="submit" style={{float: "right"}}>완료</button>
+        <button className="todaylog-btn" type="button" onClick={handleClose}>닫기</button>
       </form>
     </div>
   )

@@ -66,7 +66,7 @@ const SubjectList = ({ subjects, setFold }) => {
               return (
                 <Collapse in={subjects[key].fold} timeout='auto' unmountOnExit key={todo.id} style={{height:"auto"}}>
                   <List component='div' disablePadding>
-                    <ListItem className={classes.nested}>
+                    <ListItem className={classes.nested} onClick={()=>console.log("clicked")}>
                       <ListItemIcon>
                         {todo.todoCheck === '3' ? (
                           <ClearRoundedIcon />

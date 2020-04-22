@@ -27,8 +27,8 @@ const WordTodayModal = ({ colName, date, value, setValue, closeModal }) => {
       <form onSubmit={handleSubmit} noValidate>
         <label htmlFor="subjectName">오늘의 한마디</label>
         <input type="text" className="input-tag" onChange={handleChange} value={wordToday}/>
-        <button type="submit" style={{float: "right"}}>완료</button>
-        <button type="button" onClick={handleClose}>닫기</button>
+        <button className="todaylog-btn" type="submit" style={{float: "right"}}>완료</button>
+        <button className="todaylog-btn" type="button" onClick={handleClose}>닫기</button>
       </form>
     </div>
   )
