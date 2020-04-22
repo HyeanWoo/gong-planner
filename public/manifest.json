@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "공플래너",
+  "name": "공플래너 - 공시생 모두의 플래너",
   "icons": [
     {
       "src": "favicon.ico",
