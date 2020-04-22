@@ -114,10 +114,10 @@ class App extends Component {
       <BrowserRouter>
         <AppContainer maxWidth='sm'>
           <Switch>
+            <Route exact path='/' component={HomeComponent} />
             <Route path='/:colName/edit' component={EditComponent} />
             <Route path='/:colName/setting' component={Setting} />
             <Route path='/:colName' component={HomeComponent} />
-            <Route exact path='/' component={HomeComponent} />
           </Switch>
         </AppContainer>
       </BrowserRouter>
