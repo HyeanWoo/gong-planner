@@ -54,6 +54,7 @@ const SubjectAddModal = ({
             onClick={handleCloseModal}
             size="small"
             variant="outlined"
+            style={{ float: 'left' }}
           >
           닫기
           </Button>
