@@ -6,6 +6,9 @@ import {
   updateSubject,
   deleteSubject,
 } from '../../firebase/subjectFuntion';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 const SubjectEditModal = ({
   subjectId,
@@ -64,16 +67,37 @@ const SubjectEditModal = ({
           onChangeComplete={handleChangeColor}
           triangle='hide'
         />
-        <button type='submit' style={{ float: 'right' }}>
-          수정
-        </button>
-        <button
-          type='button'
-          onClick={handleDelete}
-          style={{ float: 'right', backgroundColor: 'red' }}
-        >
+        <div className="modal-buttons" style={{textAlign: "center", marginTop: "12px"}}>
+          <Button
+            type='button'
+            onClick={handleDelete} 
+            size="small"
+            variant="contained" 
+            color="secondary"
+            startIcon={<DeleteIcon />}
+            style={{ float: 'left'}}
+          >
           제거
-        </button>
+          </Button>
+          <Button
+            type="button"
+            onClick={handleCloseModal}
+            size="small"
+            variant="outlined"
+          >
+          닫기
+          </Button>
+          <Button
+            type='submit'
+            size="small"
+            variant="outlined" 
+            color="primary" 
+            startIcon={<BorderColorIcon />}
+            style={{ float: 'right' }}
+          >
+          수정
+          </Button>
+        </div>
       </form>
     </div>
   );

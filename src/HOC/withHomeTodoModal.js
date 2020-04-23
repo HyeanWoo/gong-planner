@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactModal from 'react-modal';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
 
 const withHomeTodoModal = WrappedComponent => {
   return (props) => {
@@ -24,7 +25,7 @@ const withHomeTodoModal = WrappedComponent => {
 
     return (
       <>
-      <button onClick={handleOpenModal} style={{ opacity: 0, zIndex: 0, height: "100%", width: "100%", position: "absolute"}}></button>
+      <Button onClick={handleOpenModal} style={{ opacity: 0, zIndex: 0, height: "100%", width: "100%", position: "absolute"}}></Button>
       <ReactModal 
           isOpen={showModal}
           contentLabel="reuse-modal"
@@ -33,9 +34,8 @@ const withHomeTodoModal = WrappedComponent => {
           style={customStyles}
       >
         <WrappedComponent {...props} handleCloseModal={handleCloseModal}/>
-        <button onClick={handleCloseModal}>닫기</button>
       </ReactModal>
-    </>
+      </>
     )
   }
 }
