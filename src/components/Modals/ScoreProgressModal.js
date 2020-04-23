@@ -4,6 +4,8 @@ import withTodayModal from '../../HOC/withTodayModal';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
 import { updateTodayLog } from '../../firebase/todayFunction';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
 
 const ScoreProgressModal = ({ colName, date, value, setValue, closeModal }) => {
   const handleSubmit = (e) => {
@@ -47,8 +49,26 @@ const ScoreProgressModal = ({ colName, date, value, setValue, closeModal }) => {
             />
           </Grid>
         </Grid>
-        <button className="todaylog-btn" type="submit" style={{float: "right"}}>완료</button>
-        <button className="todaylog-btn" type="button" onClick={handleClose}>닫기</button>
+        <div className="todaylog-btn">
+          <Button
+            type="button"
+            onClick={handleClose}
+            size="small"
+            variant="outlined"
+          >
+          닫기
+          </Button>
+          <Button
+            type='submit'
+            size="small"
+            variant="outlined" 
+            color="primary" 
+            startIcon={<EditIcon />}
+            style={{ float: 'right' }}
+          >
+          완료
+          </Button>
+        </div>
       </form>
     </div>
   )

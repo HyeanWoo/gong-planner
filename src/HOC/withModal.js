@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactModal from 'react-modal';
+import Button from '@material-ui/core/Button';
 
 const withModal = (buttonName) => WrappedComponent => {
   return (props) => {
@@ -20,7 +21,7 @@ const withModal = (buttonName) => WrappedComponent => {
 
     return (
       <>
-      <button onClick={handleOpenModal}>{buttonName}</button>
+      <Button variant="outlined" size="small" onClick={handleOpenModal}>{buttonName}</Button>
       <ReactModal 
           isOpen={showModal}
           contentLabel="reuse-modal"
@@ -29,7 +30,6 @@ const withModal = (buttonName) => WrappedComponent => {
           style={customStyles}
       >
         <WrappedComponent {...props} handleCloseModal={handleCloseModal}/>
-        <button onClick={handleCloseModal}>닫기</button>
       </ReactModal>
       </>
     )

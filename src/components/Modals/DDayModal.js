@@ -4,6 +4,8 @@ import DayjsUtils from '@date-io/dayjs';
 import withTodayModal from '../../HOC/withTodayModal';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { updateTodayLog } from '../../firebase/todayFunction';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
 
 const DDayModal = ({ colName, date, value, setValue, closeModal }) => {
   const handleSubmit = (e) => {
@@ -36,8 +38,26 @@ const DDayModal = ({ colName, date, value, setValue, closeModal }) => {
             }}
           />
         </MuiPickersUtilsProvider>
-        <button className="todaylog-btn" type="submit" style={{float: "right"}}>완료</button>
-        <button className="todaylog-btn" type="button" onClick={handleClose}>닫기</button>
+        <div className="todaylog-btn">
+          <Button
+            type="button"
+            onClick={handleClose}
+            size="small"
+            variant="outlined"
+          >
+          닫기
+          </Button>
+          <Button
+            type='submit'
+            size="small"
+            variant="outlined" 
+            color="primary" 
+            startIcon={<EditIcon />}
+            style={{ float: 'right' }}
+          >
+          완료
+          </Button>
+        </div>
       </form>
     </div>
   )

@@ -2,6 +2,8 @@ import React from 'react';
 import './TodayLogModal.css';
 import withTodayModal from '../../HOC/withTodayModal';
 import { updateTodayLog } from '../../firebase/todayFunction';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
 
 const WordTodayModal = ({ colName, date, value, setValue, closeModal }) => {
   const handleSubmit = (e) => {
@@ -27,8 +29,26 @@ const WordTodayModal = ({ colName, date, value, setValue, closeModal }) => {
       <form onSubmit={handleSubmit} noValidate>
         <label htmlFor="subjectName">오늘의 한마디</label>
         <input type="text" className="input-tag" onChange={handleChange} value={wordToday}/>
-        <button className="todaylog-btn" type="submit" style={{float: "right"}}>완료</button>
-        <button className="todaylog-btn" type="button" onClick={handleClose}>닫기</button>
+        <div className="todaylog-btn">
+          <Button
+            type="button"
+            onClick={handleClose}
+            size="small"
+            variant="outlined"
+          >
+          닫기
+          </Button>
+          <Button
+            type='submit'
+            size="small"
+            variant="outlined" 
+            color="primary" 
+            startIcon={<EditIcon />}
+            style={{ float: 'right' }}
+          >
+          완료
+          </Button>
+        </div>
       </form>
     </div>
   )

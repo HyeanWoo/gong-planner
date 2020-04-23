@@ -3,6 +3,8 @@ import dayjs from 'dayjs';
 import withModal from '../../HOC/withModal';
 import { TwitterPicker } from 'react-color';
 import { getData, createSubject } from '../../firebase/subjectFuntion';
+import Button from '@material-ui/core/Button';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 const SubjectAddModal = ({
   colName,
@@ -46,9 +48,27 @@ const SubjectAddModal = ({
           onChangeComplete={handleChangeColor}
           triangle='hide'
         />
-        <button type='submit' style={{ float: 'right' }}>
+        <div className="modal-buttons" style={{textAlign: "center", marginTop: "12px"}}>
+          <Button
+            type="button"
+            onClick={handleCloseModal}
+            size="small"
+            variant="outlined"
+            style={{ float: 'left' }}
+          >
+          닫기
+          </Button>
+          <Button
+            type='submit'
+            size="small"
+            variant="outlined" 
+            color="primary" 
+            startIcon={<BorderColorIcon />}
+            style={{ float: 'right' }}
+          >
           추가
-        </button>
+          </Button>
+        </div>
       </form>
     </div>
   );
