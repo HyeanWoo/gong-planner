@@ -27,4 +27,4 @@ yarn-error.log*
 
 # firebase
 .firebase
-src/firebase/firebase.json
+src/app/firebase/firebase.json
