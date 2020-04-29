@@ -1,6 +1,6 @@
 const firebaseConfig = require('./firebase.json');
-const firebase = require('firebase/app');
-require('firebase/firestore');
+const firebase = require('app/firebase/app');
+require('app/firebase/firestore');
 
 firebase.initializeApp(firebaseConfig);
 

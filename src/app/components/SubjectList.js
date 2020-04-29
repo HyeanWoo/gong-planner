@@ -12,7 +12,7 @@ import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import TodoHomeModal from '../components/Modals/TodoHomeModal';
+import TodoHomeModal from './Modals/TodoHomeModal';
 
 import { secondToTime } from '../utils';
 

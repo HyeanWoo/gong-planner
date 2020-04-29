@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import _ from 'lodash';
 import TodayDate from '../components/TodayDate';
 import EditSubjectList from '../components/EditSubjectList';
+import { StudyRecord } from 'app/types';
 
-const Edit = (props) => {
+export const Edit = (props: RouteComponentProps<{colName: string}> & { todayData: StudyRecord, onChangeSubjects: (subjects: Object) => void }) => {
   const { todayData, onChangeSubjects } = props;
   const [date, setDate] = useState(todayData.date);
   const colName = _.isEmpty(props.match)
@@ -37,5 +38,3 @@ const Edit = (props) => {
     </div>
   );
 };
-
-export default Edit;

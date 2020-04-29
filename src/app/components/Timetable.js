@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import _ from 'lodash';
 import dayjs from 'dayjs';
-import TimeTable from '../lib/timetable';
+import TimeTable from 'app/assets/lib/timetable';
 
 const TimetableFrame = styled(Box)({
 	'& div': {

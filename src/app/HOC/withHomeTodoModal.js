@@ -25,7 +25,7 @@ const withHomeTodoModal = WrappedComponent => {
 
     return (
       <>
-      <Button onClick={handleOpenModal} style={{ opacity: 0, zIndex: 0, height: "100%", width: "100%", position: "absolute"}}></Button>
+      <Button onClick={handleOpenModal} style={{ opacity: 0, zIndex: 0, height: "100%", width: "100%", position: "absolute"}}>&nbsp;</Button>
       <ReactModal 
           isOpen={showModal}
           contentLabel="reuse-modal"

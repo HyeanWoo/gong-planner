@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { getCollection } from '../firebase/collectionFuntion';
+import { RouteComponentProps } from 'react-router-dom';
 
-class Collections extends Component {
-  state = {
+export class Collections extends Component {
+  public props!: RouteComponentProps<{colName: string}>;
+  public state = {
     collectionData: null
   }
 
@@ -30,5 +32,3 @@ class Collections extends Component {
     );
   }
 }
-
-export default Collections;

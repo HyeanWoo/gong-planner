@@ -1,7 +1,7 @@
 import React from 'react';
 import withModal from '../../HOC/withModal';
 import './TodoModal.css';
-import nothing from '../../image/nothing.png';
+import nothing from 'assets/image/nothing.png';
 import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';

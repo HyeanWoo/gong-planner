@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Setting = props => {
+export const Setting = props => {
   const goBack = () => {
     props.history.goBack();
   }
@@ -19,6 +19,4 @@ const Setting = props => {
       </div>
     </div>
   )
-}
-
-export default Setting;
+};

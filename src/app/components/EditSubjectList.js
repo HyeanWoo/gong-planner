@@ -8,7 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import FolderIcon from '@material-ui/icons/Folder';
-import SubjectAddModal from '../components/Modals/SubjectAddModal';
+import SubjectAddModal from './Modals/SubjectAddModal';
 import SubjectEditModal from './Modals/SubjectEditModal';
 import TodoAdd from './Modals/TodoAddModal';
 import TodoEditModal from './Modals/TodoEditModal';

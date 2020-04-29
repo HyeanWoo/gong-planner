@@ -2,26 +2,20 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
-import _ from 'lodash';
-import dayjs from 'dayjs';
-import './App.css';
-import Home from './router/Home';
-import Edit from './router/Edit';
-import Setting from './router/Setting';
-import { getTodayData } from './firebase/todayFunction';
+import lodash from 'lodash';
+import 'app/App.css';
+import { Edit, Home, Setting } from 'app/router';
+import { getTodayData } from 'app/firebase/todayFunction';
+import { AppState, StudyRecord, Date } from 'app/types';
 
 const AppContainer = styled(Container)({
   fontSize: 'medium',
 });
 
 class App extends Component {
-  state = {
-    todayData: {
-      date: dayjs(),
-    },
-  };
+  public state = new AppState();
 
-  setTodayData = (date) => {
+  setTodayData = (date: Date) => {
     // 임시로 URL 검사해서 받아옴
     const pathList = window.location.pathname.split('/');
     const collectionName = pathList[1] || 'testSubject';
@@ -30,23 +24,19 @@ class App extends Component {
     console.log(shortDateStr, '정보를 받아오는중..');
 
     getTodayData(collectionName, shortDateStr).then((data) => {
-      let todayData = { date };
+      let todayData: StudyRecord = { date };
       if (data) {
-        todayData = {
-          ...todayData,
-          ...data,
+        Object.assign(todayData, data);
+        todayData.timeTable = lodash.map(data.timeTable, (time) => {
+          const subObj = lodash.find(data.subjects, { subjectName: time.subject });
 
-          // 색깔 넣어주기
-          timeTable: _.map(data.timeTable, (time) => {
-            const subObj = _.find(data.subjects, { subjectName: time.subject });
-
-            return {
-              ...time,
-              color: subObj ? subObj.subjectColor : 'black',
-            };
-          }),
-        };
+          return {
+            ...time,
+            color: subObj ? subObj.subjectColor : 'black',
+          };
+        });
       }
+
       this.setState((prevState) => {
         return { ...prevState, todayData };
       });
@@ -54,7 +44,7 @@ class App extends Component {
   };
 
   updateTodayData = (obj) => {
-    this.setState((prevState) => {
+    this.setState((prevState: AppState) => {
       return {
         todayData: {
           ...prevState.todayData,
@@ -65,7 +55,7 @@ class App extends Component {
   };
 
   setSubjects = (subjects) => {
-    this.setState((prevState) => {
+    this.setState((prevState: AppState) => {
       return {
         todayData: {
           ...prevState.todayData,
@@ -76,7 +66,7 @@ class App extends Component {
   };
 
   setTimeTable = (timeTable) => {
-    this.setState((prevState) => {
+    this.setState((prevState: AppState) => {
       return {
         todayData: {
           ...prevState.todayData,
@@ -93,7 +83,24 @@ class App extends Component {
   render() {
     const { todayData } = this.state;
 
-    const HomeComponent = (props) => (
+    // const asdf = {
+    //   aaa:1,
+    //   bbb:123123,
+    //   ccc:'haha',
+    //   ddd: false,
+    //   eee: [],
+    //   fff: {
+    //     qweqwe: 'aaa'
+    //   }
+    // }
+    // window.localStorage.setItem('Preferences', JSON.stringify(asdf));
+
+    // const aa = window.localStorage.getItem('Preferences') || '{}';
+    // console.log(JSON.parse(aa));
+
+    const HomeComponent: (any) => JSX.Element = (props) => {
+      console.log(props)
+      return (
       <Home
         todayData={todayData}
         onChangeTodayData={this.setTodayData}
@@ -101,7 +108,7 @@ class App extends Component {
         onChangeTimeTable={this.setTimeTable}
         {...props}
       />
-    );
+    )};
     const EditComponent = (props) => (
       <Edit
         todayData={todayData}

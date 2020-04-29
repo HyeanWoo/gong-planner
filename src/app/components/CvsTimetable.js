@@ -3,8 +3,8 @@ import _ from 'lodash';
 import dayjs from 'dayjs';
 import { styled } from '@material-ui/styles';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
-import TimetableModal from '../components/Modals/TimetableModal';
-import TimeTable from '../lib/timetable';
+import TimetableModal from './Modals/TimetableModal';
+import TimeTable from 'assets/lib/timetable';
 
 const StyledStage = styled(Stage)({
   height: '100%',

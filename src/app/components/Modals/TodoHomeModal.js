@@ -1,25 +1,26 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import withHomeTodoModal from 'app/HOC/withHomeTodoModal';
 import './TodoModal.css';
-import withModal from '../../HOC/withModal';
-import nothing from '../../image/nothing.png';
+import nothing from 'assets/image/nothing.png';
 import ChangeHistoryRoundedIcon from '@material-ui/icons/ChangeHistoryRounded';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
-import { addTodos } from '../../firebase/todoFunction';
-import { getData } from '../../firebase/subjectFuntion';
+import { updateTodos, deleteTodos } from 'app/firebase/todoFunction';
+import { getData } from 'app/firebase/subjectFuntion';
 import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 
-const TodoAddModal = ({
+const TodoHomeModal = ({
   subjectId,
   colName,
   date,
+  todo,
   handleCloseModal,
   reRenderSubject,
 }) => {
-  const [todoName, setTodoName] = React.useState('');
-  const [todoCheck, setTodoCheck] = React.useState(0);
+  const [todoName, setTodoName] = React.useState(todo.todoName);
+  const [todoCheck, setTodoCheck] = React.useState(todo.todoCheck);
 
   const handelChangeName = (e) => {
     setTodoName(e.target.value);
@@ -31,8 +32,20 @@ const TodoAddModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const todoId = +dayjs();
-    await addTodos(colName, date, subjectId, todoId, todoCheck, todoName);
+    await updateTodos(colName, date, subjectId, todo.id, todoCheck, todoName);
+    handleCloseModal();
+    handleReRendering();
+  };
+
+  const handleDelete = async () => {
+    await deleteTodos(
+      colName,
+      date,
+      subjectId,
+      todo.id,
+      todo.todoCheck,
+      todo.todoName
+    );
     handleCloseModal();
     handleReRendering();
   };
@@ -44,10 +57,17 @@ const TodoAddModal = ({
 
   return (
     <div className='todo-modal'>
-      <div>할일 추가</div>
+      <div>할일 편집</div>
       <form onSubmit={handleSubmit}>
         <label htmlFor='todoName'>할일</label>
-        <input type='text' id='todoName' onChange={handelChangeName} required />
+        <input
+          type='text'
+          id='todoName'
+          placeholder={todoName}
+          value={todoName}
+          onChange={handelChangeName}
+          required
+        />
         <div className='state'>
           <label htmlFor='todoCheck'>상태</label>
         </div>
@@ -58,8 +78,8 @@ const TodoAddModal = ({
               name='todoCheck'
               id='nothing'
               value='0'
+              checked={todoCheck === '0'}
               onChange={handelChangeCheck}
-              defaultChecked
             />
             <img src={nothing} alt='' />
           </label>
@@ -69,6 +89,7 @@ const TodoAddModal = ({
               name='todoCheck'
               id='notyet'
               value='1'
+              checked={todoCheck === '1'}
               onChange={handelChangeCheck}
             />
             <ChangeHistoryRoundedIcon />
@@ -79,6 +100,7 @@ const TodoAddModal = ({
               name='todoCheck'
               id='doing'
               value='2'
+              checked={todoCheck === '2'}
               onChange={handelChangeCheck}
             />
             <CheckCircleOutlineRoundedIcon />
@@ -89,6 +111,7 @@ const TodoAddModal = ({
               name='todoCheck'
               id='done'
               value='3'
+              checked={todoCheck === '3'}
               onChange={handelChangeCheck}
             />
             <ClearRoundedIcon />
@@ -96,11 +119,21 @@ const TodoAddModal = ({
         </div>
         <div className="modal-buttons" style={{textAlign: "center", marginTop: "12px"}}>
           <Button
+            type='button'
+            onClick={handleDelete} 
+            size="small"
+            variant="contained" 
+            color="secondary"
+            startIcon={<DeleteIcon />}
+            style={{ float: 'left'}}
+          >
+          제거
+          </Button>
+          <Button
             type="button"
             onClick={handleCloseModal}
             size="small"
             variant="outlined"
-            style={{ float: 'left' }}
           >
           닫기
           </Button>
@@ -112,7 +145,7 @@ const TodoAddModal = ({
             startIcon={<BorderColorIcon />}
             style={{ float: 'right' }}
           >
-          추가
+          수정
           </Button>
         </div>
       </form>
@@ -120,4 +153,4 @@ const TodoAddModal = ({
   );
 };
 
-export default withModal('+할일추가')(TodoAddModal);
+export default withHomeTodoModal(TodoHomeModal);

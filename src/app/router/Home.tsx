@@ -28,7 +28,7 @@ const BottomGrid = styled(Grid)({
   },
 });
 
-const Home = (props) => {
+export const Home = (props) => {
   const { onChangeTodayData, onChangeSubjects, onChangeTimeTable } = props;
   const todayData = props.todayData || {};
   const collectionName = _.isEmpty(props.match.params)
@@ -72,5 +72,3 @@ const Home = (props) => {
     </RootGrid>
   );
 };
-
-export default Home;

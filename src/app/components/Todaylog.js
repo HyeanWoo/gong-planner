@@ -3,9 +3,9 @@ import _ from 'lodash';
 import { Box, Grid, Paper } from '@material-ui/core';
 import { styled } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
-import WordTodayModal from '../components/Modals/WordTodayModal';
-import DDayModal from '../components/Modals/DDayModal';
-import ScoreProgressModal from '../components/Modals/ScoreProgressModal';
+import WordTodayModal from './Modals/WordTodayModal';
+import DDayModal from './Modals/DDayModal';
+import ScoreProgressModal from './Modals/ScoreProgressModal';
 import { updateTodayLog } from '../firebase/todayFunction';
 import { secondToTime } from '../utils';
 import dayjs from 'dayjs';
@@ -59,18 +59,18 @@ const Todaylog = ({ colName, date, todayData }) => {
     // updateTodayLog(colName, shortDate, "TOTAL_STUDY_TIME", totalStudyTime);
   }
 
-  const stateMaker = init => useState.call(this, init).reduce((value, set) => { return { value, set } });
+  const makeState = init => useState.call(this, init).reduce((value, set) => { return { value, set } });
   
   const logVariables = {
-    wordToday:     stateMaker(todayData.wordToday),
-    dDay:          stateMaker(todayData.dDay),
-    scoreProgress: stateMaker(todayData.score ? todayData.score : 0),
+    wordToday:     makeState(todayData.wordToday),
+    dDay:          makeState(todayData.dDay),
+    scoreProgress: makeState(todayData.score ? todayData.score : 0),
   }
 
   const modalStates = {
-    wordToday:     stateMaker(false),
-    dDay:          stateMaker(false),
-    scoreProgress: stateMaker(false),
+    wordToday:     makeState(false),
+    dDay:          makeState(false),
+    scoreProgress: makeState(false),
   };
   
   const dDayCalc = () => {
@@ -80,13 +80,13 @@ const Todaylog = ({ colName, date, todayData }) => {
 
     let dday = typeof(logVariables.dDay.value) === "string" ? dayjs(logVariables.dDay.value, "YYYY. MM. DD") : logVariables.dDay.value;
     let today = dayjs().hour(0).minute(0).second(0).millisecond(0);
-    let ddayResult = ~~(today/86400000 - dday/86400000);
+    let ddayResult = Math.floor(today/86400000 - dday/86400000);
     if(Number(dday)===Number(today)) {
       return "D-Day";
     } else if(Number(dday) < Number(today)) {
-      return "D+"+(ddayResult);
+      return `D+${ddayResult}`;
     } else {
-      return "D"+(ddayResult);
+      return "D" + (ddayResult);
     }
   }
 
