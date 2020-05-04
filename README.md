@@ -1,4 +1,4 @@
-![icon.png](https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png){: width="100%" height="100%"}
+![icon.png](https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png){: width="10%" height="10%"}
 
 # <h1 align="center">공**플래너</h1>**
 
