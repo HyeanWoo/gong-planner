@@ -1,4 +1,4 @@
-![https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/27973abd-8b2f-40aa-aa02-70b91e4458bb/planner.png)
+![https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png](https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png)
 
 # <h1 align="center">공**플래너</h1>**
 
@@ -8,7 +8,7 @@
 
 **<p align="center">[웹사이트]([https://gong-planner.web.app/](https://gong-planner.web.app/)) | [이슈 등록]([https://github.com/GongPlanner/gong-planner/issues/new](https://github.com/GongPlanner/gong-planner/issues/new))</p>**
 
-![https://user-images.githubusercontent.com/46041638/80945383-ac5e8b00-8e26-11ea-92c5-20df2c10847b.pn](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f274421a-b436-4dc0-86ac-4ee8cfab8fa9/Untitled.png)
+![https://user-images.githubusercontent.com/46041638/80945383-ac5e8b00-8e26-11ea-92c5-20df2c10847b.png](https://user-images.githubusercontent.com/46041638/80945383-ac5e8b00-8e26-11ea-92c5-20df2c10847b.png)
 
 ## 특징(Key Features)
 
