@@ -1,14 +1,17 @@
-![icon.png](https://user-images.githubusercontent.com/46041638/80945363-9d77d880-8e26-11ea-81d0-d229446a5444.png){: width="10%" height="10%"}
+<h1 align="center">
+	<img src="https://user-images.githubusercontent.com/6284140/80945246-58ec3d00-8e26-11ea-8195-c4dfbf48bf6b.png" alt="logo" width="150" align="center">
+    <br>
+    <br>
+    공플래너
+</h1>
 
-# <h1 align="center">공**플래너</h1>**
-
----
-
-**<h4 align="center">공시생을 위한 공부기록관리 웹어플리케이션</h4>**
+<h4 align="center">공시생을 위한 공부기록관리 웹어플리케이션</h4>
 
 **<p align="center">[웹사이트]([https://gong-planner.web.app/](https://gong-planner.web.app/)) | [이슈 등록]([https://github.com/GongPlanner/gong-planner/issues/new](https://github.com/GongPlanner/gong-planner/issues/new))</p>**
 
-![home.png](https://user-images.githubusercontent.com/46041638/80945383-ac5e8b00-8e26-11ea-92c5-20df2c10847b.png)
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/6284140/80945557-052e2380-8e27-11ea-91f4-674ee927b74d.png" alt="website" width="500" align="center">
+</p>
 
 ## 특징(Key Features)
 
